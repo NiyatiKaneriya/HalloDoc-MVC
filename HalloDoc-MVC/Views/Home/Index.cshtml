@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<body class=" min-vh-100 ">
+    
+    <div class="wrapper-index  d-flex justify-content-center mt-4">
+        <div class=" d-flex justify-content-center align-items-center">
+            <div class="d-flex flex-column gap-3">
+                <a asp-controller="Home" asp-action="submit_request_screen">
+                    <button type="button" class="btn m-2 mb-0 p-3"
+                            style="background-color: cornflowerblue; color: white; font-size: xx-large; font-weight: 400; border-radius: .75rem; width:25rem;">
+                        Submit A Request
+                    </button>
+                </a>
+                <a asp-controller="Login" asp-action="Index">
+                    <button type="button" class="btn m-2 p-3"
+                            style="background-color: navy; color: white; font-size: xx-large; font-weight: 400; border-radius: .75rem; width:25rem;">
+                        Registered Patients
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+</body>

@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - HalloDoc_Patient</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/HalloDoc_Patient.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/css/intlTelInput.css">
+</head>
+<body class="d-flex flex-column justify-content-between ">
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid d-flex justify-content-between px-5">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"> <img src="~/images/logo-PhotoRoom.png-PhotoRoom.png" width="100"/> </a>
+              
+                <button type="button" class="btn btn-outline-info mr-5 pr-5">
+                <i class="fa fa-moon-o " aria-hidden="true"></i>
+            </button>
+            </div>
+        </nav>
+    </header>
+    <div class="container " >
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top  text-muted">
+        <div class="container">
+            <div class="d-flex justify-content-around p-2">
+            <a href="#" class="text-decoration-none text-muted">Terms of condition</a>
+            <a href="#" class="text-muted text-decoration-none">Privacy policy</a>
+        </div>
+        </div>
+    </footer>
+    
+    
+    
+     <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/js/intlTelInput.min.js"></script> 
+    <script>
+
+
+        const input = document.querySelector("#phone");
+        const input_bp = document.querySelector("#phone-bp");
+        const input_frd = document.querySelector("#phone-frd");
+        const input_concierge = document.querySelector("#phone-concierge");
+
+        if (input != null) {
+   
+            window.intlTelInput(input, {
+                utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/js/utils.js",
+            });
+        }
+        if (input_frd != null) {
+            
+            window.intlTelInput(input_frd, {
+                     utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/js/utils.js",
+                 });
+        }
+        if (input_concierge != null) {
+            
+            window.intlTelInput(input_concierge, {
+                     utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/js/utils.js",
+                 });
+        }
+        if (input_bp != null) {
+           
+            window.intlTelInput(input_bp, {
+                      utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/js/utils.js",
+                  });
+        }
+
+
+    </script>
+    <script type="text/javascript">
+        $(window).load(function () {
+            $('#myModal').modal('show');
+        });
+    </script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+    

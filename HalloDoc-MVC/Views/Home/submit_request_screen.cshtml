@@ -1,0 +1,37 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+<div class="wrapper d-flex flex-column justify-content-around ">
+    
+    <div class="w-100  ">
+        <div class="d-flex justify-content-around">
+            <div>&nbsp; </div>
+            <h1 class="text-center">I am a ...</h1>
+
+            <a asp-controller="Home" asp-action="Index" class="text-decoration-none text-info ">
+                <button type="button"
+                        class="mx-5 btn btn-outline-info">
+                    <i class="fa fa-solid fa-angle-left"></i> back
+                </button>
+            </a>
+        </div>
+        <div class="d-grid gap-3 col-sm-7 col-md-6 col-lg-4 mx-auto py-4 ">
+            <a role="button" asp-controller="PatientRequest" asp-action="Index"
+               class="btn border-2 border-secondary py-3 font-weight-bold text-secondary"
+               style="background-color:#f0e6ff">PATIENT</a>
+            <a role="button" asp-controller="FamilyRequest" asp-action="Index"
+               class="btn border-2 border-info py-3 font-weight-bold text-info"
+               style="background-color: #c7e5f4">FAMILY / FRIEND</a>
+            <a role="button" asp-controller="ConciergeRequest" asp-action="Index"
+               class="btn border-2 border-success py-3 font-weight-bold text-success"
+               style="background-color: #aeffe3">CONCIERGE</a>
+            <a role="button" asp-controller="BusinessPartnerRequest" asp-action="Index"
+               class="btn border-2 border-danger py-3 font-weight-bold text-danger "
+               style="background-color: #ffdbdc">BUSINESS PARTNERS</a>
+        </div>
+    </div>
+</div>

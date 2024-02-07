@@ -1,0 +1,107 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<partial name="../Shared/_PartialConfirmetionModel" />
+    <div class="wrapper d-flex flex-column align-items-center pt-4">
+        <div class="w-75 d-flex flex-row-reverse bg-white">
+            <a asp-controller="Home" asp-action="submit_request_screen" class="text-decoration-none text-info ">
+                <button type="button"
+                        class="mx-5 btn btn-outline-info">
+                    <i class="fa fa-solid fa-angle-left"></i> back
+                </button>
+            </a>
+        </div>
+        <form class="row bg-white shadow p-lg-4 p-md-3 p-sm-2 form-patient ">
+            <div class="col-12 mb-3">
+                <h3>Concierge Information</h3>
+            </div>
+            <div class=" col-md-6 col-sm-12 mb-3">
+                <div class="form-floating ">
+                    <input type="text" class="form-control" id="floatingInput" placeholder="First Name">
+                    <label for="floatingInput" class="text-muted">First Name</label>
+                </div>
+            </div>
+            <div class=" col-md-6 col-sm-12 mb-3">
+                <div class="form-floating ">
+                    <input type="text" class="form-control" id="floatingInput" placeholder="Last Name">
+                    <label for="floatingInput" class="text-muted">Last Name</label>
+                </div>
+            </div>
+            <div class=" col-md-6 col-sm-12 mb-3 ">
+                <div class="form-floating ">
+                    <input id="phone-concierge" type="tel" class="form-control " />
+                </div>
+            </div>
+            <div class=" col-md-6 col-sm-12 mb-3">
+                <div class="form-floating ">
+                    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                    <label for="floatingInput" class="text-muted">Email address</label>
+                </div>
+            </div>
+            <div class=" col-md-6 col-sm-12 mb-3">
+                <div class="form-floating ">
+                    <input type="text" class="form-control" id="floatingInput" placeholder="Hotel/Property Name">
+                    <label for="floatingInput" class="text-muted">Hotel/Property Name</label>
+                </div>
+            </div>
+            <div class="col-12 mb-3">
+                <h3>Patient Information</h3>
+            </div>
+            <div class="col-12 mb-3">
+                <div class="form-floating">
+                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"
+                              style="height: 100px"></textarea>
+                    <label for="floatingTextarea" class="text-muted">Enter Brief Details of symptoms (optional) </label>
+                </div>
+            </div>
+            <div class=" col-md-6 col-sm-12 mb-3">
+                <div class="form-floating ">
+                    <input type="text" class="form-control" id="floatingInput" placeholder="First Name">
+                    <label for="floatingInput" class="text-muted">First Name</label>
+                </div>
+            </div>
+            <div class=" col-md-6 col-sm-12 mb-3">
+                <div class="form-floating ">
+                    <input type="text" class="form-control" id="floatingInput" placeholder="Last Name">
+                    <label for="floatingInput" class="text-muted">Last Name</label>
+                </div>
+            </div>
+            <div class=" col-md-6 col-sm-12 mb-3">
+                <div class="form-floating ">
+                    <input id="startDate" class="form-control" type="date" placeholder="DOB" />
+                    <label for="floatingInput" class="text-muted">DOB</label>
+                </div>
+            </div>
+            <div class="col-12 mb-3">
+                <h3>Patient Contact information</h3>
+            </div>
+            <div class=" col-md-6 col-sm-12 mb-3">
+                <div class="form-floating ">
+                    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                    <label for="floatingInput" class="text-muted">Email address</label>
+                </div>
+            </div>
+            <div class=" col-md-6 col-sm-12 mb-3 ">
+                <div class="form-floating mb-3">
+                    <input id="phone" type="tel" class="form-control " />
+                </div>
+            </div>
+            <div class="col-12 mb-3">
+                <h3>Patient Location</h3>
+            </div>
+            <div class=" col-md-6 col-sm-12 mb-3">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="floatingInput" placeholder="Room">
+                    <label for="floatingInput" class="text-muted">Room #/ Suite</label>
+                </div>
+            </div>
+            <div class="col-12 mb-3 d-flex flex-row-reverse gap-3">
+                <button type="button" class="btn btn-outline-info">Cancel</button>
+                <button type="button" class="btn btn-info text-white">Submit</button>
+            </div>
+        </form>
+    </div>
+
+ 

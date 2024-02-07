@@ -1,0 +1,148 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+body {
+    font-family: "Poppins";
+    height: 100vh;
+    margin:0;
+}
+
+.login-body {
+    position: relative;
+    background: linear-gradient( rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6) ), url("../images/11116016_415-removebg-preview.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: contain;
+    backdrop-filter: blur(5px);  
+    height: 100%;
+    overflow: hidden;
+}
+
+.theme-button .back-btn {
+    position: absolute;
+    right: 40px;
+}
+
+.theme-button:hover {
+    color: white;
+}
+
+.back-btn:hover {
+    color: white;
+}
+
+.wrapper-index {
+    /*height: 84vh;*/
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.form-patient {
+    width: 75%;
+}
+
+.upload-btn {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    color: #01bce9;
+    font-size: 16px;
+}
+
+.upload-file {
+    border: 1px solid #ccc;
+    width: fit-content;
+    display: flex;
+    justify-content: flex-end;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+input[type=file] {
+    display: none;
+}
+
+@media only screen and (max-width: 768px) {
+    form {
+        width: 70%;
+    }
+}
+
+input#phone {
+    padding-left: 47px !important;
+    padding: 16px 0px;
+}
+
+input#phone-frd {
+    padding-left: 47px !important;
+    padding: 16px 0px;
+}
+
+input#phone-concierge {
+    padding-left: 47px !important;
+    padding: 16px 0px;
+}
+
+input#phone-bp {
+    padding-left: 47px !important;
+    padding: 16px 0px;
+}
+
+.intl-tel-input .flag-dropdown .selected-flag {
+    padding: 11px 16px 11px 6px;
+}
+
+.intl-tel-input {
+    z-index: 99;
+    width: 100%;
+}
+
+.iti__selected-flag {
+    top: 12px;
+    height: 33px !important;
+    border-radius: 4px;
+    transition: .3s;
+}
+
+.iti {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.iti-flag {
+    box-shadow: none;
+}
+
+.iti--allow-dropdown .iti__flag-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.intl-tel-input .selected-flag:focus {
+    outline: none;
+}
+
+.iti--allow-dropdown .iti__flag-container:hover .iti__selected-flag {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.iti--allow-dropdown input {
+    padding-right: 6px;
+    padding-left: 52px;
+    margin-left: 0;
+}
+
+.iti__country-list {
+    border-radius: 4px !important;
+    z-index: 999 !important;
+    box-shadow: 0 0 16px 0 rgb(0 0 0 / 8%) !important;
+    border: 1px solid #ececec !important;
+    width: 350px !important;
+    overflow-x: hidden;
+}
