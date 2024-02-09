@@ -39,7 +39,7 @@ namespace HalloDoc_MVC.Controllers
                         RegionId = 1,
 
                     };
-                    _context.Business.Add(concierge);
+                    _context.Concierges.Add(concierge);
                     _context.SaveChanges();
 
                     var request = new Request

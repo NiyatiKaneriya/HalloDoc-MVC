@@ -30,7 +30,7 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<CaseTag> CaseTags { get; set; }
 
-    public virtual DbSet<Concierge> Business { get; set; }
+    public virtual DbSet<Concierge> Concierges { get; set; }
 
     public virtual DbSet<EmailLog> EmailLogs { get; set; }
 
