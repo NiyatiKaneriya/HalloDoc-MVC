@@ -11,7 +11,8 @@ namespace HalloDoc_Patient.Controllers
     public class LoginController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public LoginController(ApplicationDbContext context) {
+        public LoginController(ApplicationDbContext context)
+        {
             _context = context;
         }
         public IActionResult Index()
@@ -26,7 +27,7 @@ namespace HalloDoc_Patient.Controllers
         public IActionResult checkLogin(AspNetUser aspNetUser)
         {
             var user = _context.AspNetUsers.FirstOrDefault(u => (u.UserName == aspNetUser.UserName) && (u.PasswordHash == aspNetUser.PasswordHash));
-            if(user != null)
+            if (user != null)
             {
                 return RedirectToAction("Index", "Home");
             }

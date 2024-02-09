@@ -30,7 +30,7 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<CaseTag> CaseTags { get; set; }
 
-    public virtual DbSet<Concierge> Concierges { get; set; }
+    public virtual DbSet<Concierge> Business { get; set; }
 
     public virtual DbSet<EmailLog> EmailLogs { get; set; }
 
@@ -418,7 +418,7 @@ public partial class ApplicationDbContext : DbContext
         {
             entity.HasKey(e => e.UserId).HasName("User_pkey");
 
-            entity.Property(e => e.UserId).ValueGeneratedNever();
+            entity.Property(e => e.UserId).HasDefaultValueSql("nextval('user_sequence_id'::regclass)");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.UserCreatedByNavigations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -428,6 +428,7 @@ public partial class ApplicationDbContext : DbContext
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.UserModifiedByNavigations).HasConstraintName("User_ModifiedBy_fkey");
         });
+        modelBuilder.HasSequence("user_sequence_id");
 
         OnModelCreatingPartial(modelBuilder);
     }
