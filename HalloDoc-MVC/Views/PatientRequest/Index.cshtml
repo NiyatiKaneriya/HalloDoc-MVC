@@ -49,13 +49,20 @@
         </div>
         <div class=" col-md-6 col-sm-12 mb-3">
             <div class="form-floating ">
-                <input asp-for="Email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                <input asp-for="Email" id="Email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
                 <label for="floatingInput" class="text-muted">Email address</label>
             </div>
         </div>
         <div class=" col-md-6 col-sm-12 mb-3">
             <div class="form-floating mb-3">
                 <input asp-for="PhoneNumber" id="phone" type="tel" class="form-control">
+            </div>
+        </div>
+        
+        <div id="Password" class=" col-md-6 col-sm-12 mb-3" style="display:none">
+            <div class="form-floating mb-3" >
+                <input asp-for="Password" type="text" class="form-control" id="floatingInput" placeholder="Password" >
+                <label for="floatingInput" class="text-muted">Password</label>
             </div>
         </div>
         <div class="col-12 mb-3">
@@ -94,19 +101,80 @@
         <div class="col-12">
             <h3>(optional) Upload Photo Or Document</h3>
         </div>
-        <div class="col-12">
-            <div class="col-12 mb-3 border border-muted d-flex flex-row-reverse p-0 " style="border-radius: 5px;">
-                
-                <input type="file" id="upload" class="bg-info" />
-                <label for="upload" class="text-white  bg-info border border-2 border-info px-3 p-1 mb-0"
-                       style="border-radius: 5px;">
-                    <i class="fa fa-cloud-upload"></i><span class="d-lg-inline d-md-inline d-sm-none d-none"> Upload</span>
-                </label>
+       
+         <div class="col-12 d-flex">
+            <div class="col-md-10 mb-3 border border-muted d-flex flex-row-reverse p-0 " style="border-radius: 5px;">
+                               
+                <button id="select" class="select_file_btn text-start fw-semibold w-100 p-2">
+                    Select
+                    File <label class="" for="getFile" id="filename"></label>
+                </button>
+                <input  type="file" id="getFile" style="display:none">
             </div>
-        </div>
+            <div class="col-lg-2 col-md-3 col-4">
+                <div class="upload_file_btn text-center fw-semibold w-100 p-2">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> &nbsp; Upload
+                </div>
+                
+            </div>
+        </div> 
         <div class="col-12 mb-3 d-flex flex-row-reverse gap-3">
             <button type="button" class="btn btn-outline-info">Cancel</button>
             <input  type="submit" class="btn btn-info text-white" value="submit">
         </div>
     </form>
 </div>
+
+
+@section Scripts
+    {
+    
+    <script type="text/javascript">
+        if (document.getElementById("select") != null) {
+    document.getElementById("select").addEventListener("click", function (e) {
+        document.getElementById('getFile').click();
+        e.preventDefault();
+    })
+}
+
+if (document.getElementById("getFile") != null) {
+    document.getElementById("getFile").onchange = function () {
+        document.getElementById("filename").textContent = this.files[0].name;
+    };
+}
+
+        $(function () {
+            $("#Email").focusout(function () {
+                var Email = $("#Email").val();
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("CheckEmail")?Email=' + Email,
+                    cache: false,
+                    success: function (response) {
+                        var flag = response.message;
+                        var userId = response.data;
+                        console.log(response);
+                        console.log(flag == "False");
+                        console.log(flag == 'False');
+                        if (flag == "False") {
+                            // Show the username and password fields
+                            $("#Password").show();
+                        } else {
+                            $("#Password").hide();
+
+                            // Check if userId is defined
+                            document.getElementById("UserId").value = userId;
+                            console.log(document.getElementById("UserId").value);
+
+
+                        }
+                    },
+                    error: function () {
+                        alert("Error while checking email.");
+                    }
+                });
+            });
+        });
+
+    </script>
+}

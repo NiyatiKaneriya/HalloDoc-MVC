@@ -45,10 +45,10 @@ namespace HalloDoc_MVC.Controllers
                     var request = new Request
                     {
                         RequestTypeId = 3,
-                        FirstName = model.FirstName,                        
-                        LastName = model.LastName,                       
-                        PhoneNumber = model.PhoneNumber,                        
-                        Email = model.Email,                        
+                        FirstName = model.CFirstname,                        
+                        LastName = model.CLastname,                       
+                        PhoneNumber = model.CPhoneNumber,                        
+                        Email = model.CEmail,                        
                         Status = 1,
                         CreatedDate = DateTime.Now,
                         IsUrgentEmailSent = new BitArray(1),
