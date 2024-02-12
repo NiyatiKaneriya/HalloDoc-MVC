@@ -3,7 +3,7 @@
 body {
     font-family: "Poppins";
     height: 100vh;
-    margin:0;
+    margin: 0;
 }
 
 .login-body {
@@ -13,7 +13,7 @@ body {
     background-attachment: fixed;
     background-position: center;
     background-size: contain;
-    backdrop-filter: blur(5px);  
+    backdrop-filter: blur(5px);
     height: 100%;
     overflow: hidden;
 }
@@ -146,8 +146,9 @@ input#phone-bp {
     width: 350px !important;
     overflow-x: hidden;
 }
-.iti--inline-dropdown .iti__dropdown-content{
-    z-index:20 !important;  
+
+.iti--inline-dropdown .iti__dropdown-content {
+    z-index: 20 !important;
 }
 
 .upload_file_btn {
@@ -157,7 +158,6 @@ input#phone-bp {
     border-bottom-right-radius: 10px;
     color: #FFFFFF;
 }
-
 
 .select_file_btn {
     border-top: 2px solid #9e9797;
@@ -170,3 +170,72 @@ input#phone-bp {
     border-right: none;
     background-color: transparent;
 }
+
+/*Dashboard CSS*/
+#responsiveTable th, #responsiveTable td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+@media (min-width: 600px) {
+    #create_new_req_icon {
+        display: none;
+    }
+}
+
+@media (max-width: 600px) {
+    #responsiveTable thead, #responsiveTable tbody, #responsiveTable th, #responsiveTable td, #responsiveTable tr {
+        display: block;
+    }
+
+        #responsiveTable thead tr {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+
+    #responsiveTable tr {
+        border: 1px solid #ccc;
+        padding: 8px;
+        margin-bottom: 5px;
+    }
+
+    #responsiveTable td {
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        text-align: right;
+    }
+
+    #responsiveTable td:before {
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        content: attr(data-label);
+        text-align: left;
+        font-weight: bold;
+    }
+
+    #create_new_req_text {
+        display: none;
+    }
+
+    #create_new_req {
+        height: 45px;
+        width: 45px;
+        padding: 0px !important;
+    }
+}
+
+.tab_link {
+    text-decoration: none;
+}
+
+    .tab_link:hover {
+        border-bottom: 2px solid #01BCE9 !important;
+        color: #01BCE9 !important;
+    }

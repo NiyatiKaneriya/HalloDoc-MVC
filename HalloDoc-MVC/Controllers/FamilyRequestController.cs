@@ -20,12 +20,10 @@ namespace HalloDoc_MVC.Controllers
 
         public IActionResult Create(ViewFamilyRequest model)
         {
-            try
-            {
+            
                 if (ModelState.IsValid)
                 {
-                    
-
+                   
                     var request = new Request
                     {
                         RequestTypeId = 2,                        
@@ -62,15 +60,6 @@ namespace HalloDoc_MVC.Controllers
                     return View("Index");
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("An error occured: " + ex.Message);
-                ViewData["error"] = "An error occurred while processing your request.";
-                return View("Index");
-            }
-
-        }
-
 
     }
 }

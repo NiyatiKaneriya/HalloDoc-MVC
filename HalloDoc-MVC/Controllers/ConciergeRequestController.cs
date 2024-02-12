@@ -24,8 +24,7 @@ namespace HalloDoc_MVC.Controllers
 
         public IActionResult Create(ViewConciergeRequest model)
         {
-            try
-            {
+            
                 if (ModelState.IsValid)
                 {
                     var concierge = new Concierge
@@ -87,14 +86,9 @@ namespace HalloDoc_MVC.Controllers
                     return View("Index");
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("An error occured: " + ex.Message);
-                ViewData["error"] = "An error occurred while processing your request.";
-                return View("Index");
-            }
+            
 
-        }
+        
 
     }
 }

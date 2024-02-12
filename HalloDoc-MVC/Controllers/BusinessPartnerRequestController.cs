@@ -21,8 +21,6 @@ namespace HalloDoc_Patient.Controllers
         public IActionResult Create(ViewBusinessPartnerRequest model)
         {
 
-            try
-            {
                 if (ModelState.IsValid)
                 {
                     var business = new Business
@@ -79,17 +77,6 @@ namespace HalloDoc_Patient.Controllers
                     return View("Index");
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("An error occured: " + ex.Message);
-                ViewData["error"] = "An error occurred while processing your request.";
-                return View("Index");
-            }
-
-        }
-
-
-
 
     }
 }

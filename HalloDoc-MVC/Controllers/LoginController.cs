@@ -24,12 +24,16 @@ namespace HalloDoc_Patient.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult checkLogin(AspNetUser aspNetUser)
+        public async Task<IActionResult> checkLoginAsync(AspNetUser aspNetUser)
         {
             var user = _context.AspNetUsers.FirstOrDefault(u => (u.UserName == aspNetUser.UserName) && (u.PasswordHash == aspNetUser.PasswordHash));
             if (user != null)
             {
-                return RedirectToAction("Index", "Home");
+                HttpContext.Session.SetString("UserName", user.UserName.ToString());
+                var U = await _context.Users.FirstOrDefaultAsync(m => m.Id == user.Id.ToString());
+                HttpContext.Session.SetString("UserID", U.UserId.ToString());
+
+                return RedirectToAction("Index", "Dashboard");
             }
             else
             {

@@ -1,0 +1,112 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model HalloDoc_DAL.Models.Request
+<div class="shadow-lg ">
+    
+    <hr class="m-0">
+    <div>
+        <ul id="tab_toggle" class="nav nav-tab">
+            <li class=" active">
+                <a data-toggle="tab" class="text-muted tab_link nav-link " aria-current="page" asp-action="Index" asp-controller="Dashboard">Dashboard</a>
+            </li>
+            <li class="">
+                <a data-toggle="tab" class="text-muted tab_link nav-link" asp-action="Index" asp-controller="Profile">Profile</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<div class="p-3 mt-5">
+    <div class="tab-content">
+        <div id="Dashboard" class="my-3 px-3 tab-pane active">
+            <h3 class="mb-3">Medical History</h3>
+            <div class="shadow-lg">
+                <div class="w-100">
+                    <div class="d-flex flex-row-reverse">
+                        <a id="create_new_req" role="button"
+                           class="form_button bg-transparent d-flex align-items-center justify-content-center m-3 p-3 fw-semibold text-decoration-none">
+                            <p id="create_new_req_text" class="m-0">Create New Request</p>
+                            <i id="create_new_req_icon" class="fa fa-solid fa-plus"></i>
+                        </a>
+                    </div>
+                    <table class="w-100 " id="responsiveTable">
+                        <thead>
+                            <tr>
+                                <th>Created Date <i class="fa fa-solid fa-arrow-down"></i></th>
+                                <th class="mobile-hide">Current Status</th>
+                                <th class="mobile-hide">Document</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @* @foreach (var item in Model)
+                            {
+                                
+                                <tr class="table-row">
+                                    <td data-label="Created Date">01/01/2024</td>
+                                    <td class="mobile-hide" data-label="Current Status">Active</td>
+                                    <td class="mobile-hide" data-label="Document">Document1.pdf</td>
+                                </tr>
+                                
+                            } *@
+                           
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="Profile" class="my-3 px-3 tab-pane">
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo similique accusamus nostrum
+                qui explicabo quae illo magni obcaecati ullam iusto. Incidunt, sint corrupti? Repellat
+                debitis blanditiis dolore eveniet! Impedit quia tempora fuga placeat deleniti
+                perspiciatis at consequatur fugiat tempore recusandae?
+            </p>
+        </div>
+    </div>
+
+</div>
+
+
+@section DashboardScripts
+    {
+     <script type="text/javascript">
+
+    if (window.innerWidth <= 600) {
+        document.getElementById("create_new_req").innerHTML
+    }
+    var tableRows = document.querySelectorAll('#responsiveTable tbody .table-row');
+
+    tableRows.forEach(function (row) {
+        row.addEventListener('click', function () {
+            if (window.innerWidth <= 600) {
+                var details = this.querySelectorAll('.mobile-hide');
+                details.forEach(function (detail) {
+                    detail.style.display = detail.style.display === 'none' ? 'block' : 'none';
+                });
+            }
+        });
+    });
+
+    // Reset when resizing
+    window.addEventListener('resize', function () {
+        var details = document.querySelectorAll('.mobile-hide');
+        if (window.innerWidth > 600) {
+            // Reset display property for desktop view
+            details.forEach(function (detail) {
+                detail.style.removeProperty('display');
+            });
+        } else {
+            // Apply correct display property for mobile view
+            details.forEach(function (detail) {
+                detail.style.display = 'none';
+            });
+        }
+    });
+
+</script>
+
+} 
