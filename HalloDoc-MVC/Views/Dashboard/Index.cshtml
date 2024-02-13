@@ -5,16 +5,14 @@
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor contextAccessor
 @model IEnumerable<HalloDoc_DAL.Models.Request>
 
-
-
-<div class="p-3 mt-5">
+<div>
     <div class="tab-content">
         <div id="Dashboard" class="my-3 px-3 tab-pane active">
             <h3 class="mb-3">Medical History </h3>
             <div class="shadow-lg">
                 <div class="w-100">
                     <div class="d-flex flex-row-reverse">
-                        <a id="create_new_req" role="button"
+                        <a id="create_new_req" role="button" data-bs-toggle="modal" data-bs-target="#create_new"
                            class="form_button bg-transparent d-flex align-items-center justify-content-center m-3 p-3 fw-semibold text-decoration-none">
                             <p id="create_new_req_text" class="m-0">Create New Request</p>
                             <i id="create_new_req_icon" class="fa fa-solid fa-plus"></i>
@@ -76,7 +74,30 @@
         </div>
     </div>
 </div>
-
+<script>
+    document.getElementById("continueButton").addEventListener("click", function () {
+        var selectedOption = document.querySelector('input[name="options-outlined"]:checked').id;
+        if (selectedOption === "success-outlined") {
+            // Call an action using AJAX
+            // Example:
+            // $.ajax({
+            //     type: "POST",
+            //     url: "/YourController/YourAction",
+            //     data: yourData,
+            //     success: function(response) {
+            //         // Handle success response
+            //     },
+            //     error: function(xhr, status, error) {
+            //         // Handle error
+            //     }
+            // });
+            window.location.href = "/RequestByPatient/RequestForMe";
+        } else if (selectedOption === "danger-outlined") {
+            // Redirect to another view page
+            window.location.href = "/RequestByPatient/RequestForSomeone";
+        }
+    });
+</script>
 
 
 @section DashboardScripts
@@ -116,29 +137,6 @@
     });
 
 </script>
-    <script type="text/javascript">
-        document.getElementById("continueButton").addEventListener("click", function () {
-            var selectedOption = document.querySelector('input[name="options-outlined"]:checked').id;
-            if (selectedOption === "success-outlined") {
-                // Call an action using AJAX
-                // Example:
-                // $.ajax({
-                //     type: "POST",
-                //     url: "/YourController/YourAction",
-                //     data: yourData,
-                //     success: function(response) {
-                //         // Handle success response
-                //     },
-                //     error: function(xhr, status, error) {
-                //         // Handle error
-                //     }
-                // });
-                window.location.href = "/RequestByPatient/SubmitForMe";
-            } else if (selectedOption === "danger-outlined") {
-                // Redirect to another view page
-                window.location.href = "/RequestByPatient/SubmitForSomeoneElse";
-            }
-        });
-</script>
+    
 
 }
