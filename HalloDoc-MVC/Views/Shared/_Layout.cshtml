@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject IHttpContextAccessor contextAccessor
+﻿@using HelloDoc.Models.CV;
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -12,12 +14,12 @@
 </head>
 <body class="d-flex flex-column justify-content-between ">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow ">
             <div class="container-fluid d-flex justify-content-between px-5">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"> <img src="~/images/logo-PhotoRoom.png-PhotoRoom.png" width="100"/> </a>
                 <div class="d-flex">
-                    <div >User </div>
-                    
+                    <div>   Welcome <span class="fw-bolder"> @CV.UserName() </span>     </div>
+                    <a asp-action="Logout" asp-controller="Login" class="btn btn-outline-info mx-2 " id="logout-btn">Logout</a>
                     <button type="button" class="btn btn-outline-info mr-5 pr-5">
                         <i class="fa fa-moon-o " aria-hidden="true"></i>
                     </button>
@@ -25,12 +27,17 @@
                 
             </div>
         </nav>
+        @{
+            
+            if (CV.UserID() != null)
+            {
+                    <partial name="_PartialSubNav" />
+            }
+        }
     </header>
-    <div class="container " >
-        <main role="main" class="pb-3">
+        <main role="main" class="container">
             @RenderBody()
         </main>
-    </div>
 
     <footer class="border-top  text-muted">
         <div class="container">
@@ -84,6 +91,7 @@
             $('#myModal').modal('show');
         });
     </script>
+   
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

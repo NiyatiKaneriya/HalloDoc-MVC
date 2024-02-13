@@ -1,5 +1,6 @@
 ﻿using HalloDoc_DAL.DataContext;
 using HalloDoc_DAL.Models;
+using HelloDoc.Models.CV;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HalloDoc_MVC.Controllers
@@ -8,13 +9,18 @@ namespace HalloDoc_MVC.Controllers
     {
         private readonly ApplicationDbContext _context;
 
+
         public DashboardController(ApplicationDbContext context)
         {
             _context = context;
         }
-        public Task<IActionResult> Index()
+
+        //public IActionResult Index => View();
+        public IActionResult Index()
         {
-            return Task.FromResult<IActionResult>(View(Request));
+            var Request = _context.Requests.Where(r => r.UserId == Convert.ToInt32(CV.UserID())).ToList();
+
+            return View(Request);
         }
 
     }

@@ -1,29 +1,16 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@{
-}
-@model HalloDoc_DAL.Models.Request
-<div class="shadow-lg ">
-    
-    <hr class="m-0">
-    <div>
-        <ul id="tab_toggle" class="nav nav-tab">
-            <li class=" active">
-                <a data-toggle="tab" class="text-muted tab_link nav-link " aria-current="page" asp-action="Index" asp-controller="Dashboard">Dashboard</a>
-            </li>
-            <li class="">
-                <a data-toggle="tab" class="text-muted tab_link nav-link" asp-action="Index" asp-controller="Profile">Profile</a>
-            </li>
-        </ul>
-    </div>
-</div>
+
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor contextAccessor
+@model IEnumerable<HalloDoc_DAL.Models.Request>
+
 
 
 <div class="p-3 mt-5">
     <div class="tab-content">
         <div id="Dashboard" class="my-3 px-3 tab-pane active">
-            <h3 class="mb-3">Medical History</h3>
+            <h3 class="mb-3">Medical History </h3>
             <div class="shadow-lg">
                 <div class="w-100">
                     <div class="d-flex flex-row-reverse">
@@ -42,33 +29,54 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @* @foreach (var item in Model)
+                            <tr class="table-row">
+                                <td data-label="Created Date">01/01/2024</td>
+                                <td class="mobile-hide" data-label="Current Status">Active</td>
+                                <td class="mobile-hide" data-label="Document">Document1.pdf</td>
+                            </tr>
+                             @foreach (var item in Model)
                             {
-                                
                                 <tr class="table-row">
-                                    <td data-label="Created Date">01/01/2024</td>
-                                    <td class="mobile-hide" data-label="Current Status">Active</td>
+                                    <td data-label="Created Date">@Html.DisplayFor(modelItem => item.CreatedDate)</td>
+                                    <td class="mobile-hide" data-label="Current Status"> @Html.DisplayFor(modelItem => item.Status)</td>
                                     <td class="mobile-hide" data-label="Document">Document1.pdf</td>
                                 </tr>
-                                
-                            } *@
-                           
+                            } 
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-        <div id="Profile" class="my-3 px-3 tab-pane">
-            <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo similique accusamus nostrum
-                qui explicabo quae illo magni obcaecati ullam iusto. Incidunt, sint corrupti? Repellat
-                debitis blanditiis dolore eveniet! Impedit quia tempora fuga placeat deleniti
-                perspiciatis at consequatur fugiat tempore recusandae?
-            </p>
-        </div>
     </div>
 
 </div>
+<div class="modal fade" id="create_new" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content border-0">
+            <div class="modal-header bg-info text-white">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Create New Request</h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body ">
+                <p>
+                    Here, I want to create  new request for...
+                </p>
+                <div class="text-center">
+                    <input type="radio" class="btn-check" name="options-outlined" id="success-outlined" autocomplete="off" checked>
+                    <label class="btn btn-outline-info text- mx-2" for="success-outlined">Me</label>
+
+                    <input type="radio" class="btn-check" name="options-outlined" id="danger-outlined" autocomplete="off">
+                    <label class="btn btn-outline-info text- mx-2" for="danger-outlined">Some one else</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input value="Continue" id="continueButton" type="button" class="btn btn-outline-info">
+                <button type="button" class="btn btn-info text-white" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 @section DashboardScripts
@@ -108,5 +116,29 @@
     });
 
 </script>
+    <script type="text/javascript">
+        document.getElementById("continueButton").addEventListener("click", function () {
+            var selectedOption = document.querySelector('input[name="options-outlined"]:checked').id;
+            if (selectedOption === "success-outlined") {
+                // Call an action using AJAX
+                // Example:
+                // $.ajax({
+                //     type: "POST",
+                //     url: "/YourController/YourAction",
+                //     data: yourData,
+                //     success: function(response) {
+                //         // Handle success response
+                //     },
+                //     error: function(xhr, status, error) {
+                //         // Handle error
+                //     }
+                // });
+                window.location.href = "/RequestByPatient/SubmitForMe";
+            } else if (selectedOption === "danger-outlined") {
+                // Redirect to another view page
+                window.location.href = "/RequestByPatient/SubmitForSomeoneElse";
+            }
+        });
+</script>
 
-} 
+}

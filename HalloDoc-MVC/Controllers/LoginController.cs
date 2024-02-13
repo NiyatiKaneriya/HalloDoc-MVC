@@ -1,9 +1,7 @@
 ﻿using HalloDoc_DAL.DataContext;
 using HalloDoc_DAL.Models;
-using HalloDoc_MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Npgsql;
 using System.Data;
 
 namespace HalloDoc_Patient.Controllers
@@ -11,9 +9,11 @@ namespace HalloDoc_Patient.Controllers
     public class LoginController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public LoginController(ApplicationDbContext context)
+        private readonly IHttpContextAccessor _contextAccessor;
+        public LoginController(ApplicationDbContext context, IHttpContextAccessor contextAccessor)
         {
             _context = context;
+            _contextAccessor = contextAccessor;
         }
         public IActionResult Index()
         {
@@ -30,9 +30,10 @@ namespace HalloDoc_Patient.Controllers
             if (user != null)
             {
                 HttpContext.Session.SetString("UserName", user.UserName.ToString());
-                var U = await _context.Users.FirstOrDefaultAsync(m => m.Id == user.Id.ToString());
-                HttpContext.Session.SetString("UserID", U.UserId.ToString());
+                var Ua = await _context.Users.FirstOrDefaultAsync(m => m.Id == user.Id);
+                HttpContext.Session.SetString("UserID", Ua.UserId.ToString());
 
+                //var userRequests = _context.Requests.Where(r => r.UserId == U.UserId).ToList();
                 return RedirectToAction("Index", "Dashboard");
             }
             else
@@ -40,6 +41,11 @@ namespace HalloDoc_Patient.Controllers
                 ViewData["error"] = "Invalid Id Pass";
                 return View("Index");
             }
+        }
+        public  IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Login");
         }
 
     }
