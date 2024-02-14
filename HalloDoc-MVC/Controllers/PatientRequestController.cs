@@ -77,6 +77,7 @@ namespace HalloDoc_MVC.Controllers
 
                 _context.Users.Add(user);
                 _context.SaveChanges();
+
                 var request = new Request
                 {
                     RequestTypeId = 1,
@@ -106,7 +107,40 @@ namespace HalloDoc_MVC.Controllers
                 _context.RequestClients.Add(requestClient);
                 _context.SaveChanges();
 
+                if (model.UploadFile != null)
+                {
+
+
+                    string FilePath = "wwwroot\\UploadedFiles\\" + request.RequestId;
+                    string path = Path.Combine(Directory.GetCurrentDirectory(), FilePath);
+
+                    if (!Directory.Exists(path))
+                        Directory.CreateDirectory(path);
+
+                    string newfilename = $"{Path.GetFileNameWithoutExtension(model.UploadFile.FileName)}-{DateTime.Now.ToString("yyyyMMddhhmmss")}.{Path.GetExtension(model.UploadFile.FileName).Trim('.')}";
+
+                    string fileNameWithPath = Path.Combine(path, newfilename);
+                    model.UploadImage = FilePath.Replace("wwwroot\\UploadedFiles\\", "/UploadedFiles/") + "/" + newfilename;
+
+
+                    using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                    {
+                        model.UploadFile.CopyTo(stream);
+                    }
+
+                    var requestwisefile = new RequestWiseFile
+                    {
+                        RequestId = request.RequestId,
+                        FileName = model.UploadImage,
+                        CreatedDate = DateTime.Now,
+                    };
+                    _context.RequestWiseFiles.Add(requestwisefile);
+                    _context.SaveChanges();
+
+                }
                 return RedirectToAction("Index");
+
+               
 
             }
             else if(model.Password == null)

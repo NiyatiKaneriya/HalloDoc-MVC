@@ -74,8 +74,4 @@
     <ProjectReference Include="..\HalloDoc-DAL\HalloDoc-DAL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\UploadedFiles\" />
-  </ItemGroup>
-
 </Project>

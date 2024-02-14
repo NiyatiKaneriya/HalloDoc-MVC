@@ -16,7 +16,9 @@ namespace HalloDoc_MVC.Models
 
         public required string PhoneNumber { get; set;}
 
-        public string Password { get; set;}
+        public string? Relation {  get; set;}
+
+        public string? Password { get; set;}
 
         public required string Street { get; set;}
 
@@ -29,6 +31,6 @@ namespace HalloDoc_MVC.Models
         public string? Room { get; set;}
 
         public IFormFile? UploadFile { get; set; }
-        public string UploadImage { get; internal set; }
+        public string? UploadImage { get; internal set; }
     }
 }

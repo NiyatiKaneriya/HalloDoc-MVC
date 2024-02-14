@@ -31,5 +31,8 @@
         public required string Zipcode { get; set; }
 
         public string? Room { get; set; }
+
+        public IFormFile? UploadFile { get; set; }
+        public string UploadImage { get; internal set; }
     }
 }

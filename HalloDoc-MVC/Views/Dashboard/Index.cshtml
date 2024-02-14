@@ -3,7 +3,8 @@
 *@
 
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor contextAccessor
-@model IEnumerable<HalloDoc_DAL.Models.Request>
+@* @model IEnumerable<HalloDoc_DAL.Models.Request> *@
+@model IEnumerable<HalloDoc_MVC.Models.ViewDashboard>
 
 <div>
     <div class="tab-content">
@@ -35,9 +36,14 @@
                              @foreach (var item in Model)
                             {
                                 <tr class="table-row">
-                                    <td data-label="Created Date">@Html.DisplayFor(modelItem => item.CreatedDate)</td>
-                                    <td class="mobile-hide" data-label="Current Status"> @Html.DisplayFor(modelItem => item.Status)</td>
-                                    <td class="mobile-hide" data-label="Document">Document1.pdf</td>
+                                    <td data-label="Created Date">@item.CreatedDate</td>
+                                    <td class="mobile-hide" data-label="Current Status">@item.Status</td>
+                                    <td class="mobile-hide" data-label="Document"> 
+                                        @if(item.FileCount > 0)
+                                        {
+                                            <a role="button" asp-controller="Dashboard" asp-route-RequestId="@item.RequestId" asp-action="Documents" class="btn btn-info bg-transparent border border-info p-2">@item.FileCount Document</a>
+                                        }
+                                    </td>
                                 </tr>
                             } 
                         </tbody>
@@ -78,19 +84,7 @@
     document.getElementById("continueButton").addEventListener("click", function () {
         var selectedOption = document.querySelector('input[name="options-outlined"]:checked').id;
         if (selectedOption === "success-outlined") {
-            // Call an action using AJAX
-            // Example:
-            // $.ajax({
-            //     type: "POST",
-            //     url: "/YourController/YourAction",
-            //     data: yourData,
-            //     success: function(response) {
-            //         // Handle success response
-            //     },
-            //     error: function(xhr, status, error) {
-            //         // Handle error
-            //     }
-            // });
+            // Redirect to another view page
             window.location.href = "/RequestByPatient/RequestForMe";
         } else if (selectedOption === "danger-outlined") {
             // Redirect to another view page

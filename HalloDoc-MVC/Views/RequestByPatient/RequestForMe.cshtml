@@ -3,7 +3,7 @@
 *@
 @{
 }
-@model HalloDoc_MVC.Models.ViewRequestForMe
+@model HalloDoc_MVC.Models.ViewPatientRequest
 <div class="wrapper  d-flex flex-column align-items-center pt-4">
     <div class="w-75 d-flex flex-row-reverse bg-white">
         <a asp-controller="Dashboard" asp-action="Index" class="text-decoration-none text-info ">
@@ -14,7 +14,7 @@
         </a>
     </div>
     @ViewData["error"]
-    <form asp-controller="PatientRequest" enctype="multipart/form-data" asp-action="create" class="row bg-white shadow p-lg-4 p-md-3 p-sm-2 form-patient ">
+    <form asp-controller="RequestByPatient" enctype="multipart/form-data" asp-action="CreateForMe" class="row bg-white shadow p-lg-4 p-md-3 p-sm-2 form-patient ">
         <div class="col-12 mb-3">
             <h3>Patient Information</h3>
         </div>
@@ -116,3 +116,26 @@
         </div>
     </form>
 </div>
+
+
+@section Scripts
+    {
+
+    <script type="text/javascript">
+        if (document.getElementById("select") != null) {
+            document.getElementById("select").addEventListener("click", function (e) {
+                document.getElementById('getFile').click();
+                e.preventDefault();
+            })
+        }
+
+        if (document.getElementById("getFile") != null) {
+            document.getElementById("getFile").onchange = function () {
+                document.getElementById("filename").textContent = this.files[0].name;
+            };
+        }
+
+
+
+    </script>
+}
