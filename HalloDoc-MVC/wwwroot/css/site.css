@@ -235,7 +235,7 @@ input#phone-bp {
     text-decoration: none;
 }
 
-    .tab_link:focus {
+    .tab_link:active {
         border-bottom: 2px solid #01BCE9 !important;
         color: #01BCE9 !important;
     }

@@ -108,11 +108,52 @@
 @section Scripts
     {
         <script type="text/javascript" >
-        
-        
 
-        </script>
-       
+        $(function () {
+            $('#downloadAll').click(function () {
+                $('tbody tr').each(function () {
+                    if ($(this).find('.form-check-input').prop('checked')) {
+                        var downloadLink = $(this).find('.document-button').attr('href');
+
+                        var hiddenLink = document.createElement('a');
+                        hiddenLink.href = downloadLink;
+                        hiddenLink.target = '_blank';
+                        hiddenLink.download = '';
+                        document.body.appendChild(hiddenLink);
+                        hiddenLink.click();
+                        document.body.removeChild(hiddenLink);
+                    }
+                });
+            });
+
+            $('#topflexCheckDefault').change(function () {
+                $('.table tbody input[type="checkbox"]').prop('checked', $(this).is(':checked'));
+            });
+
+            // Uncheck main checkbox in header when any checkbox in table body is unchecked
+            $('.table tbody input[type="checkbox"]').change(function () {
+                if (!$(this).is(':checked')) {
+                    $('#topflexCheckDefault').prop('checked', false);
+                }
+            });
+
+            $("#fileupload").submit(function (e) {
+                e.preventDefault();
+                if ($('#file')[0].files[0] == undefined) {
+                    swal.fire({
+                        title: "Oops..",
+                        text: "Oops!☹️ Please Select One File ",
+                        icon: "error",
+                        showCancelButton: true,
+                        showConfirmButton: false,
+                        cancelButtonText: "Okay",
+                        cancelButtonColor: "#01BBE7",
+                    })
+                    return;
+                }
+            })
+        });
+    </script>      
 
     <script type="text/javascript">
         if (document.getElementById("select") != null) {

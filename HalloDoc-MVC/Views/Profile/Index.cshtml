@@ -1,4 +1,112 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-<p>ccccccccc</p>
+@{
+}
+@model HalloDoc_MVC.Models.ViewProfile
+
+<div class="wrapper  d-flex flex-column align-items-center pt-4">
+
+    <form asp-controller="Profile" asp-action="Edit" class="row bg-white shadow p-lg-4 p-md-3 p-sm-2 form-patient">
+        <div class="col-12 mb-3">
+            <h3>User Profile</h3>
+        </div>
+        
+        <div class=" col-md-6 col-sm-12 mb-3">
+            <div class="form-floating ">
+                <input asp-for="FirstName" type="text" class="form-control" id="FirstName" placeholder="First Name" readonly>
+                <label for="floatingInput" class="text-muted">FirstName</label>
+            </div>
+        </div>
+        <div class=" col-md-6 col-sm-12 mb-3">
+            <div class="form-floating ">
+                <input asp-for="LastName" type="text" class="form-control" id="LastName" placeholder="Last Name" readonly>
+                <label for="floatingInput" class="text-muted">LastName</label>
+            </div>
+        </div>
+        <div class=" col-md-6 col-sm-12 mb-3">
+            <div class="form-floating ">
+                <input asp-for="DOB" id="DOB" class="form-control" type="date" placeholder="DOB" readonly />
+                <label for="floatingInput" class="text-muted">DOB</label>
+            </div>
+        </div>
+        <div class="col-12 mb-3">
+            <h3>Patient Contact information</h3>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12 mb-3">
+            <div class="form-floating">
+                <select class="form-select " id="floatingSelect" aria-label="Floating label select example">
+                    <option selected>Mobile</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+                <label for="floatingSelect">Type</label>
+            </div>
+        </div>
+        
+        <div class="col-lg-4 col-md-4 col-sm-12 mb-3">
+            <div class="form-floating mb-3">
+                <input asp-for="PhoneNumber" id="phone" type="tel" class="form-control" readonly>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12 mb-3">
+            <div class="form-floating ">
+                <input asp-for="Email" id="Email" type="email" class="form-control" id="Email" placeholder="name@example.com" readonly>
+                <label for="floatingInput" class="text-muted">Email address</label>
+            </div>
+        </div>
+        <div class="col-12 mb-3">
+            <h3>Patient Location</h3>
+        </div>
+        <div class=" col-md-6 col-sm-12 mb-3">
+            <div class="form-floating ">
+                <input asp-for="Street" type="text" class="form-control" id="Street" placeholder="Street" readonly>
+                <label for="floatingInput" class="text-muted">Street</label>
+            </div>
+        </div>
+        <div class=" col-md-6 col-sm-12 mb-3">
+            <div class="form-floating">
+                <input asp-for="City" type="text" class="form-control" id="City" placeholder="City" readonly>
+                <label for="floatingInput" class="text-muted">City</label>
+            </div>
+        </div>
+        <div class=" col-md-6 col-sm-12 mb-3">
+            <div class="form-floating">
+                <input asp-for="State" type="text" class="form-control" id="State" placeholder="State" readonly>
+                <label for="floatingInput" class="text-muted">State</label>
+            </div>
+        </div>
+        <div class=" col-md-6 col-sm-12 mb-3">
+            <div class="form-floating">
+                <input asp-for="ZipCode" type="text" class="form-control" id="ZipCode" placeholder="Zip Code" readonly>
+                <label for="floatingInput" class="text-muted">ZipCode</label>
+            </div>
+        </div>       
+        <div class="col-12 mb-3 d-flex flex-row-reverse gap-3"> 
+            <button class="btn btn-info text-white" id="Editbtn">Edit</button>
+            <input type="submit" class="btn btn-info text-white" id="Savebtn" value="Save" disabled>
+            
+        </div> 
+    </form>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        document.getElementById("Editbtn").addEventListener("click", function (event) {
+            event.preventDefault();
+            document.getElementById("FirstName").removeAttribute("readonly");
+            document.getElementById("LastName").removeAttribute("readonly");
+            document.getElementById("DOB").removeAttribute("readonly");
+            document.getElementById("phone").removeAttribute("readonly");
+            document.getElementById("Street").removeAttribute("readonly");
+            document.getElementById("City").removeAttribute("readonly");
+            document.getElementById("State").removeAttribute("readonly");
+            document.getElementById("ZipCode").removeAttribute("readonly");
+            document.getElementById("Savebtn").removeAttribute("disabled");
+        }) ;
+
+
+
+    </script >
+}

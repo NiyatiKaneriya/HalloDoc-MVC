@@ -10,6 +10,8 @@ namespace HalloDoc_DAL.Models;
 [Table("User")]
 public partial class User
 {
+    public int Modifiedby;
+
     [Key]
     public int UserId { get; set; }
 

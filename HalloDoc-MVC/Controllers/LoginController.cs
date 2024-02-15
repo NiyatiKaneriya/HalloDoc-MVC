@@ -9,11 +9,9 @@ namespace HalloDoc_Patient.Controllers
     public class LoginController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly IHttpContextAccessor _contextAccessor;
-        public LoginController(ApplicationDbContext context, IHttpContextAccessor contextAccessor)
+        public LoginController(ApplicationDbContext context)
         {
             _context = context;
-            _contextAccessor = contextAccessor;
         }
         public IActionResult Index()
         {
