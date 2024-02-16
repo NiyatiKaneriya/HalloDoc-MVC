@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Net.Mail;
 using System.Net;
-using Humanizer;
+
 
 namespace HalloDoc_Patient.Controllers
 {
@@ -27,6 +27,10 @@ namespace HalloDoc_Patient.Controllers
         {
             return View();
         }
+        public IActionResult ResetPassword()
+        {
+            return View();
+        }
         [HttpPost]
         public async Task<IActionResult> checkLoginAsync(AspNetUser aspNetUser)
         {
@@ -36,8 +40,6 @@ namespace HalloDoc_Patient.Controllers
                 HttpContext.Session.SetString("UserName", user.UserName.ToString());
                 var Ua = await _context.Users.FirstOrDefaultAsync(m => m.Id == user.Id);
                 HttpContext.Session.SetString("UserID", Ua.UserId.ToString());
-
-                //var userRequests = _context.Requests.Where(r => r.UserId == U.UserId).ToList();
                 return RedirectToAction("Index", "Dashboard");
             }
             else
@@ -52,13 +54,13 @@ namespace HalloDoc_Patient.Controllers
             return RedirectToAction("Index", "Login");
         }
 
-        public IActionResult SendEmail(SendEmailModel sendEmailModel)
+        public IActionResult SendEmail( String To, string Subject, string Body)
         {
             MailMessage message = new MailMessage();
             message.From = new MailAddress(_emailConfig.From);
-            message.Subject = "Reset Password";
-            message.To.Add(new MailAddress(sendEmailModel.Email));
-            message.Body = "This is your new password 12345";
+            message.Subject = Subject;
+            message.To.Add(new MailAddress(To));
+            message.Body = Body;
             message.IsBodyHtml = true;
             using (var smtpClient = new SmtpClient(_emailConfig.SmtpServer))
             {
@@ -69,8 +71,57 @@ namespace HalloDoc_Patient.Controllers
                 smtpClient.Send(message);
             }
 
-            return View();
+            return View("Index");
         }
 
+        public string Encode(string encodeMe)
+        {
+            byte[] encoded = System.Text.Encoding.UTF8.GetBytes(encodeMe);
+            return Convert.ToBase64String(encoded);
+        }
+        public string Decode(string decodeMe)
+        {
+            byte[] encoded = Convert.FromBase64String(decodeMe);
+            return System.Text.Encoding.UTF8.GetString(encoded);
+        }
+
+        public async Task<IActionResult> ResetEmail(SendEmailModel sendEmailModel)            
+        {
+            var email = sendEmailModel.Email;
+            if (await CheckregisterdAsync(email))
+            {
+                var Subject = "Change PassWord";
+                var Body = "<html><body> your reset pas link is http://localhost:7242/Login/ResetPassword?Datetime=" + Encode(DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt")) + "&email=" + Encode(sendEmailModel.Email) + " </body></html>"; ;
+               //var Body = "<html><body> your reset pas link is http://localhost:7242/Login/ResetPassword?Datetime=" +DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt") + "&email=" + sendEmailModel.Email + " </body></html>"; ;
+
+                SendEmail(sendEmailModel.Email, Subject, Body);
+
+
+
+                ViewData["EmailCheck"] = "Your ID Pass Send In Your Mail";
+            }
+            else
+            {
+                ViewData["EmailCheck"] = "Your Email Is not registered";
+                return View("ForgotPassword");
+            }
+            return View("Index");
+        }
+
+        
+
+        public async Task<bool> CheckregisterdAsync(string email)
+        {
+          
+
+                var U = await _context.AspNetUsers.FirstOrDefaultAsync(m => m.Email == email);
+                if (U != null)
+                {
+                    return true;
+                }
+            
+
+            return false;
+        }
     }
 }
