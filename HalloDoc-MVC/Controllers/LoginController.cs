@@ -1,17 +1,23 @@
 ﻿using HalloDoc_DAL.DataContext;
 using HalloDoc_DAL.Models;
+using HalloDoc_MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+using System.Net.Mail;
+using System.Net;
+using Humanizer;
 
 namespace HalloDoc_Patient.Controllers
 {
     public class LoginController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public LoginController(ApplicationDbContext context)
+        private readonly SendEmailModel _emailConfig;
+        public LoginController(ApplicationDbContext context, SendEmailModel emailConfig)
         {
             _context = context;
+            _emailConfig = emailConfig;
         }
         public IActionResult Index()
         {
@@ -44,6 +50,26 @@ namespace HalloDoc_Patient.Controllers
         {
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Login");
+        }
+
+        public IActionResult SendEmail(SendEmailModel sendEmailModel)
+        {
+            MailMessage message = new MailMessage();
+            message.From = new MailAddress(_emailConfig.From);
+            message.Subject = "Reset Password";
+            message.To.Add(new MailAddress(sendEmailModel.Email));
+            message.Body = "This is your new password 12345";
+            message.IsBodyHtml = true;
+            using (var smtpClient = new SmtpClient(_emailConfig.SmtpServer))
+            {
+                smtpClient.Port = 587 ;
+                smtpClient.Credentials = new NetworkCredential(_emailConfig.Username, _emailConfig.Password);
+                smtpClient.EnableSsl = true;
+
+                smtpClient.Send(message);
+            }
+
+            return View();
         }
 
     }

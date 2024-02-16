@@ -1,7 +1,7 @@
 using HalloDoc_BAL.Interfaces;
 using HalloDoc_BAL.Repository;
 using HalloDoc_DAL.DataContext;
-
+using HalloDoc_MVC.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -9,6 +9,12 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();
+
+var emailConfig = builder.Configuration
+        .GetSection("EmailConfiguration")
+        .Get<SendEmailModel>();
+
+builder.Services.AddSingleton(emailConfig);
 
 var app = builder.Build();
 
