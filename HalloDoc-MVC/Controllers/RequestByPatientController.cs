@@ -21,8 +21,31 @@ namespace HalloDoc_MVC.Controllers
         }
         public IActionResult RequestForMe()
         {
-            
-            return View();
+            var user = _context.Users.FirstOrDefault(u => u.UserId == Convert.ToInt32(CV.UserID()));
+            DateTime date1 = DateTime.MinValue;
+            if (user.IntDate.HasValue || user.IntYear.HasValue)
+            {
+                var day = user.IntDate;
+                int month = Convert.ToInt32(user.StrMonth);
+                var year = user.IntYear;
+
+                date1 = new DateTime((int)year, month, (int)day);
+            }
+
+            var view = new ViewPatientRequest
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                DOB = date1.Date,
+                PhoneNumber = user.Mobile,
+                Street = user.Street,
+                City = user.City,
+                State = user.State,
+                Zipcode = user.ZipCode,
+            };
+
+            return View(view);
         }
         public async Task<IActionResult> CreateForMeAsync(ViewPatientRequest model)
         {

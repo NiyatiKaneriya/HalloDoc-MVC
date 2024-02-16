@@ -10,7 +10,7 @@ namespace HalloDoc_MVC.Models
 
         public required string LastName { get; set; }
 
-        public DateOnly DOB { get; set; }
+        public DateTime DOB { get; set; }
 
         public required string Email { get; set;}
 
@@ -32,5 +32,7 @@ namespace HalloDoc_MVC.Models
 
         public IFormFile? UploadFile { get; set; }
         public string? UploadImage { get; internal set; }
+
+        
     }
 }
