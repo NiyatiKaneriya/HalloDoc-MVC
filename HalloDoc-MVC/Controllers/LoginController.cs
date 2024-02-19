@@ -6,9 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Net.Mail;
 using System.Net;
+using System.Globalization;
+using Microsoft.AspNetCore.Identity;
+using System.Text;
 
-
-namespace HalloDoc_Patient.Controllers
+namespace HalloDoc_MVC.Controllers
 {
     public class LoginController : Controller
     {
@@ -27,10 +29,7 @@ namespace HalloDoc_Patient.Controllers
         {
             return View();
         }
-        public IActionResult ResetPassword()
-        {
-            return View();
-        }
+        
         [HttpPost]
         public async Task<IActionResult> checkLoginAsync(AspNetUser aspNetUser)
         {
@@ -48,13 +47,13 @@ namespace HalloDoc_Patient.Controllers
                 return View("Index");
             }
         }
-        public  IActionResult Logout()
+        public IActionResult Logout()
         {
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Login");
         }
 
-        public IActionResult SendEmail( String To, string Subject, string Body)
+        public IActionResult SendEmail(String To, string Subject, string Body)
         {
             MailMessage message = new MailMessage();
             message.From = new MailAddress(_emailConfig.From);
@@ -64,7 +63,7 @@ namespace HalloDoc_Patient.Controllers
             message.IsBodyHtml = true;
             using (var smtpClient = new SmtpClient(_emailConfig.SmtpServer))
             {
-                smtpClient.Port = 587 ;
+                smtpClient.Port = 587;
                 smtpClient.Credentials = new NetworkCredential(_emailConfig.Username, _emailConfig.Password);
                 smtpClient.EnableSsl = true;
 
@@ -85,18 +84,15 @@ namespace HalloDoc_Patient.Controllers
             return System.Text.Encoding.UTF8.GetString(encoded);
         }
 
-        public async Task<IActionResult> ResetEmail(SendEmailModel sendEmailModel)            
+        public async Task<IActionResult> ResetEmail(SendEmailModel sendEmailModel)
         {
             var email = sendEmailModel.Email;
             if (await CheckregisterdAsync(email))
             {
-                var Subject = "Change PassWord";
-                var Body = "<html><body> your reset pas link is http://localhost:7242/Login/ResetPassword?Datetime=" + Encode(DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt")) + "&email=" + Encode(sendEmailModel.Email) + " </body></html>"; ;
-               //var Body = "<html><body> your reset pas link is http://localhost:7242/Login/ResetPassword?Datetime=" +DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt") + "&email=" + sendEmailModel.Email + " </body></html>"; ;
-
+                var Subject = "Reset Password";
+                var Body = "<html><body> your reset pas link is https://localhost:7242/Login/ResetPassword?Datetime=" + Encode(DateTime.Now.ToString("MM-dd-yyyy hh:mm:ss tt")) + "&email=" + Encode(sendEmailModel.Email) + " </body></html>"; ;
+               
                 SendEmail(sendEmailModel.Email, Subject, Body);
-
-
 
                 ViewData["EmailCheck"] = "Your ID Pass Send In Your Mail";
             }
@@ -108,20 +104,72 @@ namespace HalloDoc_Patient.Controllers
             return View("Index");
         }
 
-        
 
         public async Task<bool> CheckregisterdAsync(string email)
         {
-          
 
-                var U = await _context.AspNetUsers.FirstOrDefaultAsync(m => m.Email == email);
-                if (U != null)
-                {
-                    return true;
-                }
-            
+
+            var U = await _context.AspNetUsers.FirstOrDefaultAsync(m => m.Email == email);
+            if (U != null)
+            {
+                return true;
+            }
+
 
             return false;
+        }
+
+        public IActionResult ResetPassword(string? Datetime, string? email)
+        {
+            string Decodee = Decode(email);
+            
+            DateTime s = DateTime.ParseExact(Decode(Datetime), "MM-dd-yyyy hh:mm:ss tt", CultureInfo.InvariantCulture);
+            
+            TimeSpan difference = s - (DateTime.Now);
+            
+            if (difference.Hours < 2)
+            {
+                ViewBag.email = Decodee;
+                return View("ResetPassword");
+            }
+            else
+            {
+                ViewBag.errormsg = "Url is expaier";
+            }
+            return View();
+            //string n1 = Decode(email);
+
+            //  DateTime s = DateTime.ParseExact(Decode(Datetime), "MM-dd-yyyy hh:mm:ss tt", CultureInfo.InvariantCulture);
+
+            //ViewBag.email = n1 + s;
+         
+           // return View();
+        }
+        public async Task<IActionResult> SavePassAsync(string ConfirmPassword, string Password, string Email)
+        {
+            if (Password != null)
+            {
+                if (ConfirmPassword != Password)
+                {
+                    ViewData["error"] = "Pass is Mismatch";
+                    return View("ResetPassword");
+                }
+                try
+                {
+                    string Decodee = Decode(Email);
+                    AspNetUser U = await _context.AspNetUsers.FirstOrDefaultAsync(m => m.Email == Decodee);
+
+                    U.PasswordHash = Password;
+                    _context.Update(U);
+                    await _context.SaveChangesAsync();
+                    ViewData["error"] = "Pass is Upadated";
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+
+                }
+            }
+            return View("Index");
         }
     }
 }

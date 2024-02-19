@@ -18,8 +18,16 @@
             <div class="container-fluid d-flex justify-content-between px-5">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"> <img src="~/images/logo-PhotoRoom.png-PhotoRoom.png" width="100"/> </a>
                 <div class="d-flex">
-                    <div>   Welcome <span class="fw-bolder"> @CV.UserName() </span>     </div>
-                    <a asp-action="Logout" asp-controller="Login" class="btn btn-outline-info mx-2 " id="logout-btn">Logout</a>
+                    
+                    @{
+
+                        if (CV.UserID() != null)
+                        {
+                            <div>   Welcome <span class="fw-bolder mx-2"> @CV.UserName() </span>     </div>
+                            <a asp-action="Logout" asp-controller="Login" class="btn btn-outline-info mx-2 " id="logout-btn">Logout</a>
+                        }
+                    }
+                    
                     <button type="button" class="btn btn-outline-info mr-5 pr-5">
                         <i class="fa fa-moon-o " aria-hidden="true"></i>
                     </button>

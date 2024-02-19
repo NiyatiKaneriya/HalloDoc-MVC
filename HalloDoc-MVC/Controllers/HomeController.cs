@@ -28,5 +28,21 @@ namespace HalloDoc_MVC.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        public IActionResult ResetPassword(string? Datetime, string? email)
+        {
+            //string Decodee = Decode(email);
+            //DateTime s = DateTime.ParseExact(Decode(Datetime), "MM/dd/yyyy hh:mm:ss tt", CultureInfo.InvariantCulture);
+            //TimeSpan dif = s - DateTime.Now;
+            //if (dif.Hours < 24)
+            //{
+            //    ViewBag.email = Decodee;
+            //    return View("ResetPassword");
+            //}
+            //else
+            //{
+            //    ViewBag.errormsg = "Url is expaier";
+            //}
+            return View();
+        }
     }
 }

@@ -54,7 +54,7 @@ namespace HalloDoc_MVC.Controllers
             try
             {
                 User Updateuser = await _context.Users.FindAsync(Convert.ToInt32(CV.UserID()));
-
+                AspNetUser Updateaspnetuser = await _context.AspNetUsers.FindAsync( CV.UserName());
                 Updateuser.FirstName = viewProfile.FirstName;
                 Updateuser.LastName = viewProfile.LastName;
                 Updateuser.Mobile = viewProfile.PhoneNumber;
@@ -70,6 +70,10 @@ namespace HalloDoc_MVC.Controllers
                 //Updateuser.Modifiedby = CV.UserName;
                 Updateuser.ModifiedDate = DateTime.Now;
                 _context.Update(Updateuser);
+                await _context.SaveChangesAsync();
+
+                Updateaspnetuser.PhoneNumber = viewProfile.PhoneNumber;
+                _context.Update(Updateaspnetuser);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
