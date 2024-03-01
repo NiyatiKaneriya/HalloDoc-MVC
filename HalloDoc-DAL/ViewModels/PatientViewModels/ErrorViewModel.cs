@@ -1,4 +1,4 @@
-namespace HalloDoc_DAL.ViewModels
+namespace HalloDoc_DAL.ViewModels.PatientViewModels
 {
     public class ErrorViewModel
     {

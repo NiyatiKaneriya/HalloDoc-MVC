@@ -74,4 +74,8 @@
     <ProjectReference Include="..\HalloDoc-DAL\HalloDoc-DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\AdminController\" />
+  </ItemGroup>
+
 </Project>

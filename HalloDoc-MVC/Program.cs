@@ -1,12 +1,21 @@
+
 using HalloDoc_BAL.Interfaces;
-using HalloDoc_BAL.Repository;
+using HalloDoc_BAL;
 using HalloDoc_DAL.DataContext;
+using HalloDoc_DAL.ViewModels.PatientViewModels;
 using HalloDoc_MVC.Models;
+using HalloDoc_BAL.Repository;
+using HalloDoc_BAL.Repository.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>();
+builder.Services.AddScoped<ILoginRepository, LoginRepository>();
+builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
+builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
+builder.Services.AddScoped<ICreateRequestsRepository, CreateRequestsRepository>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();
 

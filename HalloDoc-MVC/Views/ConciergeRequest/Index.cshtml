@@ -3,7 +3,7 @@
 *@
 @{
 }
-@model HalloDoc_MVC.Models.ViewConciergeRequest
+@model HalloDoc_DAL.ViewModels.PatientViewModels.ViewConciergeRequest
 
 <partial name="../Shared/_PartialConfirmetionModel" />
     <div class="wrapper d-flex flex-column align-items-center pt-4">
@@ -38,7 +38,7 @@
             </div>
             <div class=" col-md-6 col-sm-12 mb-3">
                 <div class="form-floating ">
-                    <input asp-for=CEmail type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                    <input asp-for="CEmail" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
                     <label for="floatingInput" class="text-muted">Email address</label>
                 </div>
             </div>

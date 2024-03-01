@@ -3,15 +3,12 @@
 *@
 @{
 }
-@model HalloDoc_MVC.Models.ViewPatientRequest
+@model HalloDoc_DAL.ViewModels.PatientViewModels.ViewPatientRequest
 
 <div class="wrapper  d-flex flex-column align-items-center pt-4">
     <div class="w-75 d-flex flex-row-reverse bg-white">
-        <a asp-controller="Dashboard" asp-action="Index" class="text-decoration-none text-info ">
-            <button type="button"
-                    class="mx-5 btn btn-outline-info">
+        <a asp-controller="Dashboard" asp-action="Index" class="btn mx-5 btn-outline-info text-decoration-none text-info ">
                 <i class="fa fa-solid fa-angle-left"></i> back
-            </button>
         </a>
     </div>
     @ViewData["error"]

@@ -1,4 +1,4 @@
-﻿namespace HelloDoc.Models.CV
+﻿namespace HalloDoc_MVC.Models.CV
 {
     public class CV
     {

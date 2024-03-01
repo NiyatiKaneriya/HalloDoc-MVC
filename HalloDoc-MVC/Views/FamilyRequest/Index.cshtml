@@ -3,7 +3,7 @@
 *@
 @{
 }
-@model HalloDoc_MVC.Models.ViewFamilyRequest
+@model HalloDoc_DAL.ViewModels.PatientViewModels.ViewFamilyRequest
 
 <partial name="../Shared/_PartialConfirmetionModel" />
     <div class="wrapper d-flex flex-column align-items-center pt-4">
@@ -16,7 +16,7 @@
             </a>
         </div>
         @ViewData["error"]
-    <form asp-controller="FamilyRequest" asp-action="Create"  class="row bg-white shadow p-lg-4 p-md-3 p-sm-2 form-patient">
+    <form asp-controller="FamilyRequest" enctype="multipart/form-data" asp-action="Create" class="row bg-white shadow p-lg-4 p-md-3 p-sm-2 form-patient">
             <div class="col-12 mb-3">
                 <h3>Family/Friend Information</h3>
             </div>
@@ -159,8 +159,6 @@
                 document.getElementById("filename").textContent = this.files[0].name;
             };
         }
-
-       
 
     </script>
 }
