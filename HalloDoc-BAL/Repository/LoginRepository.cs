@@ -5,6 +5,7 @@ using HalloDoc_DAL.ViewModels.PatientViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Globalization;
 using System.Linq;
 using System.Net;
@@ -39,6 +40,13 @@ namespace HalloDoc_BAL.Repository
             return user;
         }
 
+        public async Task<Boolean> IsBlockedUser(string email)
+        {
+            var isBlocked = _context.BlockRequests.Where(e => e.Email == email);
+            if(isBlocked == null) { return true; } 
+            else { return false; }
+           
+        }
         
         public async Task<Boolean> CheckregisterdAsync(string email)
         {

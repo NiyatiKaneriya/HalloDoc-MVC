@@ -11,9 +11,8 @@ namespace HalloDoc_BAL.Interfaces
     {
         Task<AspNetUser> aspNetUsers(AspNetUser aspNetUser);
         Task<User> users(string UserName);
-         
-         Task<Boolean> CheckregisterdAsync(string email);
-
-         Task<Boolean> SavePasswordAsync(string ConfirmPassword, string Password, string EmailDecoded);
+        Task<Boolean> IsBlockedUser(string email);
+        Task<Boolean> CheckregisterdAsync(string email);
+        Task<Boolean> SavePasswordAsync(string ConfirmPassword, string Password, string EmailDecoded);
     }
 }

@@ -17,6 +17,8 @@ namespace HalloDoc_BAL.Repository.Interfaces
         public Task<Boolean> CreateConciergeRequest(ViewConciergeRequest model);
         public Task<Boolean> CreateBusinessPartnerRequest(ViewBusinessPartnerRequest model);
         public Task<Boolean> CreateForSomeone(ViewPatientRequest model, string UserName);
+        public Task<Boolean> CreateForMe(ViewPatientRequest model, string UserName);
+        public Task<User> RequestForMe(int UserId);
 
 
     }

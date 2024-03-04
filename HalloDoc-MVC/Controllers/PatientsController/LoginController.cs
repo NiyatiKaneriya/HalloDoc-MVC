@@ -38,18 +38,27 @@ namespace HalloDoc_MVC.Controllers
         public async Task<IActionResult> checkLoginAsync(AspNetUser aspNetUser)
         {
             AspNetUser user =await _loginRepository.aspNetUsers(aspNetUser);
-            User Ua = await _loginRepository.users(user.UserName);
-            if (user != null)
-            {
-                HttpContext.Session.SetString("UserName", user.UserName.ToString());
-                HttpContext.Session.SetString("UserID", Ua.UserId.ToString());
-                return RedirectToAction("Index", "Dashboard");
-            }
-            else
-            {
-                ViewData["error"] = "Invalid Id Pass";
-                return View("Index");
-            }
+            //if(await _loginRepository.IsBlockedUser(user.UserName))
+            //{
+                User Ua = await _loginRepository.users(user.UserName);
+                if (user != null)
+                {
+                    HttpContext.Session.SetString("UserName", user.UserName.ToString());
+                    HttpContext.Session.SetString("UserID", Ua.UserId.ToString());
+                    return RedirectToAction("Index", "Dashboard");
+                }
+                else
+                {
+                    ViewData["error"] = "Invalid Id Pass";
+                    return View("Index");
+                }
+            //}
+            //else
+            //{
+            //    ViewData["error"] = "User Is Blocked";
+            //    return View("Index");
+            //}
+            
         }
         public IActionResult Logout()
         {
