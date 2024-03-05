@@ -3,10 +3,10 @@
 @using HalloDoc_MVC.Models.CV
 
 <div class="container">
-    <div class="card bg-white border-0 p-2" style="border-radius: 15px;">
-        <div class="card-header d-flex justify-content-between  border-0  bg-transparent p-1  mt-3 mb-2">
+    <div class="card bg-white border-0 mt-5 p-2 " style="border-radius: 15px;">
+        <div class="card-header d-flex justify-content-between  border-0  bg-transparent p-1   mb-2">
             <div class="text-start">
-                <h5 class="mt-2">Document</h5>
+                <h3 class="mt-2">Documents</h3>
             </div>
             <div class="text-end">
                 <a asp-action="Index" asp-controller="AdminDashboard" class="btn btn-outline-info btn-back text-end">
@@ -16,14 +16,14 @@
         </div>
         <div class="card-body m-1 shadow" style="border-radius: 15px;">
             <div class="doc-text-card">Patient name</div>
-            <div class="doc-text-card"> Username </div>
+            <h4 class="doc-text-card text-info"> @Model.FirstName @Model.LastName </h4>
             <div class="doc-text-card mt-2">
                 check here for any files that you or the
-                doctor of yours subsequents requestors have attached for yo to
+                doctor of yours subsequents requestors have attached for you to
                 review
             </div>
             <div class="col-md-12 col-sm-12 col-lg-12 mt-3">
-                <form method="post" class="w-100" asp-action="ViewUploads" asp-controller="AdminDashboard" asp-route-RequestId="@Model.RequestId" enctype="multipart/form-data">
+                <form method="post" class="w-100" asp-action="ViewUploadDoc" asp-controller="AdminDashboard" asp-route-RequestId="@Model.RequestId" enctype="multipart/form-data">
 
                     <div class="w-100 col-md-12 col-sm-12 d-flex col-lg-12">
                         <div class="col-md-10 col-lg-10 col-sm-10 mb-3 border border-muted d-flex flex-row-reverse p-0 " style="border-radius: 5px;">
@@ -41,11 +41,17 @@
                 </form>
                 <div class="card-header-2 mt-3 d-flex justify-content-between  border-0  bg-transparent ">
                     <div class="mt-2">
-                        <h6> Document</h6>
+                        <h6>Documents</h6>
                     </div>
                     <div class="text-end">
                         <div id="downloadAll" class="btn btn-outline-info btn-back text-end">
                             Downlode all
+                        </div>
+                        <div id="deleteAll" class="btn btn-outline-info btn-back text-end">
+                            Delete all
+                        </div>
+                        <div id="send-mail-btn" class="btn btn-outline-info btn-back text-end" data-bs-toggle="modal" data-bs-target="#email-popup">
+                            Send Mail
                         </div>
                     </div>
                 </div>
@@ -59,9 +65,7 @@
                                     <input class="form-check-input" type="checkbox" id="topflexCheckDefault">
                                 </div>
                             </th>
-                            <th scope="col" class="table-text-header px-3"></th>
-
-                            
+                            <th scope="col" class="table-text-header px-3"></th>                            
                             <th scope="col" class="table-text-header ">uploded date</th>
                             <th scope="col" class="table-text-header ">Action</th>
                         </tr>
@@ -70,20 +74,22 @@
                         @foreach (var item2 in Model.DocumentsList)
                         {
                             <tr>
-                                <td class="table-text px-3">
+                                <td scope="col" class="table-text px-3">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                        <input class="form-check-input subcheckbox" type="checkbox" value="@item2.RequestWiseFileId" data-path="@item2.FileName" id="flexCheckDefault">
                                     </div>
                                 </td>
-                                <td class="table-text  px-3">@item2.FileName</td>
-                               
-                                <td class="table-text  px-3">@item2.CreatedDate</td>
+                                <td scope="col" class="table-text  px-3">@item2.FileName</td>
 
-                                <td class="table-text text-center ">
+                                <td scope="col" class="table-text  ">@item2.CreatedDate</td>
+
+                                <td scope="col" class="table-text  ">
                                     <a class="btn btn-sm  btn-outline-info document-button" download href="@item2.FileName.Replace("~","")">
                                         <i class="fa fa-solid fa-download"></i>
                                     </a>
-
+                                    <a class="btn btn-sm  btn-outline-info document-button" asp-controller="AdminDashboard" asp-action="DeleteDoc" asp-route-RequestWiseFileId="@item2.RequestWiseFileId" asp-route-RequestId="@Model.RequestId">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </a>
                                 </td>
                             </tr>
                         }
@@ -93,14 +99,42 @@
 
         </div>
     </div>
-
-
 </div>
+<div class="modal fade" id="email-popup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" ">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-info">
+                <h1 class="modal-title text-light  fs-5" id="exampleModalLabel">Confirm Block</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">To</label>
+                    <input asp-for="Email" class="form-control" id="email-input">
+                    </div>
+                <button id="submit-email-btn" class="btn btn-info text-light">Submit</button>
+                @* <input type="submit" class="btn btn-info text-light" value="Confirm" id="submit-email-btn"> *@
+                    <button type="button" class="btn btn-outline-info" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+@* <div id="email-popup" style="display: none;">
+    <input type="email" id="email-input" />
+    <button id="submit-email-btn">Submit</button>
+</div> *@
 @section Scripts
     {
     <script >
 
         $(function () {
+            $('#topflexCheckDefault').change(function () {
+                $('.subcheckbox').prop('checked', $(this).is(':checked'));
+            });
+            $('.subcheckbox').change(function () {
+                var allChecked = $('.subcheckbox:checked').length === $('.subcheckbox').length;
+                $('#topflexCheckDefault').prop('checked', allChecked);
+            });
             $('#downloadAll').click(function () {
                 $('tbody tr').each(function () {
                     if ($(this).find('.form-check-input').prop('checked')) {
@@ -116,34 +150,59 @@
                     }
                 });
             });
+            $('#deleteAll').click(function () {
+                var selectedFiles = $('.subcheckbox:checked').map(function () {
+                    return $(this).val();
+                }).get();
+                var RequestId = @Model.RequestId ;
 
-            $('#topflexCheckDefault').change(function () {
-                $('.table tbody input[type="checkbox"]').prop('checked', $(this).is(':checked',true));
+                $.ajax({
+                    url: '/AdminDashboard/DeleteDocs',
+                    type: 'POST',
+                    data: { fileIds: selectedFiles, RequestId: RequestId },
+                    success: function (response) {
+                        location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error occurred: " + error);
+                    }
+                });
+            });
+            $("#send-mail-btn").click(function () {
+                var selectedFiles = [];
+                $(".subcheckbox:checked").each(function () {
+                    selectedFiles.push($(this).data("path"));
+                });
+                if (selectedFiles.length > 0) {
+                    $("#email-popup").show();
+                } else {
+                    alert("Please select at least one file.");
+                    location.reload();
+                }
+                $("#submit-email-btn").click(function () {
+                    var email = $("#email-input").val();
+                    var RequestId = @Model.RequestId ;
+                    console.log(email);
+                    // AJAX call to send selected files and email to server
+                    $.ajax({
+                        url: "/AdminDashboard/SendFiles",
+                        type: "POST",
+                        data: { files: selectedFiles, email: email, RequestId: RequestId },
+                        success: function (response) {
+                            alert("Files sent successfully.");
+                            $("#email-popup").hide();
+                            location.reload();
+                        },
+                        error: function () {
+                            alert("Error sending files.");
+                        }
+                    });
+                });
             });
 
-            // Uncheck main checkbox in header when any checkbox in table body is unchecked
-            $('.table tbody input[type="checkbox"]').change(function () {
-                if (!$(this).is(':checked')) {
-                    $('#topflexCheckDefault').prop('checked', false);
-                }
-            });
-
-            $("#fileupload").submit(function (e) {
-                e.preventDefault();
-                if ($('#file')[0].files[0] == undefined) {
-                    swal.fire({
-                        title: "Oops..",
-                        text: "Oops!☹️ Please Select One File ",
-                        icon: "error",
-                        showCancelButton: true,
-                        showConfirmButton: false,
-                        cancelButtonText: "Okay",
-                        cancelButtonColor: "#01BBE7",
-                    })
-                    return;
-                }
-            })
+            
         });
+        
     
         if (document.getElementById("select") != null) {
             document.getElementById("select").addEventListener("click", function (e) {

@@ -91,6 +91,7 @@ namespace HalloDoc_BAL.Repository
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     PhoneNumber = model.PhoneNumber,
+                    Email = model.Email,
                     Notes = model.symptoms,
 
                 };
@@ -163,6 +164,7 @@ namespace HalloDoc_BAL.Repository
                         FirstName = model.FirstName,
                         LastName = model.LastName,
                         PhoneNumber = model.PhoneNumber,
+                        Email = model.Email,
                         Notes = model.symptoms,
 
                     };
@@ -245,6 +247,7 @@ namespace HalloDoc_BAL.Repository
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     PhoneNumber = model.PhoneNumber,
+                    Email = model.Email,
                     Notes = model.symptoms,
 
                 };
@@ -342,6 +345,7 @@ namespace HalloDoc_BAL.Repository
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     PhoneNumber = model.PhoneNumber,
+                    Email = model.Email,
                     Notes = model.symptoms,
 
                 };
@@ -398,6 +402,7 @@ namespace HalloDoc_BAL.Repository
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     PhoneNumber = model.PhoneNumber,
+                    Email = model.Email,
                     Notes = model.symptoms,
 
                 };
@@ -439,6 +444,7 @@ namespace HalloDoc_BAL.Repository
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     PhoneNumber = model.PhoneNumber,
+                    Email = model.Email,
                     Notes = model.symptoms,
 
                 };
@@ -510,6 +516,7 @@ namespace HalloDoc_BAL.Repository
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 PhoneNumber = model.PhoneNumber,
+                Email = model.Email,
                 Notes = model.symptoms,
 
             };

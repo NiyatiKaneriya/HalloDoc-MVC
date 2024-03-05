@@ -3,7 +3,9 @@ using HalloDoc_DAL.DataContext;
 using HalloDoc_DAL.Models;
 using HalloDoc_DAL.ViewModels.AdminViewModels;
 using HalloDoc_DAL.ViewModels.PatientViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using System.Collections;
 using System.Reflection.Metadata;
 using static HalloDoc_DAL.ViewModels.AdminViewModels.ViewNotesModel;
 using static HalloDoc_DAL.ViewModels.AdminViewModels.ViewUploadsModel;
@@ -378,6 +380,7 @@ namespace HalloDoc_BAL.AdminRepository
                         }).FirstAsync();
             List<Documents> docs = _context.RequestWiseFiles.Where(e => e.RequestId == RequestId)
                                     .OrderByDescending(e => e.CreatedDate)
+                                    .Where(e => e.IsDeleted == new BitArray(new[] {false}))
                                     .Select(e => new Documents
                                     {
                                         RequestWiseFileId = e.RequestWiseFileId,
@@ -387,5 +390,39 @@ namespace HalloDoc_BAL.AdminRepository
             query.DocumentsList = docs;
             return query;
         }
+
+        public Boolean ViewUploadDocs(int Requestid, string Filename)
+        {
+            if (Requestid != null && Filename != null)
+            {
+                var requestwisefile = new RequestWiseFile
+                {
+                    RequestId = Requestid,
+                    FileName = Filename,
+                    AdminId = 1,
+                    IsDeleted = new BitArray(new[] { false }),
+                CreatedDate = DateTime.Now,
+                };
+                _context.RequestWiseFiles.Add(requestwisefile);
+                _context.SaveChanges();
+
+                return true;
+            }
+            return false;
+        }
+        public Boolean DeleteDoc(int Requestid, int RequestWiseFileId)
+        {
+            var File = _context.RequestWiseFiles.FirstOrDefault(e => e.RequestWiseFileId == RequestWiseFileId);
+            if (File != null)
+            {
+                File.IsDeleted = new BitArray(new[] { true });                
+                _context.RequestWiseFiles.Update(File);
+                _context.SaveChanges();
+
+                return true;
+            }
+            return false;
+        }
+        
     }
 }

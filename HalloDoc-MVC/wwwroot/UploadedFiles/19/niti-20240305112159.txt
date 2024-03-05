@@ -1,0 +1,145 @@
+  public IActionResult create(ViewPatientRequest model)
+  {
+      try
+      {
+          if (ModelState.IsValid)
+          {
+              var newaspNetUser = new AspNetUser
+              {
+                  Id = Guid.NewGuid().ToString(),
+                  UserName = model.Email,
+                  Email = model.Email,
+                  CreatedDate = DateTime.Now,
+              };
+
+              _context.AspNetUsers.Add(newaspNetUser);
+              _context.SaveChanges();
+
+              var user = new User
+              {
+                  Id = newaspNetUser.Id,
+                  FirstName = model.FirstName,
+                  LastName = model.LastName,
+                  Email = model.Email,
+                  CreatedBy = newaspNetUser.Id,
+                  CreatedDate = DateTime.Now,
+              };
+
+              _context.Users.Add(user);
+              _context.SaveChanges();
+
+              var request = new Request
+              {
+                  RequestTypeId = 1,
+                  UserId = user.UserId,
+                  FirstName = model.FirstName,
+                  LastName = model.LastName,
+                  Status = 1,
+                  CreatedDate = DateTime.Now,
+                  IsUrgentEmailSent = new BitArray(1),
+
+              };
+
+              _context.Requests.Add(request);
+              _context.SaveChanges();
+
+              var requestClient = new RequestClient
+              {
+                  RequestId = request.RequestId,
+                  FirstName = model.FirstName,
+                  LastName = model.LastName,
+
+              };
+              _context.RequestClients.Add(requestClient);
+              _context.SaveChanges();
+
+              return RedirectToAction("Index");
+          }
+          else
+          {
+              ViewData["error"] = "Invalid Id Password";
+              return View("Index");
+          }
+      }
+      catch (Exception ex)
+      {
+          Console.WriteLine("An erroe occured: " + ex.Message);
+          ViewData["error"] = "An error occurred while processing your request.";
+          return View("Index");
+      }
+
+
+  }
+ public IActionResult create(ViewPatientRequest model)
+ {
+     try
+     {
+         if (ModelState.IsValid)
+         {
+             var newaspNetUser = new HalloDoc_DAL.Models.AspNetUser
+             {
+                 Id = Guid.NewGuid().ToString(),
+                 UserName = model.Email,
+                 Email = model.Email,
+                 CreatedDate = DateTime.Now,
+             };
+
+             _context.AspNetUsers.Add(newaspNetUser);
+             _context.SaveChanges();
+
+             User user = new User
+             {
+                 Id = newaspNetUser.Id,
+                 FirstName = model.FirstName,
+                 LastName = model.LastName,
+                 Email = model.Email,
+                 CreatedBy = newaspNetUser.Id,
+                 CreatedDate = DateTime.Now,
+             };
+
+             _context.Users.Add(user);
+             _context.SaveChanges();
+
+             var request = new Request
+             {
+                 RequestTypeId = 1,
+                 UserId = user.UserId,
+                 FirstName = model.FirstName,
+                 LastName = model.LastName,
+                 Status = 1,
+                 CreatedDate = DateTime.Now,
+                 IsUrgentEmailSent = new BitArray(1),
+
+             };
+
+             _context.Requests.Add(request);
+             _context.SaveChanges();
+
+             var requestClient = new RequestClient
+             {
+                 RequestId = request.RequestId,
+                 FirstName = model.FirstName,
+                 LastName = model.LastName,
+
+             };
+             _context.RequestClients.Add(requestClient);
+             _context.SaveChanges();
+
+             return RedirectToAction("Index");
+         }
+         else
+         {
+             ViewData["error"] = "Invalid Id Password";
+             return View("Index");
+         }
+     }
+     catch (Exception ex)
+     {
+         Console.WriteLine("An erroe occured: " + ex.Message);
+         ViewData["error"] = "An error occurred while processing your request.";
+         return View("Index");
+     }
+
+
+ }
+

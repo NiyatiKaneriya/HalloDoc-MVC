@@ -36,7 +36,7 @@ namespace HalloDoc_MVC.Controllers
             string UploadDoc;
             if (file != null)
             {
-                string FilePath = "wwwroot\\Upload\\" + Requestid;
+                string FilePath = "wwwroot\\UploadedFiles\\" + Requestid;
                 string path = Path.Combine(Directory.GetCurrentDirectory(), FilePath);
 
                 if (!Directory.Exists(path))
@@ -45,7 +45,7 @@ namespace HalloDoc_MVC.Controllers
                 string newfilename = $"{Path.GetFileNameWithoutExtension(file.FileName)}-{DateTime.Now.ToString("yyyyMMddhhmmss")}.{Path.GetExtension(file.FileName).Trim('.')}";
 
                 string fileNameWithPath = Path.Combine(path, newfilename);
-                UploadDoc = FilePath.Replace("wwwroot\\Upload\\", "/Upload/") + "/" + newfilename;
+                UploadDoc = FilePath.Replace("wwwroot\\UploadedFiles\\", "/UploadedFiles/") + "/" + newfilename;
                 using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
                 {
                     file.CopyTo(stream);

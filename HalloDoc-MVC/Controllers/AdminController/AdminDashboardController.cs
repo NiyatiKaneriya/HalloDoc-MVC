@@ -1,7 +1,14 @@
 ﻿using HalloDoc_BAL.AdminRepository.AdminInterfaces;
+using HalloDoc_DAL.Models;
 using HalloDoc_DAL.ViewModels.AdminViewModels;
+using Humanizer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Net.Mail;
+using System.Net;
+using HalloDoc_DAL.ViewModels.PatientViewModels;
+using MimeKit;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace HalloDoc_MVC.Controllers.AdminController
 {
@@ -10,11 +17,13 @@ namespace HalloDoc_MVC.Controllers.AdminController
 
         private readonly IRequestRepository _requestRepository;
         private readonly IActionRepository _actionRepository;
-        public AdminDashboardController(IRequestRepository requestRepository, IActionRepository actionRepository)
+        private readonly SendEmailModel _emailConfig;
+        public AdminDashboardController(IRequestRepository requestRepository, IActionRepository actionRepository,SendEmailModel emailConfig)
         {
 
             _requestRepository = requestRepository;
             _actionRepository = actionRepository;
+            _emailConfig = emailConfig;
         }
         public async Task<IActionResult> Index()
         {
@@ -98,6 +107,74 @@ namespace HalloDoc_MVC.Controllers.AdminController
         {
             
             return View(await _actionRepository.GetUploadedDocuments(RequestId));
+        }
+
+        public IActionResult ViewUploadDoc(int Requestid, IFormFile file)
+        {
+            string UploadDoc;
+            if (file != null)
+            {
+                string FilePath = "wwwroot\\UploadedFiles\\" + Requestid;
+                string path = Path.Combine(Directory.GetCurrentDirectory(), FilePath);
+
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+
+                string newfilename = $"{Path.GetFileNameWithoutExtension(file.FileName)}-{DateTime.Now.ToString("yyyyMMddhhmmss")}.{Path.GetExtension(file.FileName).Trim('.')}";
+
+                string fileNameWithPath = Path.Combine(path, newfilename);
+                UploadDoc = FilePath.Replace("wwwroot\\UploadedFiles\\", "/UploadedFiles/") + "/" + newfilename;
+                using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
+
+                _actionRepository.ViewUploadDocs(Requestid, UploadDoc);
+
+                return RedirectToAction("ViewUploads", new { Requestid = Requestid });
+
+            }
+            else
+            {
+                return BadRequest("No file Provided for upload");
+            }
+        }
+        public IActionResult DeleteDoc(int Requestid, int RequestWiseFileId) 
+        {
+            _actionRepository.DeleteDoc(Requestid, RequestWiseFileId);
+            return RedirectToAction("ViewUploads", new { Requestid = Requestid });
+        }
+        public IActionResult DeleteDocs(int Requestid, List<int> fileIds)
+        {
+            foreach (var fileId in fileIds)
+            {
+                _actionRepository.DeleteDoc(Requestid, fileId);
+            }
+            return RedirectToAction("ViewUploads", new { Requestid = Requestid });
+        }
+        public IActionResult SendFiles(string email, List<string> files, int RequestId)
+        {
+            MailMessage message = new MailMessage();
+            message.From = new MailAddress(_emailConfig.From);
+            message.Subject = "Find Files in Attechment";
+            message.To.Add(new MailAddress(email));
+            foreach (var file in files)
+            {
+                
+               message.Attachments.Add(new Attachment(Directory.GetCurrentDirectory() + "\\wwwroot\\UploadedFiles" + file.Replace("UploadedFiles/", "").Replace("/", "\\")) );
+            }
+            
+            message.IsBodyHtml = true;
+            using (var smtpClient = new SmtpClient(_emailConfig.SmtpServer))
+            {
+                smtpClient.Port = 587;
+                smtpClient.Credentials = new NetworkCredential(_emailConfig.Username, _emailConfig.Password);
+                smtpClient.EnableSsl = true;
+
+                smtpClient.Send(message);
+            }
+
+            return RedirectToAction("ViewUploads", new { Requestid = RequestId });
         }
     }
 }

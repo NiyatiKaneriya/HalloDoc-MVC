@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,6 +25,7 @@ namespace HalloDoc_DAL.ViewModels.AdminViewModels
             public string FileName { get; set; }
             public DateTime CreatedDate { get; set; }
             public int RequestWiseFileId { get; set; }
+            public BitArray? IsDeleted { get; set; }
         }
 
     }

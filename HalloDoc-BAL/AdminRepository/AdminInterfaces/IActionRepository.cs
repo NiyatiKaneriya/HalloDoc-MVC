@@ -22,5 +22,10 @@ namespace HalloDoc_BAL.AdminRepository.AdminInterfaces
         public Task<bool> SaveAssignCase(int RequestId, AssignCaseModel assignCaseModel);
         public Task<bool> BlockCase(int RequestId, CancelCaseModel cancelCaseModel);
         public Task<ViewUploadsModel> GetUploadedDocuments(int RequestId);
+        public Boolean ViewUploadDocs(int Requestid, string Filename);
+        public Boolean DeleteDoc(int Requestid, int RequestWiseFileId);
+        
+
+
     }
 }
