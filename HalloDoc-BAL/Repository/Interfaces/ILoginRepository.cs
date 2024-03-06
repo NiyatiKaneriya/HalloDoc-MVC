@@ -1,4 +1,5 @@
 ﻿using HalloDoc_DAL.Models;
+using HalloDoc_DAL.ViewModels.AdminViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,7 @@ namespace HalloDoc_BAL.Interfaces
         Task<Boolean> IsBlockedUser(string email);
         Task<Boolean> CheckregisterdAsync(string email);
         Task<Boolean> SavePasswordAsync(string ConfirmPassword, string Password, string EmailDecoded);
+        public Task<UserInfo> CheckAccessLogin(AspNetUser aspNetUser);
+
     }
 }

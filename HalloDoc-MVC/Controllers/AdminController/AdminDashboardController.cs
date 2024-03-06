@@ -12,6 +12,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace HalloDoc_MVC.Controllers.AdminController
 {
+    [CustomAuthorize("Admin")]
     public class AdminDashboardController : Controller
     {
 

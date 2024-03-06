@@ -22,7 +22,33 @@ namespace HalloDoc_BAL.Repository
             _context = context;
         }
 
+        public int GetCountOfTodayRequests()
+        {
+            var currentDate = DateTime.Now.Date;
 
+            return _context.Requests.Where(u => u.CreatedDate.Date == currentDate).Count();
+        }
+
+        public string GetConfirmationNumber(string state, string lastname, string firstname)
+        {
+
+            string Region = state.Substring(0, 2).ToUpperInvariant();
+
+            string NameAbbr = lastname.Substring(0, 2).ToUpperInvariant() + firstname.Substring(0, 2).ToUpperInvariant();
+
+            DateTime requestDateTime = DateTime.Now;
+
+            string datePart = requestDateTime.ToString("ddMMyy");
+
+            int requestsCount = GetCountOfTodayRequests() + 1;
+
+            string newRequestCount = requestsCount.ToString("D4");
+
+            string ConfirmationNumber = Region + datePart + NameAbbr + newRequestCount;
+
+            return ConfirmationNumber;
+
+        }
         public async Task<AspNetUser> aspNetUsers(string email,AspNetUser aspNetUser)
         {
             AspNetUser? aspnetuser = await _context.AspNetUsers.FirstOrDefaultAsync(m => m.Email == email);
@@ -79,6 +105,7 @@ namespace HalloDoc_BAL.Repository
                     Status = 1,
                     CreatedDate = DateTime.Now,
                     IsUrgentEmailSent = new BitArray(1),
+                    ConfirmationNumber = GetConfirmationNumber(model.State, model.LastName, model.FirstName),
 
                 };
 
@@ -92,7 +119,7 @@ namespace HalloDoc_BAL.Repository
                     LastName = model.LastName,
                     PhoneNumber = model.PhoneNumber,
                     Email = model.Email,
-                    Notes = model.symptoms,
+                    Notes = model.symptoms
 
                 };
                 _context.RequestClients.Add(requestClient);
@@ -137,7 +164,7 @@ namespace HalloDoc_BAL.Repository
             else if (model.Password == null)
             {
                 var IsBlocked =  _context.BlockRequests.Where(e => e.Email == model.Email);
-                if(IsBlocked == null)
+                if(IsBlocked != null)
                 {
                     var user = await _context.Users.FirstOrDefaultAsync(m => m.Email == model.Email);
 
@@ -152,6 +179,7 @@ namespace HalloDoc_BAL.Repository
                         Status = 1,
                         CreatedDate = DateTime.Now,
                         IsUrgentEmailSent = new BitArray(1),
+                        ConfirmationNumber = GetConfirmationNumber(model.State, model.LastName, model.FirstName),
 
                     };
 

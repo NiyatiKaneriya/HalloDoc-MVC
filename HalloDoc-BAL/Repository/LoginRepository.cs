@@ -1,7 +1,9 @@
 ﻿using HalloDoc_BAL.Interfaces;
 using HalloDoc_DAL.DataContext;
 using HalloDoc_DAL.Models;
+using HalloDoc_DAL.ViewModels.AdminViewModels;
 using HalloDoc_DAL.ViewModels.PatientViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -39,8 +41,47 @@ namespace HalloDoc_BAL.Repository
 
             return user;
         }
+        public async Task<UserInfo> CheckAccessLogin(AspNetUser aspNetUser)
+        {
+            var user = await _context.AspNetUsers.FirstOrDefaultAsync(u => u.UserName == aspNetUser.UserName);
+            UserInfo admin = new UserInfo();
+            if (user != null)
+            {
+                
+                    var data = _context.AspNetUserRoles.FirstOrDefault(E => E.UserId == user.Id);
+                    var datarole = _context.AspNetRoles.FirstOrDefault(e => e.Id == data.RoleId);
 
-        public async Task<Boolean> IsBlockedUser(string email)
+
+                    admin.UserName = user.UserName;
+                    admin.FirstName = admin.FirstName ?? string.Empty;
+                    admin.LastName = admin.LastName ?? string.Empty;
+                    admin.Role = datarole.Name;
+                    if (admin.Role == "Admin")
+                    {
+                        var admindata = _context.Admins.FirstOrDefault(u => u.AspNetUserId == user.Id);
+                        admin.UserId = admindata.AdminId;
+                    }
+                    else if (admin.Role == "Patient")
+                    {
+                        var admindata = _context.Users.FirstOrDefault(u => u.Id == user.Id);
+                        admin.UserId = admindata.UserId;
+
+                    }
+                    else
+                    {
+                        var admindata = _context.Physicians.FirstOrDefault(u => u.Id == user.Id);
+                        admin.UserId = admindata.PhysicianId;
+                    }
+
+                    return admin;
+               
+            }
+            else
+            {
+                return admin;
+            }
+        }
+            public async Task<Boolean> IsBlockedUser(string email)
         {
             var isBlocked = _context.BlockRequests.Where(e => e.Email == email);
             if(isBlocked == null) { return true; } 

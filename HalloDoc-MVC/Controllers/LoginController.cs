@@ -11,21 +11,30 @@ using Microsoft.AspNetCore.Identity;
 using System.Text;
 using HalloDoc_DAL.ViewModels.PatientViewModels;
 using HalloDoc_BAL.Interfaces;
+using HalloDoc_BAL.Repository.Interfaces;
+using HalloDoc_DAL.ViewModels.AdminViewModels;
 
 namespace HalloDoc_MVC.Controllers
 {
+    
     public class LoginController : Controller
     {
         
         private readonly SendEmailModel _emailConfig;
         private readonly ILoginRepository _loginRepository;
-        public LoginController( SendEmailModel emailConfig, ILoginRepository loginRepository)
+        private readonly IJwtService _jwtService;
+        public LoginController( SendEmailModel emailConfig, ILoginRepository loginRepository,IJwtService jwtService)
         {
             
             _emailConfig = emailConfig;
             _loginRepository = loginRepository;
+            _jwtService = jwtService;
         }
         public IActionResult Index()
+        {
+            return View();
+        }
+        public IActionResult AccessDenied()
         {
             return View();
         }
@@ -35,30 +44,30 @@ namespace HalloDoc_MVC.Controllers
         }
         
         [HttpPost]
+
         public async Task<IActionResult> checkLoginAsync(AspNetUser aspNetUser)
         {
-            AspNetUser user =await _loginRepository.aspNetUsers(aspNetUser);
-            //if(await _loginRepository.IsBlockedUser(user.UserName))
-            //{
-                User Ua = await _loginRepository.users(user.UserName);
-                if (user != null)
+            
+            UserInfo admin = await _loginRepository.CheckAccessLogin(aspNetUser);
+            if (admin != null)
+            {
+                TempData["error"] = "Correct";
+                // SessionUtils.setLogginUser(HttpContext.Session, admin);
+
+                var jwttoken = _jwtService.GenerateJWTAuthetication(admin);
+                Response.Cookies.Append("jwt", jwttoken);
+
+                if (admin.Role == "Patient")
                 {
-                    HttpContext.Session.SetString("UserName", user.UserName.ToString());
-                    HttpContext.Session.SetString("UserID", Ua.UserId.ToString());
                     return RedirectToAction("Index", "Dashboard");
                 }
-                else
-                {
-                    ViewData["error"] = "Invalid Id Pass";
-                    return View("Index");
-                }
-            //}
-            //else
-            //{
-            //    ViewData["error"] = "User Is Blocked";
-            //    return View("Index");
-            //}
-            
+                return RedirectToAction("Index", "AdminDashboard");
+            }
+            else
+            {
+                TempData["error"] = "InCorrect Id Or Pass";
+                return RedirectToAction("Index", "Login");
+            }
         }
         public IActionResult Logout()
         {

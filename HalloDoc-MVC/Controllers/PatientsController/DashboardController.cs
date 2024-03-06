@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HalloDoc_MVC.Controllers
 {
+    [CustomAuthorize("User")]
     public class DashboardController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -19,7 +20,7 @@ namespace HalloDoc_MVC.Controllers
             _DashboardRepository = dashboardRepository;
         }
 
-        //public IActionResult Index => View();
+        
         public IActionResult Index(ViewDashboard viewDashboard)
         { 
             var UserID = Convert.ToInt32(CV.UserID());

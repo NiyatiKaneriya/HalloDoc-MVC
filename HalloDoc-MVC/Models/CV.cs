@@ -1,4 +1,6 @@
-﻿namespace HalloDoc_MVC.Models.CV
+﻿using System.IdentityModel.Tokens.Jwt;
+
+namespace HalloDoc_MVC.Models.CV
 {
     public class CV
     {
@@ -30,6 +32,26 @@
             }
             return UserID;
         }
+        //public static string? Role()
+        //{
+        //    string? Role = null;
 
+        //    if (_contextAccessor.HttpContext.Session.GetString("Role") != null)
+        //    {
+        //        Role = _contextAccessor.HttpContext.Session.GetString("Role");
+
+        //    }
+        //    return Role;
+        //}
+        public static string? role()
+        {
+            string cookieValue = _contextAccessor.HttpContext.Request.Cookies["jwt"];
+            var handler = new JwtSecurityTokenHandler();
+
+            var jsonToken = handler.ReadToken(cookieValue);
+            var tokenS = jsonToken as JwtSecurityToken;
+            var jti = tokenS.Claims.First(claim => claim.Type == "UserId").Value;
+            return "ed";
+        }
     }
 }

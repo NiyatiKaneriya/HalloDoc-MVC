@@ -104,7 +104,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-info">
-                <h1 class="modal-title text-light  fs-5" id="exampleModalLabel">Confirm Block</h1>
+                <h1 class="modal-title text-light  fs-5" id="exampleModalLabel">Send Email To</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -174,7 +174,7 @@
                     selectedFiles.push($(this).data("path"));
                 });
                 if (selectedFiles.length > 0) {
-                    $("#email-popup").show();
+                    //$("#email-popup").show();
                 } else {
                     alert("Please select at least one file.");
                     location.reload();
@@ -190,7 +190,7 @@
                         data: { files: selectedFiles, email: email, RequestId: RequestId },
                         success: function (response) {
                             alert("Files sent successfully.");
-                            $("#email-popup").hide();
+                            //$("#email-popup").hide();
                             location.reload();
                         },
                         error: function () {

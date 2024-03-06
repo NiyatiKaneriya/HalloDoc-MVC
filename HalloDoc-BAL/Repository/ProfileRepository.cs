@@ -68,7 +68,7 @@ namespace HalloDoc_BAL.Repository
                     Updateuser.IntDate = viewProfile.DOB.Day;
                     Updateuser.StrMonth = viewProfile.DOB.Month.ToString();
                     Updateuser.IntYear = viewProfile.DOB.Year;
-                    Updateuser.Modifiedby = id;
+                    //Updateuser.Modifiedby = id;
                     Updateuser.ModifiedDate = DateTime.Now;
                     _context.Update(Updateuser);
                     await _context.SaveChangesAsync();
