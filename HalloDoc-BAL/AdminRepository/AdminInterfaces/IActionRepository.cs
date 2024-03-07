@@ -17,14 +17,17 @@ namespace HalloDoc_BAL.AdminRepository.AdminInterfaces
         public Task<bool> CancelCase(int RequestId, CancelCaseModel cancelCaseModel);
         public Task<List<CaseTagComboBox>> CaseTagComboBox();
         public Task<List<RegionComboBox>> RegionComboBox();
-        public IEnumerable<Region> GetRegions();
+     
         public List<Physician> GetPhysicianByRegion(int RegionId);
         public Task<bool> SaveAssignCase(int RequestId, AssignCaseModel assignCaseModel);
         public Task<bool> BlockCase(int RequestId, CancelCaseModel cancelCaseModel);
         public Task<ViewUploadsModel> GetUploadedDocuments(int RequestId);
         public Boolean ViewUploadDocs(int Requestid, string Filename);
         public Boolean DeleteDoc(int Requestid, int RequestWiseFileId);
-        
+        public Task<List<ProfessionComboBox>> ProfessionComboBox();
+        public List<HealthProfessional> GetHealthProfessional(int HealthProfessionalId);
+        public Task<OrdersModel> GetOrder(int vendorId);
+        public Task<bool> SaveOrders(OrdersModel ordersModel, int RequestId);
 
 
     }

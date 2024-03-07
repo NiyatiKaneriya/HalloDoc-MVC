@@ -43,7 +43,7 @@ namespace HalloDoc_BAL.Repository
         }
         public async Task<UserInfo> CheckAccessLogin(AspNetUser aspNetUser)
         {
-            var user = await _context.AspNetUsers.FirstOrDefaultAsync(u => u.UserName == aspNetUser.UserName);
+            var user = await _context.AspNetUsers.FirstOrDefaultAsync(u => u.Email == aspNetUser.UserName);
             UserInfo admin = new UserInfo();
             if (user != null)
             {

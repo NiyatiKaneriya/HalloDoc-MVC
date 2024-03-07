@@ -1,0 +1,148 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model HalloDoc_DAL.ViewModels.AdminViewModels.OrdersModel
+
+<section class="container-fluid w-75 my-5">
+    <div class="d-flex justify-content-between m-2">
+        <h2>Orders</h2>
+        <div>
+            <a asp-action="Index" asp-controller="AdminDashboard" class="mx-5 btn btn-outline-info">
+                <i class="fa-solid fa-angle-left"></i> back
+            </a>
+        </div>
+    </div>
+    <div class="card border-0 shadow">
+        <form class="row  mx-3 my-3" asp-controller="AdminDashboard" asp-action="SaveOrders" method="post">
+            <input hidden asp-for="RequestId"  />
+            <div class=" col-md-6 col-sm-12 mb-3">
+                <div class="form-floating">
+                    @* <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                        <option selected hidden>Profession</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select> *@
+                     <select class="form-select form-select-sm mt-3 p-2" required data-allow-clear="true" tabindex="-1" onchange="myFunction2()" asp-for="Profession" id="Profession" 
+                            asp-items="@(new SelectList(ViewBag.ProfessionComboBox, "HealthProfessionalId", "ProfessionName" ))" data-control="select2" data-placeholder="Select Level">
+                        <option >Profession</option>
+                    </select> 
+                    @* <select class="form-select form-select-sm mt-3 p-2" required data-allow-clear="true" tabindex="-1" onchange="myFunction()" id="region1"  asp-items="@(new SelectList(ViewBag.RegionComboBox,"RegionId","RegionName"))" data-control="select2" data-placeholder="Select Level">
+                        <option>All Region</option>
+                    </select> *@
+                    
+                </div>
+            </div>
+            <div class=" col-md-6 col-sm-12 mb-3">
+                <div class="form-floating">
+                    <select class="form-select form-select-sm mt-3 p-2" required data-allow-clear="true" tabindex="-1" onchange="myFunction3()" id="Business" asp-for="VendorId"
+                            asp-items="@(new SelectList(ViewBag.HealthProfessional, "VendorName", "VendorId" ))" data-control="select2" data-placeholder="Select Level">
+                        <option >Business</option>
+                    </select>
+                    
+                </div>
+            </div>
+            <div class=" col-md-6 col-sm-12 mb-3">
+                <div class="form-floating ">
+                    <input id="BusinessContact" class="form-control" asp-for="BusinessContact" name="BusinessContact" type="text" placeholder="BusinessContact"  />
+                    <label for="floatingInput" class="text-muted">Business Contact</label>
+                </div>
+            </div>
+            
+            <div class=" col-md-6 col-sm-12 mb-3">
+                <div class="form-floating ">
+                    <input  id="Email" type="email" class="form-control" asp-for="Email" name="Email" id="floatingInput" placeholder="name@example.com" >
+                    <label for="floatingInput" class="text-muted">Email</label>
+                </div>
+            </div>
+            
+            <div class=" col-md-6 col-sm-12 mb-3">
+                <div class="form-floating ">
+                    <input type="text" class="form-control" asp-for="FaxNumber" name="faxNumber" id="FaxNumber" placeholder="FaxNumber">
+                    <label for="floatingInput" class="text-muted">Fax Number</label>
+                </div>
+            </div>
+            <div class="col-12 mb-3">
+                <div class="form-floating">
+                    <textarea class="form-control" placeholder="" asp-for="Prescription" id="floatingTextarea"
+                              style="height: 100px" ></textarea>
+                    <label for="floatingTextarea" class="text-muted">Prescription for order details </label>
+                </div>
+            </div>
+            <div class=" col-md-6 col-sm-12 mb-3">
+                <div class="form-floating">
+                    <select class="form-select" id="floatingSelect" asp-for="NoOfRefill" aria-label="Floating label select example">
+                        <option selected>Not Required</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                    <label for="floatingSelect">No of Refills</label>
+                </div>
+            </div>
+            <div class="d-flex flex-row-reverse gap-2 m-3">
+                <a class="btn btn-lg btn-outline-info">
+                    Cancel
+                </a>
+                <input type="submit" class="btn btn-lg btn-info">
+                   
+                
+
+            </div>
+        </form>
+
+        
+    </div>
+
+</section>
+@section Scripts{
+    <script type="text/javascript">
+        function myFunction2() {
+            var Profession = $("#Profession").val();
+            
+            console.log(Profession + 12);
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetHealthProfessional","AdminDashboard")?Profession=' + Profession,
+                
+                cache: false,
+                success: function (response) {
+
+                    console.log(response);
+                    var s = '<option value="-1">Please Select</option>';
+                    for (var i = 0; i < response.length; i++) {
+                        s += '<option value="' + response[i].vendorId + '">' + response[i].vendorName + '</option>';
+                    }
+                    $("#Business").html(s);
+                },
+                error: function () {
+                    alert("Error while fetching Business.");
+                }
+            });
+        }
+        function myFunction3() {
+            var Business = $("#Business").val();
+            
+            console.log(Business + 12);
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetOrder","AdminDashboard")?VendorId=' + Business,
+
+                cache: false,
+                success: function (response) {
+                    console.log(response);
+                    $("#BusinessContact").val(response.businessContact);
+                    $("#Email").val(response.email);
+                    $("#FaxNumber").val(response.faxNumber);
+                  
+                },
+                error: function () {
+                    alert("Error while fetching Business data.");
+                }
+            });
+        }
+    
+    </script>
+}

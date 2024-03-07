@@ -9,6 +9,7 @@ using System.Net;
 using HalloDoc_DAL.ViewModels.PatientViewModels;
 using MimeKit;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace HalloDoc_MVC.Controllers.AdminController
 {
@@ -37,9 +38,9 @@ namespace HalloDoc_MVC.Controllers.AdminController
             ViewBag.UnpaidCount = await _requestRepository.UnpaidCount();
             ViewBag.CaseTagCombobox = await _actionRepository.CaseTagComboBox();
             ViewBag.RegionCombobox = await _actionRepository.RegionComboBox();
-
+            ViewBag.ProfessionComboBox = await _actionRepository.ProfessionComboBox();
             ViewBag.PhysiciansByRegion = new SelectList(Enumerable.Empty<SelectListItem>());
-
+            ViewBag.HealthProfessional = new SelectList(Enumerable.Empty<SelectListItem>());
             return View();
         }
         public async Task<IActionResult> GetRequestTable(int state, int requesttype)
@@ -176,6 +177,60 @@ namespace HalloDoc_MVC.Controllers.AdminController
             }
 
             return RedirectToAction("ViewUploads", new { Requestid = RequestId });
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public async Task<IActionResult> Orders(int? requestid)
+        {
+            ViewBag.ProfessionComboBox = await _actionRepository.ProfessionComboBox();
+            
+            ViewBag.HealthProfessional =new SelectList(Enumerable.Empty<SelectListItem>());
+            OrdersModel ordersModel = new OrdersModel();
+                ordersModel.RequestId = requestid;
+            return View();  
+        }
+        public IActionResult GetHealthProfessional(int Profession)
+        {
+            var HealthProfessional = _actionRepository.GetHealthProfessional(Profession);
+
+            return Json(HealthProfessional);
+        }
+        public async Task<IActionResult> GetOrder(int vendorId)
+        {
+            OrdersModel ordersModel = await _actionRepository.GetOrder(vendorId);
+
+            return Json(ordersModel);
+        }
+        public async Task<IActionResult> SaveOrdersAsync(OrdersModel ordersModel, int RequestId)
+        {
+
+            ViewBag.ProfessionComboBox = await _actionRepository.ProfessionComboBox();
+
+            ViewBag.HealthProfessional = new SelectList(Enumerable.Empty<SelectListItem>());
+            if (ordersModel != null) {
+                _actionRepository.SaveOrders(ordersModel, RequestId);
+            }
+            OrdersModel ordersModel1 = new OrdersModel();
+            ordersModel1.RequestId = RequestId;
+            return View("Orders");
         }
     }
 }

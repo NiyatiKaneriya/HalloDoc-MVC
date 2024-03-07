@@ -20,18 +20,9 @@
                         To assign the request search and select the physician.
                     </div>
                     <div class="mb-3">
-                      @*   <select class="form-select form-select-sm p-2 custom-select" data-allow-clear="true" onchange="myFunction()" tabindex="-1" id="region" data-control="select2" data-placeholder="Cancel Reason">
-                            <option>All Case Reason</option>
-                            @foreach (var reason in ViewBag.RegionComboBox)
-                            {
-                                <option  value="@reason.RegionId">@reason.RegionName</option>
-                            }
-                        </select> *@
-                        
-                         <select class="form-select form-select-sm mt-3 p-2" required data-allow-clear="true" tabindex="-1" onchange="myFunction()" id="region1" asp-for="RegionId" asp-items="@(new SelectList(ViewBag.RegionComboBox,"RegionId","RegionName"))" data-control="select2" data-placeholder="Select Level">
+                        <select class="form-select form-select-sm mt-3 p-2" required data-allow-clear="true" tabindex="-1" onchange="myFunction()" id="region1" asp-for="RegionId" asp-items="@(new SelectList(ViewBag.RegionComboBox,"RegionId","RegionName"))" data-control="select2" data-placeholder="Select Level">
                             <option>All Region</option>
-                        </select> 
-
+                        </select>
                     </div>
                     <div class="mb-3">
                        

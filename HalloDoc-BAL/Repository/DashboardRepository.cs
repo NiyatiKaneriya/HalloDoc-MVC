@@ -27,7 +27,7 @@ namespace HalloDoc_BAL.Repository
 
        public List<ViewDashboard> GetRequest(ViewDashboard viewDashboard,int UserID)
         {
-            var Request = _context.Requests   .Where(r => r.UserId == Convert.ToInt32(UserID))
+            var Request = _context.Requests   .Where(r => r.UserId == UserID)
                                               .OrderByDescending(x => x.CreatedDate)
                                               .Select(r => new ViewDashboard
                                               {

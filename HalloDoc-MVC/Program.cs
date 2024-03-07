@@ -13,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
 builder.Services.AddAuthentication().AddJwtBearer();
 builder.Services.AddAuthorization();
 builder.Services.AddDbContext<ApplicationDbContext>();
@@ -52,5 +53,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+
 
 app.Run();

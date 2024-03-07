@@ -13,6 +13,7 @@ using HalloDoc_DAL.ViewModels.PatientViewModels;
 using HalloDoc_BAL.Interfaces;
 using HalloDoc_BAL.Repository.Interfaces;
 using HalloDoc_DAL.ViewModels.AdminViewModels;
+using Microsoft.AspNetCore.Http;
 
 namespace HalloDoc_MVC.Controllers
 {
@@ -51,6 +52,8 @@ namespace HalloDoc_MVC.Controllers
             UserInfo admin = await _loginRepository.CheckAccessLogin(aspNetUser);
             if (admin != null)
             {
+                HttpContext.Session.SetString("UserID",Convert.ToString(admin.UserId));
+                HttpContext.Session.SetString("UserName", admin.UserName);
                 TempData["error"] = "Correct";
                 // SessionUtils.setLogginUser(HttpContext.Session, admin);
 

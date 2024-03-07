@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HalloDoc_MVC.Controllers
 {
-    [CustomAuthorize("User")]
+    [CustomAuthorize("Patient")]
     public class DashboardController : Controller
     {
         private readonly ApplicationDbContext _context;

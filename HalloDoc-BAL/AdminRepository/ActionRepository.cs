@@ -285,10 +285,6 @@ namespace HalloDoc_BAL.AdminRepository
                 RegionAbbr = req.Abbreviation,
             }).ToListAsync();
         }
-        public IEnumerable<Region> GetRegions()
-        {
-            return (IEnumerable<Region>)_context.Regions.ToList();
-        }
         public List<Physician> GetPhysicianByRegion(int RegionId)
         {
             List<Physician> p = _context.Physicians.Where(p => p.RegionId == RegionId).ToList();
@@ -423,6 +419,64 @@ namespace HalloDoc_BAL.AdminRepository
             }
             return false;
         }
-        
+        public async Task<List<ProfessionComboBox>> ProfessionComboBox()
+        {
+            var Profession = await _context.HealthProfessionalTypes.Select(req => new ProfessionComboBox()
+            {
+                HealthProfessionalId = req.HealthProfessionalId,
+                ProfessionName = req.ProfessionName,
+            }).ToListAsync();
+            return Profession;
+        }
+        public List<HealthProfessional> GetHealthProfessional(int HealthProfessionalId)
+        {
+            List<HealthProfessional> p = _context.HealthProfessionals.Where(p => p.Profession == HealthProfessionalId).ToList();
+            return p;
+        }
+        public async Task<OrdersModel> GetOrder(int vendorId)
+        {
+            var query = await (from v in _context.HealthProfessionals
+                               
+                               where v.VendorId == vendorId
+                               select new OrdersModel
+                               {
+                                   VendorId = v.VendorId,
+                                   VendorName = v.VendorName,
+                                   Profession = (int)v.Profession,
+                                   BusinessContact = v.BusinessContact,
+                                   Email = v.Email,
+                                   FaxNumber = v.FaxNumber,
+                                   
+                               }).FirstOrDefaultAsync();
+            return query;
+
+        }
+        public async Task<bool> SaveOrders(OrdersModel ordersModel,int RequestId)
+        {
+            if (RequestId != null )
+            {
+                var OrderDetail = new OrderDetail
+                {
+
+                    RequestId = RequestId,
+                    VendorId= ordersModel.VendorId,
+                    FaxNumber= ordersModel.FaxNumber,
+                    Email= ordersModel.Email,
+                    BusinessContact= ordersModel.BusinessContact,
+                    Prescription = ordersModel.Prescription,
+                    NoOfRefill= ordersModel.NoOfRefill,
+                    
+                    CreatedDate = DateTime.Now,
+                };
+                _context.OrderDetails.Add(OrderDetail);
+                _context.SaveChanges();
+
+                return true;
+            }
+            return false;
+
+
+            return true;
+        }
     }
 }

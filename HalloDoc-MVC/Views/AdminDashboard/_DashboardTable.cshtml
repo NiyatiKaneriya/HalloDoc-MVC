@@ -7,7 +7,7 @@
 @model List<HalloDoc_DAL.ViewModels.AdminViewModels.ViewDashboradList>
 
 
-       <div class="w-100 overflow-scroll">
+       <div class="w-100 ">
     @if (Model.Count > 0)
     {
         <table class=" w-100">
@@ -146,8 +146,8 @@
                                     }
                                     @if (item.state == 2 || item.state == 4 || item.state == 5)
                                     {
-                                        <li><a class="dropdown-item" href="#"><i class="fa-solid fa-clipboard-check"></i> Order</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="fa-solid fa-file-signature"></i> Doctor Note</a></li>
+                                        <li><a class="dropdown-item" asp-controller="AdminDashboard" asp-route-requestid="@item.RequestId" asp-action="Orders"><i class="fa-solid fa-clipboard-check"></i> Order</a></li>
+                                        
                                         <li><a class="dropdown-item" href="#"><i class="fa-solid fa-file-waveform"></i> Encounter</a></li>
                                     }
                                     @if (item.state > 1)

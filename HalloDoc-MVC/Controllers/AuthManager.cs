@@ -36,7 +36,7 @@ namespace HalloDoc_MVC.Controllers
                 return;
             }
             var roles = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
-
+              
             if(roles == null)
             {
                 context.Result = new RedirectToRouteResult(new RouteValueDictionary(new { Controller = "Login", action = "Index" }));
@@ -45,22 +45,7 @@ namespace HalloDoc_MVC.Controllers
             {
                 context.Result = new RedirectToRouteResult(new RouteValueDictionary(new { Controller = "Login", action = "AccessDenied" }));
             }
-            //var userid = CV.UserID();
-            //if (userid == null)
-            //{
-               
-            //    context.Result = new RedirectToRouteResult(new RouteValueDictionary(new {Controller = "Login", action = "Index"}));
-            
-            //return;}
-            //if(!string.IsNullOrEmpty(_role) )
-            //{
-            //    if(!(CV.Role() == _role))
-            //    {
-            //        context.Result = new RedirectToRouteResult(new RouteValueDictionary(new { Controller = "Home", action = "Index" }));
-            //        return;
-            //    }
-                
-            //}
+           
         }
     }
     

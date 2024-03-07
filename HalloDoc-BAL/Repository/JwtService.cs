@@ -36,7 +36,8 @@ namespace HalloDoc_BAL.Repository
                 Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var expires =
-                DateTime.Now.AddMinutes(5);
+                //DateTime.Now.AddSeconds(5);
+                DateTime.Now.AddDays(5);
 
             var token = new JwtSecurityToken(
                Configuration["Jwt:Issuer"],
