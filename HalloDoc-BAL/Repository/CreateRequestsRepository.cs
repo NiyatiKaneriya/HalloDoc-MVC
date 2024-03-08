@@ -262,6 +262,7 @@ namespace HalloDoc_BAL.Repository
                     Email = model.FEmail,
                     Status = 1,
                     CreatedDate = DateTime.Now,
+                    ConfirmationNumber = GetConfirmationNumber(model.State, model.LastName, model.FirstName),
                     IsUrgentEmailSent = new BitArray(1),
 
                 };
@@ -351,6 +352,7 @@ namespace HalloDoc_BAL.Repository
                     Email = model.CEmail,
                     Status = 1,
                     CreatedDate = DateTime.Now,
+                    ConfirmationNumber = GetConfirmationNumber(model.State, model.LastName, model.FirstName),
                     IsUrgentEmailSent = new BitArray(1),
 
                 };
@@ -408,6 +410,7 @@ namespace HalloDoc_BAL.Repository
                     Email = model.Email,
                     Status = 1,
                     CreatedDate = DateTime.Now,
+                    ConfirmationNumber = GetConfirmationNumber(model.State, model.LastName, model.FirstName),
                     IsUrgentEmailSent = new BitArray(1),
 
                 };
@@ -459,6 +462,7 @@ namespace HalloDoc_BAL.Repository
                     Email = user.Email,
                     Status = 1,
                     CreatedDate = DateTime.Now,
+                    ConfirmationNumber = GetConfirmationNumber(model.State, model.LastName, model.FirstName),
                     IsUrgentEmailSent = new BitArray(1),
 
                 };
@@ -531,6 +535,7 @@ namespace HalloDoc_BAL.Repository
                 RelationName = model.Relation,
                 Status = 1,
                 CreatedDate = DateTime.Now,
+                ConfirmationNumber = GetConfirmationNumber(model.State, model.LastName, model.FirstName),
                 IsUrgentEmailSent = new BitArray(1),
 
             };

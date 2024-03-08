@@ -10,7 +10,7 @@ namespace HalloDoc_DAL.ViewModels.PatientViewModels
         public required string FPhoneNumber { get; set; }
 
         public required string FEmail { get; set; }
-
+        public string? confirmationNumber { get; set; }
         public string? symptoms { get; set; }
 
         public required string FirstName { get; set; }

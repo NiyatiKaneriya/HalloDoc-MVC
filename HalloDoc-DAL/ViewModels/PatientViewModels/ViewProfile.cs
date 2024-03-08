@@ -5,6 +5,7 @@
         public int? UserId { get; set; }
         public required string FirstName { get; set; }
         public required string LastName { get; set; }
+        public string? confirmationNumber { get; set; }
 
         public DateTime DOB { get; set; }
 

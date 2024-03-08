@@ -210,9 +210,10 @@ namespace HalloDoc_MVC.Controllers.AdminController
             if (ordersModel != null) {
                 _actionRepository.SaveOrders(ordersModel, RequestId);
             }
-            OrdersModel ordersModel1 = new OrdersModel();
-            ordersModel1.RequestId = RequestId;
-            return View("Index");
+            //OrdersModel ordersModel1 = new OrdersModel();
+            //ordersModel1.RequestId = RequestId;
+
+            return RedirectToAction("Index","AdminDashboard");
         }
         public  IActionResult TransferCase(int RequestId, AssignCaseModel assignCaseModel)
         {

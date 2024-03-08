@@ -6,6 +6,7 @@ namespace HalloDoc_DAL.ViewModels.PatientViewModels
     {
         public int RequestId { get; set; }
         public int? Status { get; set; }
+        public string? confirmationNumber { get; set; }
         public DateTime? CreatedDate { get; set; }
         public int? FileCount { get; set; }
         public string? Filename { get; set; }

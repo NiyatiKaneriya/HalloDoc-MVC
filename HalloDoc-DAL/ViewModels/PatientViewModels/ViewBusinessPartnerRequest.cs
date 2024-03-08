@@ -9,7 +9,7 @@
         public required string BPPhoneNumber { get; set; }
 
         public required string BPEmail { get; set; }
-
+        public string? confirmationNumber { get; set; }
         public required string Business { get; set; }
 
         public string? CaseNumber { get; set; }

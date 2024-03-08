@@ -475,8 +475,6 @@ namespace HalloDoc_BAL.AdminRepository
             }
             return false;
 
-
-            return true;
         }
         public  bool TransferCase(int RequestId, AssignCaseModel assignCaseModel)
         {

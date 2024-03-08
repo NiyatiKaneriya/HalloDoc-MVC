@@ -9,9 +9,15 @@
         public required string CPhoneNumber { get; set; }
 
         public required string CEmail { get; set; }
-
+        public string? confirmationNumber { get; set; }
         public required string Hotel { get; set; }
+        public required string Street { get; set; }
 
+        public required string City { get; set; }
+
+        public required string State { get; set; }
+
+        public required string Zipcode { get; set; }
         public string? symptoms { get; set; }
 
         public required string FirstName { get; set; }
