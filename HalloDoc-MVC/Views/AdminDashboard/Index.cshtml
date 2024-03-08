@@ -95,7 +95,7 @@
             <div class="col-sm-6">
                 <div class="">
                     
-                    <select class="form-select form-select-sm p-2 mt-3 mb-3 w-100" data-allow-clear="true" tabindex="-1" id="region" onchange="captureSelectedRegion()" asp-items="@(new SelectList(ViewBag.RegionComboBox, "RegionId", "RegionName"))" data-control="select" data-placeholder="Region">
+                    <select class="form-select form-select-sm p-2 mt-3 mb-3 w-100" data-allow-clear="true" tabindex="-1" id="regionDashboard" onchange="captureSelectedRegion()" asp-items="@(new SelectList(ViewBag.RegionComboBox, "RegionId", "RegionName"))" data-control="select" data-placeholder="Region">
                         <option id="defaultregion" value="">Regions</option>
                     </select> 
                 </div>
@@ -136,6 +136,8 @@
     <partial name="_CancelCase" />
     <partial name="_AssignCase" />
     <partial name="_BlockCase" />
+    <partial name="_TransferRequest"/>
+    <partial name="_ClearCase"/>
 
 </section>
 @section scripts{

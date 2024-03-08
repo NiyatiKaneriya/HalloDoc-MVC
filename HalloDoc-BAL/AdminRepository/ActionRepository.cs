@@ -478,5 +478,52 @@ namespace HalloDoc_BAL.AdminRepository
 
             return true;
         }
+        public  bool TransferCase(int RequestId, AssignCaseModel assignCaseModel)
+        {
+            var req =  _context.Requests.FirstOrDefault(e => e.RequestId == RequestId);
+            if (req != null)
+            {
+                RequestStatusLog requestStatusLog = new RequestStatusLog
+                {
+                    RequestId = (int)assignCaseModel.RequestId,
+                    Status = 2,
+                    PhysicianId = req.PhysicianId,
+                    TransToPhysicianId = assignCaseModel.PhysicianId,
+                    Notes = assignCaseModel?.Notes,
+                    CreatedDate = DateTime.Now,
+                };
+                _context.RequestStatusLogs.Add(requestStatusLog);
+                _context.SaveChanges();
+
+                
+                req.PhysicianId = assignCaseModel.PhysicianId;
+                _context.Requests.Update(req);
+                _context.SaveChanges();
+
+                return true;
+            }
+            return false;
+        }
+        public bool ClearCase(int RequestId)
+        {
+            var req = _context.Requests.FirstOrDefault(e => e.RequestId == RequestId);
+            if (req != null)
+            {
+                req.Status = 10;
+                _context.Requests.Update(req);
+                _context.SaveChanges();
+                RequestStatusLog requestStatusLog = new RequestStatusLog
+                {
+                    RequestId = (int)RequestId,
+                    Status = 10,
+                    CreatedDate = DateTime.Now,
+                };
+                _context.RequestStatusLogs.Add(requestStatusLog);
+                _context.SaveChanges();
+                return true;
+            }
+            
+            return false;
+        }
     }
 }

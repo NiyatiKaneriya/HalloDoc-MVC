@@ -137,12 +137,12 @@
                                     }
                                     @if (item.state == 3)
                                     {
-                                        <li><a class="dropdown-item" href="#"><i class="fa-solid fa-arrow-right-arrow-left"></i> Transfer</a></li>
+                                        <li><a class="btn dropdown-item" data-bs-toggle="modal" data-bs-target="#Transfermodal" data-bs-requestid="@item.RequestId" data-bs-patientname="@item.Patient"><i class="fa-solid fa-arrow-right-arrow-left"></i> Transfer</a></li>
                                         <li><a class="dropdown-item" href="#"><i class="fa-regular fa-handshake"></i> Send Agreement</a></li>
                                     }
                                     @if (item.state == 3 || item.state == 5)
                                     {
-                                        <li><a class="dropdown-item" href="#"><i class="fa-regular fa-circle-xmark"></i> Clear Case</a></li>
+                                        <li><a class="btn dropdown-item" data-bs-toggle="modal" data-bs-target="#clearCase" data-bs-requestid="@item.RequestId" data-bs-patientname="@item.Patient"><i class="fa-regular fa-circle-xmark"></i> Clear Case</a></li>
                                     }
                                     @if (item.state == 2 || item.state == 4 || item.state == 5)
                                     {

@@ -28,6 +28,8 @@ namespace HalloDoc_BAL.AdminRepository.AdminInterfaces
         public List<HealthProfessional> GetHealthProfessional(int HealthProfessionalId);
         public Task<OrdersModel> GetOrder(int vendorId);
         public Task<bool> SaveOrders(OrdersModel ordersModel, int RequestId);
+        public bool TransferCase(int RequestId, AssignCaseModel assignCaseModel);
+        public bool ClearCase(int RequestId);
 
 
     }

@@ -1,0 +1,98 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model HalloDoc_DAL.ViewModels.AdminViewModels.AssignCaseModel
+
+<div class="modal fade" id="Transfermodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-info">
+                <h1 class="modal-title text-light  fs-5" id="exampleModalLabel">Transfer Request</h1>
+                <button type="button" class="btn-close btn-light" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-controller="AdminDashboard" asp-action="TransferCase" asp-route-RequestId="RequestId">
+
+                    <input asp-for="RequestId" name="RequestId" id="transferreqid" hidden />
+                    <div class="mb-3">
+                        To Transfer the request search and select the physician.
+                    </div>
+                    <div class="mb-3">
+                        <select class="form-select form-select-sm mt-3 p-2" required data-allow-clear="true" tabindex="-1" onchange="myFunctionT()" id="regionT" asp-for="RegionId" asp-items="@(new SelectList(ViewBag.RegionComboBox,"RegionId","RegionName"))" data-control="select2" data-placeholder="Select Level">
+                            <option>All Region</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+
+                        <select class="form-select form-select-sm mt-3 p-2" required data-allow-clear="true" tabindex="-1" id="PhysicianT" asp-for="PhysicianId" asp-items="@(new SelectList(ViewBag.PhysiciansByRegion,"PhysicianId","PhysicianId"))" data-control="select2" data-placeholder="Select Level">
+                            <option>Physician</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Description</label>
+                        <textarea asp-for="Notes"  class="form-control" id="message-textT" style="height: 100px"></textarea>
+                    </div>
+
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-info text-light">
+                        <button type="button" class="btn btn-outline-info" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function myFunctionT() {
+        var region = $("#regionT").val();
+        console.log(region + 12);
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetPhysicianByRegion","AdminDashboard")?regionid=' + region,
+            cache: false,
+            success: function (response) {
+
+                console.log(response);
+                var s = '<option value="-1">Please Select</option>';
+                for (var i = 0; i < response.length; i++) {
+                    s += '<option value="' + response[i].physicianId + '">' + response[i].firstName + '</option>';
+                }
+                $("#PhysicianT").html(s);
+            },
+            error: function () {
+                alert("Error while fetching Physicians.");
+            }
+        });
+    }
+
+    const Transfermodal = document.getElementById('Transfermodal')
+    if (Transfermodal) {
+        Transfermodal.addEventListener('show.bs.modal', event => {
+            // Button that triggered the modal
+            const button = event.relatedTarget
+            // Extract info from data-bs-* attributes
+
+            const requestid = button.getAttribute('data-bs-requestid')
+            console.log(requestid);
+            // If necessary, you could initiate an Ajax request here
+            // and then do the updating in a callback.
+            // Update the modal's content.
+
+            document.getElementById('transferreqid').value = requestid;
+            //modalTitle.textContent = `New message to ${recipient}`
+
+        })
+    }
+
+</script>

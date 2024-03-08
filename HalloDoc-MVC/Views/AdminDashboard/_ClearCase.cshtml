@@ -1,0 +1,52 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="modal" id="clearCase">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <!-- Modal body -->
+            <div class="modal-body text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" style="fill: rgb(255, 213, 0);"
+                     class="bi bi-exclamation-circle-fill m-3" viewBox="0 0 16 16">
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2" />
+                </svg>
+                <h2 class="text-center">Confirmation For Clear Case</h2>
+                <p class="text-center mx-2">
+                    Are you Sure ? You Want to Clear this request? Once Clear this request then you are not able to see this request .
+                </p>
+                <form asp-controller="AdminDashboard" asp-action="ClearCase" method="post">
+                    <input hidden name="RequestId" id="clearReq"/>
+                    <input type="submit" class="btn btn-info m-3" value="Clear" />
+                    <button type="button" class="btn btn-outline-info m-3" data-bs-dismiss="modal">Cancel</button>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    
+
+    const clearCase = document.getElementById('clearCase')
+    if (clearCase) {
+        clearCase.addEventListener('show.bs.modal', event => {
+            // Button that triggered the modal
+            const button = event.relatedTarget
+            // Extract info from data-bs-* attributes
+
+            const requestid = button.getAttribute('data-bs-requestid')
+            // If necessary, you could initiate an Ajax request here
+            // and then do the updating in a callback.
+            // Update the modal's content.
+
+            document.getElementById('clearReq').value = requestid;
+            //modalTitle.textContent = `New message to ${recipient}`
+
+        })
+    }
+
+</script>

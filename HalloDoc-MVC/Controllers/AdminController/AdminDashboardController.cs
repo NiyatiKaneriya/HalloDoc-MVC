@@ -180,24 +180,6 @@ namespace HalloDoc_MVC.Controllers.AdminController
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         public async Task<IActionResult> Orders(int? requestid)
         {
             ViewBag.ProfessionComboBox = await _actionRepository.ProfessionComboBox();
@@ -230,7 +212,21 @@ namespace HalloDoc_MVC.Controllers.AdminController
             }
             OrdersModel ordersModel1 = new OrdersModel();
             ordersModel1.RequestId = RequestId;
-            return View("Orders");
+            return View("Index");
         }
+        public  IActionResult TransferCase(int RequestId, AssignCaseModel assignCaseModel)
+        {
+
+            _actionRepository.TransferCase(RequestId, assignCaseModel);
+
+            return RedirectToAction("Index");
+
+        }
+        public IActionResult ClearCase(int RequestId)
+        {
+            _actionRepository.ClearCase(RequestId);
+            return View("Index");
+        }
+
     }
 }
