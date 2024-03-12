@@ -138,7 +138,7 @@
                                     @if (item.state == 3)
                                     {
                                         <li><a class="btn dropdown-item" data-bs-toggle="modal" data-bs-target="#Transfermodal" data-bs-requestid="@item.RequestId" data-bs-patientname="@item.Patient"><i class="fa-solid fa-arrow-right-arrow-left"></i> Transfer</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="fa-regular fa-handshake"></i> Send Agreement</a></li>
+                                        <li><a class="btn dropdown-item" data-bs-toggle="modal" data-bs-target="#sendagreement" data-bs-requesttypeid="@item.RequestTypeId" data-bs-requestid="@item.RequestId" data-bs-patientname="@item.Patient"><i class="fa-regular fa-handshake"></i> Send Agreement</a></li>
                                     }
                                     @if (item.state == 3 || item.state == 5)
                                     {
@@ -154,6 +154,7 @@
                                     {
                                         <li><a class="dropdown-item" asp-controller="AdminDashboard" asp-action="ViewUploads" asp-route-requestid="@item.RequestId"><i class="fa-solid fa-file-arrow-up"></i> View Uploads</a></li>
                                     }
+
                                 </ul>
                             </div> 
                         </td>
@@ -163,6 +164,3 @@
         </table>
     }
         </div>
-
-
-

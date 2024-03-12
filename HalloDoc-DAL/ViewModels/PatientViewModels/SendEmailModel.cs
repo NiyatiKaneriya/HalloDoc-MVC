@@ -15,6 +15,7 @@
 
         public string Password { get; set; }
 
-
+        public string Requestid { get; set; }
+        public string name { get; set; }
     }
 }

@@ -16,8 +16,7 @@ namespace HalloDoc_BAL.AdminRepository.AdminInterfaces
         public Task<bool> SaveViewNotes(int? Requestid, string? AdminNotes, string? PhysicianNotes);
         public Task<bool> CancelCase(int RequestId, CancelCaseModel cancelCaseModel);
         public Task<List<CaseTagComboBox>> CaseTagComboBox();
-        public Task<List<RegionComboBox>> RegionComboBox();
-     
+        public Task<List<RegionComboBox>> RegionComboBox();     
         public List<Physician> GetPhysicianByRegion(int RegionId);
         public Task<bool> SaveAssignCase(int RequestId, AssignCaseModel assignCaseModel);
         public Task<bool> BlockCase(int RequestId, CancelCaseModel cancelCaseModel);
@@ -30,6 +29,12 @@ namespace HalloDoc_BAL.AdminRepository.AdminInterfaces
         public Task<bool> SaveOrders(OrdersModel ordersModel, int RequestId);
         public bool TransferCase(int RequestId, AssignCaseModel assignCaseModel);
         public bool ClearCase(int RequestId);
+        public bool Accept(int RequestId);
+        public bool CancelAgreement(int RequestId, string Notes);
+        public bool IsAgreementValid(int RequestId);
+
+
+
 
 
     }

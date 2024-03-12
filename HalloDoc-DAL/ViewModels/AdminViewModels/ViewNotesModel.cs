@@ -36,6 +36,16 @@ namespace HalloDoc_DAL.ViewModels.AdminViewModels
             public string? Notes { get; set; }
             public BitArray? TranstoAdmin { get; set; }
         }
+        public List<CancellationNotesModel>? CancellationNotes { get; set; }
+        public class CancellationNotesModel
+        {
+            public int RequestStatusLogId { get; set; }
+            public int RequestId { get; set; }
+            public int? Status { get; set; }
+            public DateTime CreatedDate { get; set; }
+            public string? Notes { get; set; }
+            
+        }
 
         //public string TransferNotes => $"{Admin} transferred to {Physician} on {TransferDate}: {Notes}";
 

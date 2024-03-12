@@ -46,4 +46,23 @@ if (input_bp != null) {
     });
 }
 
-
+const sendagreement = document.getElementById('sendagreement');
+if (sendagreement) {
+    
+    sendagreement.addEventListener('show.bs.modal', event => {
+        // Button that triggered the modal
+        const button = event.relatedTarget;
+        // Extract info from data-bs-* attributes
+        const patient = button.getAttribute('data-bs-patientname');
+        const requestid = button.getAttribute('data-bs-requestid');
+        // If necessary, you could initiate an Ajax request here
+        // and then do the updating in a callback.
+        // Update the modal's content.
+        const name = sendagreement.querySelector('.modal-body #names');
+        document.getElementById('sendrequestid').value = requestid;
+        document.getElementById('names').value = patient;
+        //modalTitle.textContent = `New message to ${recipient}`
+        //name.textContent = patient;
+        console.log(document.getElementById('sendrequestid').value + ' ' + document.getElementById('names').value);
+    })
+}

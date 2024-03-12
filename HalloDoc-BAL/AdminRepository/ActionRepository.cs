@@ -66,7 +66,10 @@ namespace HalloDoc_BAL.AdminRepository
         {
             try
             {
-                ViewNotesModel? notes = await _context.RequestNotes
+                ViewNotesModel? notes = new ViewNotesModel();
+                
+                
+                     notes = await _context.RequestNotes
                     .Where(r => r.RequestId == requestid)
                     .Select(r => new ViewNotesModel
                     {
@@ -75,21 +78,13 @@ namespace HalloDoc_BAL.AdminRepository
                         AdminNotes = r.AdminNotes,
                         CreatedBy = r.CreatedBy,
                         CreatedDate = r.CreatedDate,
-                        //Intdate = r.Intdate,
-                        //Intyear = r.Intyear,
-                        //Ip = r.Ip,
                         ModifiedBy = r.ModifiedBy,
                         ModifiedDate = r.ModifiedDate,
                         PhysicianNotes = r.PhysicianNotes,
                         RequestNotesId = r.RequestNotesId,
                     })
                     .FirstOrDefaultAsync();
-
-
-                var requestlog = await _context.RequestStatusLogs
-                    .Where(E => E.RequestId == requestid && E.TransToPhysician != null)
-                .ToListAsync();
-                if (requestlog.Count <= 0 && notes == null)
+                if ( notes == null)
                 {
                     notes = new ViewNotesModel();
                     notes.Requestid = requestid;
@@ -97,6 +92,40 @@ namespace HalloDoc_BAL.AdminRepository
                     notes.AdministrativeNotes = "--";
                     notes.AdminNotes = "--";
                 }
+
+                var requestlog = await _context.RequestStatusLogs
+                    .Where(E => E.RequestId == requestid && E.TransToPhysician != null)
+                .ToListAsync();
+                //if (requestlog.Count <= 0 && notes == null)
+                //{
+                //    notes = new ViewNotesModel();
+                //    notes.Requestid = requestid;
+                //    notes.PhysicianNotes = "--";
+                //    notes.AdministrativeNotes = "--";
+                //    notes.AdminNotes = "--";
+                //}
+                var requestlog2 = await _context.RequestStatusLogs
+                    .Where(E => E.RequestId == requestid && (E.Status == 3 || E.Status == 7 || E.Status == 8))
+                .ToListAsync();
+                //if (requestlog2.Count <= 0 && notes == null)
+                //{
+                //    notes = new ViewNotesModel();
+                //    notes.Requestid = requestid;
+                //    notes.PhysicianNotes = "--";
+                //    notes.AdministrativeNotes = "--";
+                //    notes.AdminNotes = "--";
+                //}
+                List<CancellationNotesModel> cancellist = requestlog2.Select(e => new CancellationNotesModel
+                {
+                    RequestId = e.RequestId,
+                    Notes = e.Notes,
+                    Status = e.Status,
+                    CreatedDate = e.CreatedDate,
+                    RequestStatusLogId = e.RequestStatusLogId,
+
+                }).ToList();
+
+                notes.CancellationNotes = cancellist;
                 List<TransferNotesModel> transferlist = requestlog.Select(e => new TransferNotesModel
                 {
                     RequestId = e.RequestId,
@@ -108,7 +137,10 @@ namespace HalloDoc_BAL.AdminRepository
                     TranstoPhysicianId = e.TransToPhysicianId
                 }).ToList();
 
+
                 notes.TransferNotes = transferlist;
+                
+                
 
                 return notes;
             }
@@ -257,6 +289,7 @@ namespace HalloDoc_BAL.AdminRepository
                     Status = 3,
                     AdminId = cancelCaseModel.AdminId,
                     Notes = cancelCaseModel?.Notes,
+                    TransToAdmin = new BitArray(0),
                     CreatedDate = DateTime.Now,
                 };
 
@@ -308,6 +341,7 @@ namespace HalloDoc_BAL.AdminRepository
                     AdminId = 1,
                     PhysicianId = assignCaseModel.PhysicianId,
                     Notes = assignCaseModel?.Notes,
+                    TransToAdmin = new BitArray(0),
                     CreatedDate = DateTime.Now,
                 };
 
@@ -332,9 +366,9 @@ namespace HalloDoc_BAL.AdminRepository
                 RequestStatusLog requestStatusLog = new RequestStatusLog
                 {
                     RequestId = (int)cancelCaseModel.Requestid,
-                    Status = 2,
-                    AdminId = 1,
-
+                    Status = 11,
+                    //AdminId = 1,
+                    TransToAdmin = new BitArray(0),
                     Notes = cancelCaseModel?.Notes,
                     CreatedDate = DateTime.Now,
                 };
@@ -488,6 +522,7 @@ namespace HalloDoc_BAL.AdminRepository
                     PhysicianId = req.PhysicianId,
                     TransToPhysicianId = assignCaseModel.PhysicianId,
                     Notes = assignCaseModel?.Notes,
+                    TransToAdmin = new BitArray(0),
                     CreatedDate = DateTime.Now,
                 };
                 _context.RequestStatusLogs.Add(requestStatusLog);
@@ -514,6 +549,7 @@ namespace HalloDoc_BAL.AdminRepository
                 {
                     RequestId = (int)RequestId,
                     Status = 10,
+                    TransToAdmin = new BitArray(0),
                     CreatedDate = DateTime.Now,
                 };
                 _context.RequestStatusLogs.Add(requestStatusLog);
@@ -522,6 +558,69 @@ namespace HalloDoc_BAL.AdminRepository
             }
             
             return false;
+        }
+        public bool IsAgreementValid(int RequestId)
+        {
+            if (RequestId != 0)
+            {
+                var request = _context.Requests.FirstOrDefault(e => e.RequestId == RequestId);
+                if(request.Status == 2) { return true; }
+                else { return false; }
+            }
+            return false;
+        }
+
+
+        public bool Accept(int RequestId)
+        {
+            if(RequestId != 0)
+            {
+                var request = _context.Requests.FirstOrDefault(e => e.RequestId == RequestId);
+                if (request != null)
+                {
+                    request.Status = 4;
+                    _context.Requests.Update(request);
+                    _context.SaveChanges();
+                    RequestStatusLog requestStatusLog = new RequestStatusLog
+                    {
+                        RequestId = (int)RequestId,
+                        Status = 4,
+                        TransToAdmin = new BitArray(0),
+                        CreatedDate = DateTime.Now,
+                    };
+                    _context.RequestStatusLogs.Add(requestStatusLog);
+                    _context.SaveChanges();
+                    return true;
+                }
+                return false;
+            }
+            else { return false; }
+        }
+        public bool CancelAgreement(int RequestId, string Notes)
+        {
+            if (RequestId != 0)
+            {
+                var request = _context.Requests.FirstOrDefault(e => e.RequestId == RequestId);
+                if (request != null)
+                {
+                    request.Status = 7;
+                    _context.Requests.Update(request);
+                    _context.SaveChanges();
+                    RequestStatusLog requestStatusLog = new RequestStatusLog
+                    {
+                        RequestId = (int)RequestId,
+                        Status = 7,
+                        Notes = Notes,
+                        TransToAdmin = new BitArray(0),
+                        CreatedDate = DateTime.Now,
+                    };
+                    _context.RequestStatusLogs.Add(requestStatusLog);
+                    _context.SaveChanges();
+                    return true;
+                }
+                return false;
+            }
+            else { return false; }
         }
     }
 }

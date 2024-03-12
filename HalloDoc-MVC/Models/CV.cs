@@ -13,25 +13,34 @@ namespace HalloDoc_MVC.Models.CV
 
         public static string? UserName()
         {
-            string? UserName = null;
-            if (_contextAccessor.HttpContext.Session.GetString("UserName") != null)
+            string cookieValue;
+            string UserName = null;
+
+            if (_contextAccessor.HttpContext.Request.Cookies["jwt"] != null)
             {
-                UserName = _contextAccessor.HttpContext.Session.GetString("UserName").ToString();
+                cookieValue = _contextAccessor.HttpContext.Request.Cookies["jwt"].ToString();
+
+                UserName = DecodedToken.DecodeJwt(DecodedToken.ConvertJwtStringToJwtSecurityToken(cookieValue)).claims.FirstOrDefault(t => t.Key == "UserName").Value;
             }
+
             return UserName;
         }
 
         public static string? UserID()
         {
-            string? UserID = null;
+            string cookieValue;
+            string UserID = null;
 
-            if (_contextAccessor.HttpContext.Session.GetString("UserID") != null)
+            if (_contextAccessor.HttpContext.Request.Cookies["jwt"] != null)
             {
-                UserID = _contextAccessor.HttpContext.Session.GetString("UserID");
+                cookieValue = _contextAccessor.HttpContext.Request.Cookies["jwt"].ToString();
 
+                UserID = DecodedToken.DecodeJwt(DecodedToken.ConvertJwtStringToJwtSecurityToken(cookieValue)).claims.FirstOrDefault(t => t.Key == "UserID").Value;
             }
+
             return UserID;
         }
+
         //public static string? Role()
         //{
         //    string? Role = null;
@@ -45,13 +54,17 @@ namespace HalloDoc_MVC.Models.CV
         //}
         public static string? role()
         {
-            string cookieValue = _contextAccessor.HttpContext.Request.Cookies["jwt"];
-            var handler = new JwtSecurityTokenHandler();
+            string cookieValue;
+            string role = null;
 
-            var jsonToken = handler.ReadToken(cookieValue);
-            var tokenS = jsonToken as JwtSecurityToken;
-            var jti = tokenS.Claims.First(claim => claim.Type == "UserId").Value;
-            return "ed";
+            if (_contextAccessor.HttpContext.Request.Cookies["jwt"] != null)
+            {
+                cookieValue = _contextAccessor.HttpContext.Request.Cookies["jwt"].ToString();
+
+                role = DecodedToken.DecodeJwt(DecodedToken.ConvertJwtStringToJwtSecurityToken(cookieValue)).claims.FirstOrDefault(t => t.Key == "Role").Value;
+            }
+
+            return role;
         }
     }
 }

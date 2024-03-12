@@ -116,7 +116,7 @@ namespace HalloDoc_MVC.Controllers
             if (await _loginRepository.CheckregisterdAsync(email))
             {
                 var Subject = "Reset Password";
-                var Body = "<html><body> your reset pas link is https://localhost:7242/Login/ResetPassword?Datetime=" + Encode(DateTime.Now.ToString("MM-dd-yyyy hh:mm:ss tt")) + "&email=" + Encode(sendEmailModel.Email) + " </body></html>"; ;
+                var Body = "<html><body> your reset pas link is https://localhost:44312/Login/ResetPassword?Datetime=" + Encode(DateTime.Now.ToString("MM-dd-yyyy hh:mm:ss tt")) + "&email=" + Encode(sendEmailModel.Email) + " </body></html>"; ;
 
                 SendEmail(sendEmailModel.Email, Subject, Body);
 

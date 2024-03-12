@@ -228,6 +228,9 @@ namespace HalloDoc_MVC.Controllers.AdminController
             _actionRepository.ClearCase(RequestId);
             return View("Index");
         }
+       
+
+        
 
     }
 }

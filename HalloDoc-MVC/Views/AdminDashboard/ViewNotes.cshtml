@@ -50,24 +50,39 @@
                 </div>
             </div>
         </div>
-        @* <div class="col-6 p-2">
-        <div class="btn notebtn d-flex border border-1 rounded " id="cancelbtn">
-        <h2 class="text-center align-content-center"><i class="fa-solid fa-right-left"></i></h2>
-        <div class="ps-3">
-        <h5>Cancellation Notes</h5>
-        @foreach (var item in Model)
+        @if(Model.CancellationNotes.Count != 0)
         {
-        if (item.Status == 3)
-        {
-        <p id="txtCancelNotes">@item.Notes</p>
+            <div class="col-6 p-2">
+                <div class="btn notebtn d-flex border border-1 rounded " id="cancelbtn">
+                    <h2 class="text-center align-content-center"><i class="fa-solid fa-right-left"></i></h2>
+                    <div class="ps-3">
+                        <h5>Cancellation Notes</h5>
+                        @foreach (var item in Model.CancellationNotes)
+                        {
+                            if (item.Status == 3)
+                            {
+                                <p id="txtCancelNotes">Request Cancelled on @item.CreatedDate:@item.Notes</p>
+
+                            }
+                            if (item.Status == 7)
+                            {
+                                <p id="txtCancelNotes">Patient Cancel the request on @item.CreatedDate:@item.Notes</p>
+
+                            }
+                            if (item.Status == 8)
+                            {
+                                <p id="txtCancelNotes">Request Closed on @item.CreatedDate :@item.Notes</p>
+
+                            }
+
+                        }
+
+                    </div>
+                </div>
+
+            </div>
         }
-
-        }
-
-        </div>
-        </div>
-
-        </div> *@
+        
 
     </div>
     <form method="post" asp-controller="AdminDashboard" asp-action="SaveViewNotes" asp-route-requestid="@Model.Requestid">

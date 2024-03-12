@@ -1,0 +1,48 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@{
+    Layout = "_Layout1";
+}
+
+<section class="w-100 h-75 d-flex justify-content-center align-items-center">
+    <form class="w-50 mt-5" asp-controller="SendAgreement" asp-action="Accept">
+        <input id="req" name="RequestId" value="@ViewBag.RequestId"  hidden />
+        <div>
+            To provide best medical service, we cannot determine the cost right away. If you agree to our service, so we will provide care and follow-up until all care is completed. So woth this points, if you like us to provide care to you click on 'Agree' and we`ll get started immediately, if you do not agree simply click 'Cancel'.
+        </div>
+        <div class="d-flex justify-content-around mt-5">
+            <input type="submit" class="btn btn-success" value="I agree" />
+            <button type="button" class="btn btn-danger" data-bs-target="#AgreementCancel" data-bs-toggle="modal">Cancel</button>
+        </div>
+    </form>
+</section>
+<div class="modal fade" id="AgreementCancel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-info">
+                <h1 class="modal-title text-light  fs-5" id="exampleModalLabel">Confirm cancellation</h1>
+                <button type="button" class="btn-close"  data-bs-dismiss="modal"  aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form  method="post" asp-controller="SendAgreement" asp-action="CancelAgreement">
+
+                    <input id="req" name="RequestId" value="@ViewBag.RequestId" asp-route-Requestid="@ViewBag.RequestId" hidden />
+                    <div class="mb-3">
+                        Patient Name : <span id="name" class="text-info fw-bold"> @ViewBag.name </span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Please Provide Brief explaination for your cancellation</label>
+                        <textarea name="Notes" class="form-control" id="message"></textarea>
+                    </div>
+                    <input type="submit" class="btn btn-info text-light" value="Confirm">
+                    <button type="button" class="btn btn-outline-info"  data-bs-dismiss="modal" >Cancel</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
