@@ -10,6 +10,8 @@ using HalloDoc_DAL.ViewModels.PatientViewModels;
 using MimeKit;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using Org.BouncyCastle.Asn1.Ocsp;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Drawing.Printing;
 
 namespace HalloDoc_MVC.Controllers.AdminController
 {
@@ -43,10 +45,11 @@ namespace HalloDoc_MVC.Controllers.AdminController
             ViewBag.HealthProfessional = new SelectList(Enumerable.Empty<SelectListItem>());
             return View();
         }
+      
         public async Task<IActionResult> GetRequestTable(int state, int requesttype)
         {
             List<ViewDashboradList> requestTableData = await _requestRepository.RequestTableAsync(state, requesttype);
-
+            
             return PartialView("_DashboardTable", requestTableData);
         }
         public async Task<IActionResult> ViewCase(int requestclientid)
@@ -228,9 +231,13 @@ namespace HalloDoc_MVC.Controllers.AdminController
             _actionRepository.ClearCase(RequestId);
             return View("Index");
         }
-       
+        public IActionResult EncounterForm()
+        {
+            
+            return View();
+        }
 
-        
+
 
     }
 }

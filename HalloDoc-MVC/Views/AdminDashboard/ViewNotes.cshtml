@@ -20,12 +20,15 @@
         <div class="col-6 p-2">
             <div class="btn notebtn d-flex border border-1 rounded " id="transferbtn">
                 <h2 class="text-center align-content-center"><i class="fa-solid fa-right-left"></i></h2>
-                <div class="ps-3">
+                <div class="ps-3 text-start">
                     <h5>Transfer Notes</h5>
-                    @foreach (var item in Model.TransferNotes)
-                    {
-                        <p class="notespara" id="txtTransferNotes">@item.Notes</p>
-                    }
+                    
+                        @foreach (var item in Model.TransferNotes)
+                        {
+                            <div>@item.AdminName Transferred @item.PhysicianName to @item.TranstoPhysician On @item.CreatedDate : @item.Notes</div>
+                        }
+                   
+                    
 
                 </div>
             </div>
@@ -34,7 +37,7 @@
         <div class="col-6 p-2">
             <div class="btn notebtn d-flex border border-1 rounded " id="physicianbtn">
                 <h2 class="text-center align-content-center"><i class="fa-solid fa-user-doctor"></i></h2>
-                <div class="ps-3">
+                <div class="ps-3 text-start">
                     <h5>Physician Notes</h5>
                     <p class="notespara" id="txtPhysicianNotes">@Model.PhysicianNotes</p>
                 </div>
@@ -44,7 +47,7 @@
         <div class="col-6 p-2">
             <div class="btn notebtn d-flex border border-1 rounded " id="adminbtn">
                 <h2 class="text-center align-content-center"><i class="fa-solid fa-user-tie"></i></h2>
-                <div class="ps-3">
+                <div class="ps-3 text-start">
                     <h5>Admin Notes</h5>
                     <p class="notespara text-start" id="txtAdminNotes">@Model.AdminNotes</p>
                 </div>
@@ -55,7 +58,7 @@
             <div class="col-6 p-2">
                 <div class="btn notebtn d-flex border border-1 rounded " id="cancelbtn">
                     <h2 class="text-center align-content-center"><i class="fa-solid fa-right-left"></i></h2>
-                    <div class="ps-3">
+                    <div class="ps-3 text-start">
                         <h5>Cancellation Notes</h5>
                         @foreach (var item in Model.CancellationNotes)
                         {
@@ -106,7 +109,11 @@
 @section Scripts{
     <script>
         $(function () {
-
+            var s = $("#txtAdminNotes").html();
+            $("#notetext").val(s);
+            $("#notetext").attr("name", "AdminNotes");
+            $("#note").text("Admin Notes");
+            $("#notetext").removeAttr("disabled");
             $("#adminbtn").click(function () {
                 var s = $("#txtAdminNotes").html();
                 $("#notetext").val(s);
@@ -128,6 +135,7 @@
                 $("#note").text("Cancellation Notes");
                 $("#notetext").attr("disabled", "true");
             });
+            
         });
 
     </script>

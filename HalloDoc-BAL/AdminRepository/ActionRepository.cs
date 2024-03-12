@@ -67,8 +67,6 @@ namespace HalloDoc_BAL.AdminRepository
             try
             {
                 ViewNotesModel? notes = new ViewNotesModel();
-                
-                
                      notes = await _context.RequestNotes
                     .Where(r => r.RequestId == requestid)
                     .Select(r => new ViewNotesModel
@@ -84,65 +82,76 @@ namespace HalloDoc_BAL.AdminRepository
                         RequestNotesId = r.RequestNotesId,
                     })
                     .FirstOrDefaultAsync();
-                if ( notes == null)
-                {
-                    notes = new ViewNotesModel();
-                    notes.Requestid = requestid;
-                    notes.PhysicianNotes = "--";
-                    notes.AdministrativeNotes = "--";
-                    notes.AdminNotes = "--";
-                }
+                    if ( notes == null)
+                    {
+                        notes = new ViewNotesModel();
+                        notes.Requestid = requestid;
+                        notes.PhysicianNotes = "--";
+                        notes.AdministrativeNotes = "--";
+                        notes.AdminNotes = "--";
+                    }
+                    var requestlog2 = await _context.RequestStatusLogs
+                        .Where(E => E.RequestId == requestid && (E.Status == 3 || E.Status == 7 || E.Status == 8))
+                    .ToListAsync();
+                    
+                    List<CancellationNotesModel> cancellist = requestlog2.Select(e => new CancellationNotesModel
+                    {
+                        RequestId = e.RequestId,
+                        Notes = e.Notes,
+                        Status = e.Status,
+                        CreatedDate = e.CreatedDate,
+                        RequestStatusLogId = e.RequestStatusLogId,
 
-                var requestlog = await _context.RequestStatusLogs
-                    .Where(E => E.RequestId == requestid && E.TransToPhysician != null)
-                .ToListAsync();
-                //if (requestlog.Count <= 0 && notes == null)
-                //{
-                //    notes = new ViewNotesModel();
-                //    notes.Requestid = requestid;
-                //    notes.PhysicianNotes = "--";
-                //    notes.AdministrativeNotes = "--";
-                //    notes.AdminNotes = "--";
-                //}
-                var requestlog2 = await _context.RequestStatusLogs
-                    .Where(E => E.RequestId == requestid && (E.Status == 3 || E.Status == 7 || E.Status == 8))
-                .ToListAsync();
-                //if (requestlog2.Count <= 0 && notes == null)
-                //{
-                //    notes = new ViewNotesModel();
-                //    notes.Requestid = requestid;
-                //    notes.PhysicianNotes = "--";
-                //    notes.AdministrativeNotes = "--";
-                //    notes.AdminNotes = "--";
-                //}
-                List<CancellationNotesModel> cancellist = requestlog2.Select(e => new CancellationNotesModel
-                {
-                    RequestId = e.RequestId,
-                    Notes = e.Notes,
-                    Status = e.Status,
-                    CreatedDate = e.CreatedDate,
-                    RequestStatusLogId = e.RequestStatusLogId,
+                    }).ToList();
 
-                }).ToList();
-
-                notes.CancellationNotes = cancellist;
-                List<TransferNotesModel> transferlist = requestlog.Select(e => new TransferNotesModel
-                {
-                    RequestId = e.RequestId,
-                    Notes = e.Notes,
-                    PhysicianId = e.PhysicianId,
-                    CreatedDate = e.CreatedDate,
-                    RequestStatusLogId = e.RequestStatusLogId,
-                    TranstoAdmin = e.TransToAdmin,
-                    TranstoPhysicianId = e.TransToPhysicianId
-                }).ToList();
+                    notes.CancellationNotes = cancellist;
+                    //var requestlog = await _context.RequestStatusLogs
+                    //        .Where(E => E.RequestId == requestid && E.TransToPhysician != null)
+                    //    .ToListAsync();
+                 
+                //var requestlog = from rsl in _context.RequestStatusLogs
+                //             join p in _context.Physicians on rsl.TransToPhysicianId equals p.PhysicianId
+                //             where rsl.RequestId == requestid
+                //             select new
+                //             {
+                //                 rsl.RequestStatusLogId,
+                //                 rsl.Status,
+                //                 rsl.Notes,
+                //                 rsl.CreatedDate,
+                //                 rsl.TransToAdmin,
+                //                 rsl.RequestId,
+                //                 rsl.PhysicianId,
+                //                 rsl.TransToPhysicianId,
+                //                 p.FirstName,
+                //                 p.LastName,
+                //             };
 
 
+                List<TransferNotesModel> transferlist = (from rs in _context.RequestStatusLogs
+                                                         join py in _context.Physicians on rs.PhysicianId equals py.PhysicianId into pyGroup
+                                                         from py in pyGroup.DefaultIfEmpty()
+                                                         join p in _context.Physicians on rs.TransToPhysicianId equals p.PhysicianId into pGroup
+                                                         from p in pGroup.DefaultIfEmpty()
+                                                         join a in _context.Admins on rs.AdminId equals a.AdminId into aGroup
+                                                         from a in aGroup.DefaultIfEmpty()
+                                                         where (rs.RequestId == requestid && rs.Status !=3 && rs.Status != 7 && rs.Status != 8 )
+                                                         select new TransferNotesModel
+                                                         {
+                                                             TranstoPhysician = p.FirstName +' '+ p.LastName,
+                                                             AdminName = a.FirstName + ' '+a.LastName,
+                                                             PhysicianName = py.FirstName+' '+py.LastName,
+                                                             RequestId = rs.RequestId,
+                                                             Notes = rs.Notes,
+                                                             Status = rs.Status,
+                                                             PhysicianId = rs.PhysicianId,
+                                                             CreatedDate = rs.CreatedDate,
+                                                             RequestStatusLogId = rs.RequestStatusLogId,
+                                                             TranstoAdmin = rs.TransToAdmin,
+                                                             TranstoPhysicianId = rs.TransToPhysicianId
+
+                                                         }).ToList();
                 notes.TransferNotes = transferlist;
-                
-                
-
-                return notes;
+                    return notes;
             }
             catch (Exception e)
             {
@@ -289,7 +298,7 @@ namespace HalloDoc_BAL.AdminRepository
                     Status = 3,
                     AdminId = cancelCaseModel.AdminId,
                     Notes = cancelCaseModel?.Notes,
-                    TransToAdmin = new BitArray(0),
+                    TransToAdmin = new BitArray(new[] { false }),
                     CreatedDate = DateTime.Now,
                 };
 
@@ -339,9 +348,9 @@ namespace HalloDoc_BAL.AdminRepository
                     RequestId = (int)assignCaseModel.RequestId,
                     Status = 2,
                     AdminId = 1,
-                    PhysicianId = assignCaseModel.PhysicianId,
+                    TransToPhysicianId = assignCaseModel.PhysicianId,
                     Notes = assignCaseModel?.Notes,
-                    TransToAdmin = new BitArray(0),
+                    TransToAdmin = new BitArray(new[] { false }),
                     CreatedDate = DateTime.Now,
                 };
 
@@ -368,7 +377,7 @@ namespace HalloDoc_BAL.AdminRepository
                     RequestId = (int)cancelCaseModel.Requestid,
                     Status = 11,
                     //AdminId = 1,
-                    TransToAdmin = new BitArray(0),
+                    TransToAdmin = new BitArray(new[] { false }),
                     Notes = cancelCaseModel?.Notes,
                     CreatedDate = DateTime.Now,
                 };
@@ -420,7 +429,6 @@ namespace HalloDoc_BAL.AdminRepository
             query.DocumentsList = docs;
             return query;
         }
-
         public Boolean ViewUploadDocs(int Requestid, string Filename)
         {
             if (Requestid != null && Filename != null)
@@ -431,7 +439,7 @@ namespace HalloDoc_BAL.AdminRepository
                     FileName = Filename,
                     AdminId = 1,
                     IsDeleted = new BitArray(new[] { false }),
-                CreatedDate = DateTime.Now,
+                    CreatedDate = DateTime.Now,
                 };
                 _context.RequestWiseFiles.Add(requestwisefile);
                 _context.SaveChanges();
@@ -522,7 +530,7 @@ namespace HalloDoc_BAL.AdminRepository
                     PhysicianId = req.PhysicianId,
                     TransToPhysicianId = assignCaseModel.PhysicianId,
                     Notes = assignCaseModel?.Notes,
-                    TransToAdmin = new BitArray(0),
+                    TransToAdmin = new BitArray(new[] { false }),
                     CreatedDate = DateTime.Now,
                 };
                 _context.RequestStatusLogs.Add(requestStatusLog);
@@ -549,7 +557,7 @@ namespace HalloDoc_BAL.AdminRepository
                 {
                     RequestId = (int)RequestId,
                     Status = 10,
-                    TransToAdmin = new BitArray(0),
+                    TransToAdmin = new BitArray(new[] { false }),
                     CreatedDate = DateTime.Now,
                 };
                 _context.RequestStatusLogs.Add(requestStatusLog);
@@ -569,8 +577,6 @@ namespace HalloDoc_BAL.AdminRepository
             }
             return false;
         }
-
-
         public bool Accept(int RequestId)
         {
             if(RequestId != 0)
@@ -585,7 +591,7 @@ namespace HalloDoc_BAL.AdminRepository
                     {
                         RequestId = (int)RequestId,
                         Status = 4,
-                        TransToAdmin = new BitArray(0),
+                        TransToAdmin = new BitArray(new[] { false }),
                         CreatedDate = DateTime.Now,
                     };
                     _context.RequestStatusLogs.Add(requestStatusLog);
@@ -611,7 +617,7 @@ namespace HalloDoc_BAL.AdminRepository
                         RequestId = (int)RequestId,
                         Status = 7,
                         Notes = Notes,
-                        TransToAdmin = new BitArray(0),
+                        TransToAdmin = new BitArray(new[] { false }),
                         CreatedDate = DateTime.Now,
                     };
                     _context.RequestStatusLogs.Add(requestStatusLog);

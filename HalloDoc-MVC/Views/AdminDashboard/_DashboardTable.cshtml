@@ -7,7 +7,7 @@
 @model List<HalloDoc_DAL.ViewModels.AdminViewModels.ViewDashboradList>
 
 
-       <div class="w-100 ">
+<div class="w-100 ">
     @if (Model.Count > 0)
     {
         <table class=" w-100">
@@ -55,11 +55,11 @@
             <tbody class="text-light ">
                 @foreach (var item in Model)
                 {
-                    <tr class="border-bottom p-2 bg-@item.RequestTypeId" >
+                    <tr class="border-bottom p-2 bg-@item.RequestTypeId">
                         <td class="d-none"></td>
                         <td class="d-none">@item.RequestClientId</td>
                         <td class="d-none">@item.RequestTypeId</td>
-                        <td id="PatientName" class="p-2" >@item.Patient</td>
+                        <td id="PatientName" class="p-2">@item.Patient</td>
                         <td class="mx-3"> <a href="mailto:@item.Email?subject=Comments" class="text-white"><i class="fa-regular fa-envelope"></i></a> </td>
                         @if (item.state == 1 || item.state == 2 || item.state == 3 || item.state == 4 || item.state == 5)
                         {
@@ -83,7 +83,7 @@
                         }
                         @if (item.state == 1 || item.state == 2 || item.state == 3 || item.state == 4 || item.state == 6)
                         {
-                            <td class="py-2" >
+                            <td class="py-2">
                                 <button type="button" class="btn btn-outline-light bg-transparent"><i class="fa-solid fa-phone"></i> @item.Phone</button><br>
                                 <small>(Patient)</small><br>
                                 @if (item.RequestTypeId != 1)
@@ -147,8 +147,8 @@
                                     @if (item.state == 2 || item.state == 4 || item.state == 5)
                                     {
                                         <li><a class="dropdown-item" asp-controller="AdminDashboard" asp-route-requestid="@item.RequestId" asp-action="Orders"><i class="fa-solid fa-clipboard-check"></i> Order</a></li>
-                                        
-                                        <li><a class="dropdown-item" href="#"><i class="fa-solid fa-file-waveform"></i> Encounter</a></li>
+
+                                        <li><a class="dropdown-item" asp-controller="AdminDashboard" asp-route-id="@item.RequestId" asp-action="EncounterForm"><i class="fa-solid fa-file-waveform"></i> Encounter</a></li>
                                     }
                                     @if (item.state > 1)
                                     {
@@ -156,11 +156,13 @@
                                     }
 
                                 </ul>
-                            </div> 
+                            </div>
                         </td>
                     </tr>
                 }
             </tbody>
+            
         </table>
+        
     }
-        </div>
+</div>
