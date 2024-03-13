@@ -40,7 +40,7 @@ namespace HalloDoc_DAL.ViewModels.AdminViewModels
         public int RequestTypeId { get; set; }
         public int RequestId { get; set; }
 
-
+        public bool IsFinalize { get; set; }
 
         public int state
         {

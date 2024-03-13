@@ -12,6 +12,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 using Org.BouncyCastle.Asn1.Ocsp;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Drawing.Printing;
+using HalloDoc_MVC.Models.CV;
 
 namespace HalloDoc_MVC.Controllers.AdminController
 {
@@ -48,7 +49,7 @@ namespace HalloDoc_MVC.Controllers.AdminController
       
         public async Task<IActionResult> GetRequestTable(int state, int requesttype)
         {
-            List<ViewDashboradList> requestTableData = await _requestRepository.RequestTableAsync(state, requesttype);
+             List<ViewDashboradList> requestTableData = await _requestRepository.RequestTable(state, requesttype);
             
             return PartialView("_DashboardTable", requestTableData);
         }
@@ -181,8 +182,6 @@ namespace HalloDoc_MVC.Controllers.AdminController
 
             return RedirectToAction("ViewUploads", new { Requestid = RequestId });
         }
-
-
         public async Task<IActionResult> Orders(int? requestid)
         {
             ViewBag.ProfessionComboBox = await _actionRepository.ProfessionComboBox();
@@ -231,12 +230,38 @@ namespace HalloDoc_MVC.Controllers.AdminController
             _actionRepository.ClearCase(RequestId);
             return View("Index");
         }
-        public IActionResult EncounterForm()
+        public IActionResult EncounterForm(int Requestid)
         {
-            
-            return View();
-        }
+            var FormDetails = _actionRepository.GetEncounterForm(Requestid);
+            //when is finalize is true then physician cant see the form again
+            if (FormDetails.IsFinalize == true)
+            {
+                return PartialView("_EncounterPOPUP");
+            }
+            else
+            {
+                return View(FormDetails);
+            }
+            //return PartialView("_EncounterPOPUP");
 
+        }
+        public IActionResult SaveEncounterForm(int Requestid, EncounterModel model)
+        {
+            _actionRepository.EncounterForm(Requestid, model );
+
+            return RedirectToAction("EncounterForm",new {Requestid = Requestid});
+        }
+        public IActionResult Finalize(int Requestid, EncounterModel model)
+        {
+            _actionRepository.Finalize(Requestid, model);
+
+            return RedirectToAction("Index");
+        }
+        public async Task<IActionResult> CloseCaseAsync(int Requestid)
+        {
+            return View(await _actionRepository.GetUploadedDocuments(Requestid));
+        }
+        
 
 
     }

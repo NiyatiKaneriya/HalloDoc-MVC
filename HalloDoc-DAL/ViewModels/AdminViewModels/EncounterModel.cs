@@ -12,8 +12,8 @@ namespace HalloDoc_DAL.ViewModels.AdminViewModels
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? Location { get; set; }
-        public DateOnly? DOB { get; set; }
-        public DateOnly? DateOfService { get; set; }
+        public DateTime? DOB { get; set; }
+        public DateTime? DateOfService { get; set; }
         public string? Phone { get; set; }
         public string? Email { get; set; }
         public int EncounterFormId { get; set; }

@@ -52,10 +52,9 @@ namespace HalloDoc_MVC.Controllers
             UserInfo admin = await _loginRepository.CheckAccessLogin(aspNetUser);
             if (admin != null)
             {
-                HttpContext.Session.SetString("UserID",Convert.ToString(admin.UserId));
-                HttpContext.Session.SetString("UserName", admin.UserName);
+                
                 TempData["error"] = "Correct";
-                // SessionUtils.setLogginUser(HttpContext.Session, admin);
+               
 
                 var jwttoken = _jwtService.GenerateJWTAuthetication(admin);
                 Response.Cookies.Append("jwt", jwttoken);
@@ -74,7 +73,7 @@ namespace HalloDoc_MVC.Controllers
         }
         public IActionResult Logout()
         {
-            HttpContext.Session.Clear();
+            Response.Cookies.Delete("jwt");
             return RedirectToAction("Index", "Login");
         }
 

@@ -56,7 +56,20 @@ namespace HalloDoc_BAL.AdminRepository
             var query = await _context.Requests.CountAsync(e => e.Status == 9);
             return query;
         }
-        public async Task<List<ViewDashboradList>> RequestTableAsync(int state, int requesttype)
+        public bool GetIsFinalize(int Requestid)
+        {
+            var a = _context.EncounterForms.FirstOrDefault(e => e.RequestId == Requestid);
+            if(a == null)
+            {
+                return false;
+            }
+            else
+            {
+                return a.IsFinalize;
+            }
+            
+        }
+        public async Task<List<ViewDashboradList>> RequestTable(int state, int requesttype)
         {
 
             List<int> statusList = new List<int>();
@@ -88,6 +101,7 @@ namespace HalloDoc_BAL.AdminRepository
                 statusList.Add(9);
             }
             List<ViewDashboradList> query;
+            
             if (requesttype == 0)
             {
                 query = (from r in _context.Requests
@@ -116,7 +130,8 @@ namespace HalloDoc_BAL.AdminRepository
                              PhysicianL = physician.LastName,
                              Address = rc.Address,
                              Notes = rc.Notes,
-                             Region = region.Name
+                             Region = region.Name,
+                             //IsFinalize = GetIsFinalize(r.RequestId),
                          }).ToList();
             }
             else
@@ -147,7 +162,8 @@ namespace HalloDoc_BAL.AdminRepository
                              PhysicianL = physician.LastName,
                              Address = rc.Address,
                              Notes = rc.Notes,
-                             Region = region.Name
+                             Region = region.Name,
+                             //IsFinalize = GetIsFinalize(r.RequestId),
                          }).ToList();
             }
 

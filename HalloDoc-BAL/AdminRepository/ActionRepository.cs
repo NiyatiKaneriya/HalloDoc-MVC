@@ -45,7 +45,6 @@ namespace HalloDoc_BAL.AdminRepository
             return query;
 
         }
-
         public async Task<bool> SaveViewCase(ViewCaseModel viewCase)
         {
 
@@ -61,7 +60,6 @@ namespace HalloDoc_BAL.AdminRepository
 
             return true;
         }
-
         public async Task<ViewNotesModel> GetViewNotes(int requestid)
         {
             try
@@ -493,7 +491,7 @@ namespace HalloDoc_BAL.AdminRepository
             return query;
 
         }
-        public async Task<bool> SaveOrders(OrdersModel ordersModel,int RequestId)
+        public bool SaveOrders(OrdersModel ordersModel,int RequestId)
         {
             if (RequestId != null )
             {
@@ -628,5 +626,227 @@ namespace HalloDoc_BAL.AdminRepository
             }
             else { return false; }
         }
+        public EncounterModel GetEncounterForm (int RequestId)
+        {
+            if (RequestId != 0)
+            {
+                var result = (from rc in _context.RequestClients
+                                          join e in _context.EncounterForms
+                                          on rc.RequestId equals e.RequestId
+                                          where rc.RequestId == RequestId
+                                          select new EncounterModel
+                                          {
+                                              //RequestId = rc.RequestId,
+                                              FirstName = rc.FirstName,
+                                              LastName = rc.LastName,
+                                              Phone = rc.PhoneNumber,
+                                              Email = rc.Email,
+                                              Location = rc.Location,
+                                              HistoryOfPresentIllnessOrInjury = e.HistoryOfPresentIllnessOrInjury,
+                                              MedicalHistory = e.MedicalHistory,
+                                              Medications = e.Medications,
+                                              Allergies = e.Allergies,
+                                              Temp = e.Temp,
+                                              Hr = e.Hr,
+                                              Rr = e.Rr,
+                                              BloodPressureSystolic = e.BloodPressureSystolic,
+                                              BloodPressureDiastolic = e.BloodPressureDiastolic,
+                                              O2 = e.O2,
+                                              Pain = e.Pain,
+                                              Heent = e.Heent,
+                                              Cv = e.Cv,
+                                              Chest = e.Chest,
+                                              Abd = e.Abd,
+                                              Extremeties = e.Extremeties,
+                                              Skin = e.Skin,
+                                              Neuro = e.Neuro,
+                                              Other = e.Other,
+                                              Diagnosis = e.Diagnosis,
+                                              TreatmentPlan = e.TreatmentPlan,
+                                              MedicationsDispensed = e.MedicationsDispensed,
+                                              Procedures = e.Procedures,
+                                              FollowUp = e.FollowUp,
+                                              IsFinalize = e.IsFinalize,
+                                              //DateOfService = e.CreatedDate
+                                          }).FirstOrDefault();
+             
+                if(result == null)
+                {
+                    result = (from rc in _context.RequestClients
+                             where rc.RequestId == RequestId
+                             select new EncounterModel
+                             {
+                                 RequestId = rc.RequestId,
+                                 FirstName = rc.FirstName,
+                                 LastName = rc.LastName,
+                                 Phone = rc.PhoneNumber,
+                                 Email = rc.Email,
+                                 Location = rc.Location,
+                             }).FirstOrDefault();
+                }
+                
+                return result;
+            }
+            return null;
+                
+        }
+        public bool EncounterForm(int RequestId, EncounterModel encounterModel)
+        {
+            if (RequestId != 0 )
+            {
+                var Encounter = _context.EncounterForms.FirstOrDefault(e => e.RequestId == RequestId);
+                if(Encounter == null)
+                {
+                    var EncounterForm = new EncounterForm
+                    {
+                        RequestId = (int)RequestId,
+                        HistoryOfPresentIllnessOrInjury = encounterModel.HistoryOfPresentIllnessOrInjury,
+                        MedicalHistory = encounterModel.MedicalHistory,
+                        Medications = encounterModel.Medications,
+                        Allergies = encounterModel.Allergies,
+                        Temp = encounterModel.Temp,
+                        Hr = encounterModel.Hr,
+                        Rr = encounterModel.Rr,
+                        BloodPressureSystolic = encounterModel.BloodPressureSystolic,
+                        BloodPressureDiastolic = encounterModel?.BloodPressureDiastolic,
+                        O2 = encounterModel?.O2,
+                        Pain = encounterModel?.Pain,
+                        Heent = encounterModel?.Heent,
+                        Cv = encounterModel?.Cv,
+                        Chest = encounterModel?.Chest,
+                        Abd = encounterModel?.Abd,
+                        Extremeties = encounterModel?.Extremeties,
+                        Skin = encounterModel?.Skin,
+                        Neuro = encounterModel?.Neuro,
+                        Other = encounterModel?.Other,
+                        Diagnosis = encounterModel?.Diagnosis,
+                        TreatmentPlan = encounterModel?.TreatmentPlan,
+                        MedicationsDispensed = encounterModel.MedicationsDispensed,
+                        Procedures = encounterModel?.Procedures,
+                        FollowUp = encounterModel?.FollowUp,
+                        IsFinalize = false,
+                        CreatedDate = DateTime.Now,
+                        
+                    };
+                    _context.EncounterForms.Add(EncounterForm);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    Encounter.RequestId = (int)RequestId;
+                    Encounter.HistoryOfPresentIllnessOrInjury = encounterModel.HistoryOfPresentIllnessOrInjury;
+                    Encounter.MedicalHistory = encounterModel.MedicalHistory;
+                    Encounter.Medications = encounterModel.Medications;
+                        Encounter.Allergies = encounterModel.Allergies;
+                        Encounter.Temp = encounterModel.Temp;
+                    Encounter.Hr = encounterModel.Hr;
+                        Encounter.Rr = encounterModel.Rr;
+                        Encounter.BloodPressureSystolic = encounterModel.BloodPressureSystolic;
+                        Encounter.BloodPressureDiastolic = encounterModel?.BloodPressureDiastolic;
+                        Encounter.O2 = encounterModel?.O2;
+                        Encounter.Pain = encounterModel?.Pain;
+                        Encounter.Heent = encounterModel?.Heent;
+                        Encounter.Cv = encounterModel?.Cv;
+                        Encounter.Chest = encounterModel?.Chest;
+                        Encounter.Abd = encounterModel?.Abd;
+                        Encounter.Extremeties = encounterModel?.Extremeties;
+                        Encounter.Skin = encounterModel?.Skin;
+                        Encounter.Neuro = encounterModel?.Neuro;
+                        Encounter.Other = encounterModel?.Other;
+                        Encounter.Diagnosis = encounterModel?.Diagnosis;
+                        Encounter.TreatmentPlan = encounterModel?.TreatmentPlan;
+                        Encounter.MedicationsDispensed = encounterModel.MedicationsDispensed;
+                        Encounter.Procedures = encounterModel?.Procedures;
+                        Encounter.FollowUp = encounterModel?.FollowUp;
+                        Encounter.IsFinalize = false;
+                        Encounter.ModifiedDate = DateTime.Now;
+                    _context.EncounterForms.Update(Encounter);
+                    _context.SaveChanges();
+                }
+               
+                return true;
+            }
+            return false;
+
+        }
+        public bool Finalize(int RequestId, EncounterModel encounterModel)
+        {
+            if (RequestId != 0)
+            {
+                var Encounter = _context.EncounterForms.FirstOrDefault(e => e.RequestId == RequestId);
+                if (Encounter == null)
+                {
+                    var EncounterForm = new EncounterForm
+                    {
+                        RequestId = (int)RequestId,
+                        HistoryOfPresentIllnessOrInjury = encounterModel.HistoryOfPresentIllnessOrInjury,
+                        MedicalHistory = encounterModel.MedicalHistory,
+                        Medications = encounterModel.Medications,
+                        Allergies = encounterModel.Allergies,
+                        Temp = encounterModel.Temp,
+                        Hr = encounterModel.Hr,
+                        Rr = encounterModel.Rr,
+                        BloodPressureSystolic = encounterModel.BloodPressureSystolic,
+                        BloodPressureDiastolic = encounterModel?.BloodPressureDiastolic,
+                        O2 = encounterModel?.O2,
+                        Pain = encounterModel?.Pain,
+                        Heent = encounterModel?.Heent,
+                        Cv = encounterModel?.Cv,
+                        Chest = encounterModel?.Chest,
+                        Abd = encounterModel?.Abd,
+                        Extremeties = encounterModel?.Extremeties,
+                        Skin = encounterModel?.Skin,
+                        Neuro = encounterModel?.Neuro,
+                        Other = encounterModel?.Other,
+                        Diagnosis = encounterModel?.Diagnosis,
+                        TreatmentPlan = encounterModel?.TreatmentPlan,
+                        MedicationsDispensed = encounterModel.MedicationsDispensed,
+                        Procedures = encounterModel?.Procedures,
+                        FollowUp = encounterModel?.FollowUp,
+                        IsFinalize = true,
+                        CreatedDate = DateTime.Now,
+
+                    };
+                    _context.EncounterForms.Add(EncounterForm);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    Encounter.RequestId = (int)RequestId;
+                    Encounter.HistoryOfPresentIllnessOrInjury = encounterModel.HistoryOfPresentIllnessOrInjury;
+                    Encounter.MedicalHistory = encounterModel.MedicalHistory;
+                    Encounter.Medications = encounterModel.Medications;
+                    Encounter.Allergies = encounterModel.Allergies;
+                    Encounter.Temp = encounterModel.Temp;
+                    Encounter.Hr = encounterModel.Hr;
+                    Encounter.Rr = encounterModel.Rr;
+                    Encounter.BloodPressureSystolic = encounterModel.BloodPressureSystolic;
+                    Encounter.BloodPressureDiastolic = encounterModel?.BloodPressureDiastolic;
+                    Encounter.O2 = encounterModel?.O2;
+                    Encounter.Pain = encounterModel?.Pain;
+                    Encounter.Heent = encounterModel?.Heent;
+                    Encounter.Cv = encounterModel?.Cv;
+                    Encounter.Chest = encounterModel?.Chest;
+                    Encounter.Abd = encounterModel?.Abd;
+                    Encounter.Extremeties = encounterModel?.Extremeties;
+                    Encounter.Skin = encounterModel?.Skin;
+                    Encounter.Neuro = encounterModel?.Neuro;
+                    Encounter.Other = encounterModel?.Other;
+                    Encounter.Diagnosis = encounterModel?.Diagnosis;
+                    Encounter.TreatmentPlan = encounterModel?.TreatmentPlan;
+                    Encounter.MedicationsDispensed = encounterModel.MedicationsDispensed;
+                    Encounter.Procedures = encounterModel?.Procedures;
+                    Encounter.FollowUp = encounterModel?.FollowUp;
+                    Encounter.IsFinalize = true;
+                    Encounter.ModifiedDate = DateTime.Now;
+                    _context.EncounterForms.Update(Encounter);
+                    _context.SaveChanges();
+                }
+                return true;
+            }
+            return false;
+
+        }
+
     }
 }

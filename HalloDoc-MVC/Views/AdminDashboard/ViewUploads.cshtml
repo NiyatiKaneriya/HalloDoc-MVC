@@ -1,6 +1,6 @@
 ﻿
 @model HalloDoc_DAL.ViewModels.AdminViewModels.ViewUploadsModel;
-@using HalloDoc_MVC.Models.CV
+
 
 <div class="container">
     <div class="card bg-white border-0 mt-5 p-2 " style="border-radius: 15px;">
@@ -79,7 +79,7 @@
                                         <input class="form-check-input subcheckbox" type="checkbox" value="@item2.RequestWiseFileId" data-path="@item2.FileName" id="flexCheckDefault">
                                     </div>
                                 </td>
-                                <td scope="col" class="table-text  px-3">@item2.FileName</td>
+                                <td scope="col" class="table-text  px-3 filename ">@item2.FileName</td>
 
                                 <td scope="col" class="table-text  ">@item2.CreatedDate</td>
 
@@ -126,7 +126,19 @@
 @section Scripts
     {
     <script >
+        $('.filename').each(function () {
+            var fileName = $(this).text().trim();
+            if (fileName.endsWith('.pdf')) {
+                $(this).prepend('<i class="fa fa-solid fa-file-pdf" style="color: #be2323;font-size:1rem"></i> ');
+            } else if (fileName.endsWith('.doc') || fileName.endsWith('.docx')) {
+                $(this).prepend('<i class="fa fa-solid fa-file-doc" style="color: #74C0FC;font-size:1rem"></i> ');
+            } else if (fileName.endsWith('.jpg') || fileName.endsWith('.jpeg') || fileName.endsWith('.png') || fileName.endsWith('.gif') || fileName.endsWith('.svg')) {
+                $(this).prepend('<i class="fa-solid fa-images" style="color: #B197FC;font-size:1rem"></i> ');
+            } else {
+                $(this).prepend(' <i class="fa-solid fa-file" ></i> ');
+            }
 
+        });
         $(function () {
             $('#topflexCheckDefault').change(function () {
                 $('.subcheckbox').prop('checked', $(this).is(':checked'));

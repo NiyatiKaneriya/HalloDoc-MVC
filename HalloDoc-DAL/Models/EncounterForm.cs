@@ -72,6 +72,12 @@ public partial class EncounterForm
 
     public bool IsFinalize { get; set; }
 
+    [Column(TypeName = "timestamp without time zone")]
+    public DateTime? CreatedDate { get; set; }
+
+    [Column(TypeName = "timestamp without time zone")]
+    public DateTime? ModifiedDate { get; set; }
+
     [ForeignKey("AdminId")]
     [InverseProperty("EncounterForms")]
     public virtual Admin? Admin { get; set; }

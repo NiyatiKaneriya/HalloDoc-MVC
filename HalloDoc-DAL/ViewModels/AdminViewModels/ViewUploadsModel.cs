@@ -15,7 +15,8 @@ namespace HalloDoc_DAL.ViewModels.AdminViewModels
         public int RequestId { get; set; }
         public string RequestClientId { get; set; }
         public string? Email {  get; set; }
-        public string? Phone {  get; set; }
+        public string? Phone { get; set; }
+        public DateOnly? DOB { get; set; }
         public List<Documents>? DocumentsList { get; set; }
 
         public class Documents

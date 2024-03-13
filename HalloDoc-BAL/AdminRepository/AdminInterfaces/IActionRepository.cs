@@ -26,13 +26,15 @@ namespace HalloDoc_BAL.AdminRepository.AdminInterfaces
         public Task<List<ProfessionComboBox>> ProfessionComboBox();
         public List<HealthProfessional> GetHealthProfessional(int HealthProfessionalId);
         public Task<OrdersModel> GetOrder(int vendorId);
-        public Task<bool> SaveOrders(OrdersModel ordersModel, int RequestId);
+        public bool SaveOrders(OrdersModel ordersModel, int RequestId);
         public bool TransferCase(int RequestId, AssignCaseModel assignCaseModel);
         public bool ClearCase(int RequestId);
         public bool Accept(int RequestId);
         public bool CancelAgreement(int RequestId, string Notes);
         public bool IsAgreementValid(int RequestId);
-
+        public bool EncounterForm(int RequestId, EncounterModel encounterModel);
+        public EncounterModel GetEncounterForm(int RequestId);
+        public bool Finalize(int RequestId, EncounterModel encounterModel);
 
 
 

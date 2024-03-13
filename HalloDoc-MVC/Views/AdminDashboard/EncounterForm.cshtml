@@ -14,8 +14,8 @@
         </div>
     </div>
     <div class="card border-0 shadow">
-        <form class="row  mx-3 my-3" asp-controller="AdminDashboard" asp-action="Encounter">
-
+        <form class="row  mx-3 my-3"  asp-controller="AdminDashboard" asp-action="SaveEncounterForm" asp-route-Requestid="Requestid"  method="post">
+            
             <div class="col-12 mb-3 text-center">
                 <h3 class="text-info fw-bolder">Medical Report-Confidential</h3>
             </div>
@@ -222,23 +222,22 @@
                     <label for="floatingInput" class="text-muted">Followup</label>
                 </div>
             </div>
+            
+            <div class="d-flex flex-row-reverse gap-2 m-3">
+                <input class="btn btn-lg btn-outline-info" type="reset"  value="Cancel">
+                @{
+                    if (Model.IsFinalize == false)
+                    {
+                        <button type="submit" value="Finalize" asp-action="Finalize" asp-controller="AdminDashboard" class="btn btn-lg btn-dark btn-cancel ">Finalize</button>
+                    }
 
-
+                }
+                @* <input class="btn btn-lg btn-dark" type="submit" id="finalizebtn"  value="Finalize"> *@
+                   
+                <input class="btn btn-lg btn-info" type="submit" id="savebtn"  value="Save Changes">
+            </div>
             
         </form>
-
-        <div class="d-flex flex-row-reverse gap-2 m-3">
-            <a class="btn btn-lg btn-outline-info">
-                Cancel
-            </a>
-            <a class="btn btn-lg btn-dark">
-                Finalize
-            </a>
-            <a class="btn btn-lg btn-info">
-                Save Changes
-            </a>
-
-        </div>
     </div>
-
 </section>
+
