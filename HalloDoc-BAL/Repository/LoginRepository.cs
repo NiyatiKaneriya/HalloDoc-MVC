@@ -56,20 +56,24 @@ namespace HalloDoc_BAL.Repository
                     admin.FirstName = admin.FirstName ?? string.Empty;
                     admin.LastName = admin.LastName ?? string.Empty;
                     admin.Role = datarole.Name;
+                
                     if (admin.Role == "Admin")
                     {
                         var admindata = _context.Admins.FirstOrDefault(u => u.AspNetUserId == user.Id);
+                        admin.AspNetUserId = admindata.AspNetUserId;
                         admin.UserId = admindata.AdminId;
                     }
                     else if (admin.Role == "Patient")
                     {
                         var admindata = _context.Users.FirstOrDefault(u => u.Id == user.Id);
+                        admin.AspNetUserId = admindata.Id;
                         admin.UserId = admindata.UserId;
 
                     }
                     else
                     {
                         var admindata = _context.Physicians.FirstOrDefault(u => u.Id == user.Id);
+                        admin.AspNetUserId = admindata.Id;
                         admin.UserId = admindata.PhysicianId;
                     }
 

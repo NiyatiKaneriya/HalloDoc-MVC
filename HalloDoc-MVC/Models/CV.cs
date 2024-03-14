@@ -35,10 +35,24 @@ namespace HalloDoc_MVC.Models.CV
             {
                 cookieValue = _contextAccessor.HttpContext.Request.Cookies["jwt"].ToString();
 
-                UserID = DecodedToken.DecodeJwt(DecodedToken.ConvertJwtStringToJwtSecurityToken(cookieValue)).claims.FirstOrDefault(t => t.Key == "UserID").Value;
+                UserID = DecodedToken.DecodeJwt(DecodedToken.ConvertJwtStringToJwtSecurityToken(cookieValue)).claims.FirstOrDefault(t => t.Key == "UserId").Value;
             }
 
             return UserID;
+        }
+        public static string? AspNetUserID()
+        {
+            string cookieValue;
+            string AspNetUserID = null;
+
+            if (_contextAccessor.HttpContext.Request.Cookies["jwt"] != null)
+            {
+                cookieValue = _contextAccessor.HttpContext.Request.Cookies["jwt"].ToString();
+
+                AspNetUserID = DecodedToken.DecodeJwt(DecodedToken.ConvertJwtStringToJwtSecurityToken(cookieValue)).claims.FirstOrDefault(t => t.Key == "UserID").Value;
+            }
+
+            return AspNetUserID;
         }
 
         //public static string? Role()

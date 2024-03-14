@@ -10,6 +10,7 @@ using System.Reflection.Metadata;
 using static HalloDoc_DAL.ViewModels.AdminViewModels.ViewNotesModel;
 using static HalloDoc_DAL.ViewModels.AdminViewModels.ViewUploadsModel;
 
+
 namespace HalloDoc_BAL.AdminRepository
 {
     public class ActionRepository : IActionRepository
@@ -103,28 +104,7 @@ namespace HalloDoc_BAL.AdminRepository
                     }).ToList();
 
                     notes.CancellationNotes = cancellist;
-                    //var requestlog = await _context.RequestStatusLogs
-                    //        .Where(E => E.RequestId == requestid && E.TransToPhysician != null)
-                    //    .ToListAsync();
-                 
-                //var requestlog = from rsl in _context.RequestStatusLogs
-                //             join p in _context.Physicians on rsl.TransToPhysicianId equals p.PhysicianId
-                //             where rsl.RequestId == requestid
-                //             select new
-                //             {
-                //                 rsl.RequestStatusLogId,
-                //                 rsl.Status,
-                //                 rsl.Notes,
-                //                 rsl.CreatedDate,
-                //                 rsl.TransToAdmin,
-                //                 rsl.RequestId,
-                //                 rsl.PhysicianId,
-                //                 rsl.TransToPhysicianId,
-                //                 p.FirstName,
-                //                 p.LastName,
-                //             };
-
-
+                
                 List<TransferNotesModel> transferlist = (from rs in _context.RequestStatusLogs
                                                          join py in _context.Physicians on rs.PhysicianId equals py.PhysicianId into pyGroup
                                                          from py in pyGroup.DefaultIfEmpty()
@@ -132,7 +112,7 @@ namespace HalloDoc_BAL.AdminRepository
                                                          from p in pGroup.DefaultIfEmpty()
                                                          join a in _context.Admins on rs.AdminId equals a.AdminId into aGroup
                                                          from a in aGroup.DefaultIfEmpty()
-                                                         where (rs.RequestId == requestid && rs.Status !=3 && rs.Status != 7 && rs.Status != 8 )
+                                                         where (rs.RequestId == requestid && (rs.Status !=3 && rs.Status != 7 && rs.Status != 8 ) && rs.TransToPhysicianId != null)
                                                          select new TransferNotesModel
                                                          {
                                                              TranstoPhysician = p.FirstName +' '+ p.LastName,
@@ -769,7 +749,7 @@ namespace HalloDoc_BAL.AdminRepository
             return false;
 
         }
-        public bool Finalize(int RequestId, EncounterModel encounterModel)
+        public bool Finalize(int RequestId, EncounterModel encounterModel, string id)
         {
             if (RequestId != 0)
             {
@@ -841,12 +821,68 @@ namespace HalloDoc_BAL.AdminRepository
                     Encounter.ModifiedDate = DateTime.Now;
                     _context.EncounterForms.Update(Encounter);
                     _context.SaveChanges();
+
+                    var final = _context.Requests.FirstOrDefault(e => e.RequestId == encounterModel.RequestId);
+                    final.ModifiedDate = DateTime.Now;
+                    final.Status = 6;
+                    _context.Requests.Update(final);
+                    _context.SaveChanges();
+
+                    var admindata = _context.Admins.FirstOrDefault(e => e.AspNetUserId ==  id);
+                    RequestStatusLog rs = new RequestStatusLog
+                    {
+                        RequestId = final.RequestId,
+                        Status = 6,
+                        CreatedDate = DateTime.Now,
+                        AdminId = admindata.AdminId
+
+
+                    };
                 }
                 return true;
             }
             return false;
 
         }
+        public async Task<bool> SaveCloseCase(ViewUploadsModel model)
+        {
 
+            var requestclient = await _context.RequestClients.Where(r => r.RequestClientId == Convert.ToInt32(model.RequestClientId)).FirstAsync();
+            requestclient.PhoneNumber = model.Phone;
+            requestclient.Email = model.Email;
+            _context.RequestClients.Update(requestclient);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+        public async Task<bool> ClosePatientCase(int Requestid)
+        {
+            var req = await _context.Requests.Where(e => e.RequestId == Requestid).FirstOrDefaultAsync();
+            req.Status = 9; // Unpaid Case Status
+            _context.Requests.Update(req);
+            await _context.SaveChangesAsync();
+
+            RequestStatusLog requestStatusLog = new RequestStatusLog
+            {
+                RequestId = Requestid,
+                Status = 9, // Unpaid
+                AdminId = 1,
+                CreatedDate = DateTime.Now,
+            };
+            _context.RequestStatusLogs.Add(requestStatusLog);
+            _context.SaveChanges();
+
+
+            RequestClosed requestClosed = new RequestClosed
+            {
+                RequestId = Requestid,
+                RequestStatusLogId = requestStatusLog.RequestStatusLogId,
+
+            };
+            _context.RequestCloseds.Add(requestClosed);
+            _context.SaveChanges();
+
+            return true;
+        }
     }
 }

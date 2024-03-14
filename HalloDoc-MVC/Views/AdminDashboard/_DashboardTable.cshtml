@@ -147,15 +147,15 @@
                                     @if (item.state == 2 || item.state == 4 || item.state == 5)
                                     {
                                         <li><a class="dropdown-item" asp-controller="AdminDashboard" asp-route-requestid="@item.RequestId" asp-action="Orders"><i class="fa-solid fa-clipboard-check"></i> Order</a></li>
-                                        @* @if (item.IsFinalize)
+                                        @if (item.IsFinalize)
                                         {
-                                            <li><a class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#Encounterpopup" asp-route-requestid="@item.RequestId" ><i class="fa-solid fa-file-waveform"></i> Encounter</a></li>
+                                            <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#Encounterpopup" data-bs-requestid="@item.RequestId" asp-route-requestid="@item.RequestId"><i class="fa-solid fa-file-waveform"></i> Encounter</a></li>
                                         }
                                         else
                                         {
                                             <li><a class="dropdown-item" asp-controller="AdminDashboard" asp-route-requestid="@item.RequestId" asp-action="EncounterForm"><i class="fa-solid fa-file-waveform"></i> Encounter</a></li>
-                                        } *@
-                                        <li><a class="dropdown-item" asp-controller="AdminDashboard" data-bs-toggle="modal" data-bs-target="#Encounterpopup" asp-route-requestid="@item.RequestId" asp-action="EncounterForm"><i class="fa-solid fa-file-waveform"></i> Encounter</a></li>
+                                        }
+                                       @*  <li><a class="dropdown-item" asp-controller="AdminDashboard" data-bs-toggle="modal" data-bs-target="#Encounterpopup" asp-route-requestid="@item.RequestId" asp-action="EncounterForm"><i class="fa-solid fa-file-waveform"></i> Encounter</a></li> *@
                                     }
                                     @if (item.state > 1)
                                     {

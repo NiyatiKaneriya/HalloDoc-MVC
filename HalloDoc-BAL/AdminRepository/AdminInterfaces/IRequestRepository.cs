@@ -19,8 +19,8 @@ namespace HalloDoc_BAL.AdminRepository.AdminInterfaces
         public Task<int> ToCloseCount();
         public Task<int> UnpaidCount();
         public Task<List<ViewDashboradList>> RequestTable(int state, int requesttype);
-        
 
+        public bool GetIsFinalize(int Requestid);
 
 
 

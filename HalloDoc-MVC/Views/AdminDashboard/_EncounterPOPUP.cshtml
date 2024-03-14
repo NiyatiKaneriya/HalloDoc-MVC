@@ -9,11 +9,38 @@
                 <h1 class="modal-title text-light  fs-5" id="exampleModalLabel">Encounter Form</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body d-flex flex-column justify-content-center align-items-center">
                 <div>Encounter Form is Finalize successfully ...... !!!</div>
-                    <button type="" class="btn btn-info text-light" value="Download">
+                <form asp-action="generatePDF" asp-controller="AdminDashboard" asp-route-Requestid="Requestid">
+                    <input hidden name="Requestid" id="encounterid" />
+                    <button type="submit" class="btn btn-info text-light m-3" value="Download">Download</button>
+
+                </form>
                    
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    const Encounterpopup = document.getElementById('Encounterpopup')
+    if (Encounterpopup) {
+        Encounterpopup.addEventListener('show.bs.modal', event => {
+            console.log("hello ");
+            // Button that triggered the modal
+            const button = event.relatedTarget
+            // Extract info from data-bs-* attributes
+
+            const requestid = button.getAttribute('data-bs-requestid')
+            console.log(requestid);
+            // If necessary, you could initiate an Ajax request here
+            // and then do the updating in a callback.
+            // Update the modal's content.
+
+            document.getElementById('encounterid').value = requestid;
+            //modalTitle.textContent = `New message to ${recipient}`
+
+        })
+    }
+
+</script>

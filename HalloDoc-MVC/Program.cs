@@ -8,6 +8,7 @@ using HalloDoc_BAL.Repository;
 using HalloDoc_BAL.Repository.Interfaces;
 using HalloDoc_BAL.AdminRepository.AdminInterfaces;
 using HalloDoc_BAL.AdminRepository;
+using Rotativa.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,7 @@ builder.Services.AddScoped<ICreateRequestsRepository, CreateRequestsRepository>(
 builder.Services.AddScoped<IRequestRepository, RequestRepository>();
 builder.Services.AddScoped<IActionRepository, ActionRepository>();
 builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<IAdminProfileRepository, AdminProfileRepository>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();
 
@@ -32,6 +34,7 @@ var emailConfig = builder.Configuration
         .Get<SendEmailModel>();
 
 builder.Services.AddSingleton(emailConfig);
+
 
 var app = builder.Build();
 
@@ -53,7 +56,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
+app.UseRotativa();
 
 
 app.Run();

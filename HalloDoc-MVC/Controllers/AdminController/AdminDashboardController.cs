@@ -13,6 +13,7 @@ using Org.BouncyCastle.Asn1.Ocsp;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Drawing.Printing;
 using HalloDoc_MVC.Models.CV;
+using Rotativa.AspNetCore;
 
 namespace HalloDoc_MVC.Controllers.AdminController
 {
@@ -261,8 +262,24 @@ namespace HalloDoc_MVC.Controllers.AdminController
         {
             return View(await _actionRepository.GetUploadedDocuments(Requestid));
         }
-        
+        public async Task<IActionResult> SaveCloseCase(ViewUploadsModel model)
+        {
+            await _actionRepository.SaveCloseCase(model);
 
-
+            return View("CloseCase");
+        }
+        public async Task<IActionResult> ClosePatientCase(int Requestid)
+        {
+            if(await _actionRepository.ClosePatientCase(Requestid))
+            {
+                return RedirectToAction("Index");
+            }
+            else { return RedirectToAction("CloseCase"); }
+        }
+        public IActionResult generatePDF(int Requestid)
+        {
+            var FormDetails = _actionRepository.GetEncounterForm(Requestid);
+            return new ViewAsPdf("DownLoad", FormDetails);
+        }
     }
 }

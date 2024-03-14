@@ -75,6 +75,9 @@ namespace HalloDoc_DAL.ViewModels.AdminViewModels
 
         public int RequestClientId { get; set; }
         public string? PhoneO { get; set; }
+        public int IntYear { get; set; }
+        public bool StrMonth { get; set; }
+        public int IntDate { get; set; }
     }
 
 }

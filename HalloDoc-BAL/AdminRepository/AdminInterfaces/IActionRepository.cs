@@ -34,9 +34,9 @@ namespace HalloDoc_BAL.AdminRepository.AdminInterfaces
         public bool IsAgreementValid(int RequestId);
         public bool EncounterForm(int RequestId, EncounterModel encounterModel);
         public EncounterModel GetEncounterForm(int RequestId);
-        public bool Finalize(int RequestId, EncounterModel encounterModel);
-
-
+        public bool Finalize(int RequestId, EncounterModel encounterModel, string id);
+        public Task<bool> SaveCloseCase(ViewUploadsModel model);
+        public Task<bool> ClosePatientCase(int Requestid);
 
 
     }
