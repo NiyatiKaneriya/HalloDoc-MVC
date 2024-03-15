@@ -41,7 +41,7 @@ namespace HalloDoc_MVC.Controllers.AdminController
             ViewBag.ToCloseCount = await _requestRepository.ToCloseCount();
             ViewBag.UnpaidCount = await _requestRepository.UnpaidCount();
             ViewBag.CaseTagCombobox = await _actionRepository.CaseTagComboBox();
-            ViewBag.RegionCombobox = await _actionRepository.RegionComboBox();
+            ViewBag.RegionCombobox = _actionRepository.RegionComboBox();
             ViewBag.ProfessionComboBox = await _actionRepository.ProfessionComboBox();
             ViewBag.PhysiciansByRegion = new SelectList(Enumerable.Empty<SelectListItem>());
             ViewBag.HealthProfessional = new SelectList(Enumerable.Empty<SelectListItem>());
@@ -254,7 +254,7 @@ namespace HalloDoc_MVC.Controllers.AdminController
         }
         public IActionResult Finalize(int Requestid, EncounterModel model)
         {
-            _actionRepository.Finalize(Requestid, model);
+            _actionRepository.Finalize(Requestid, model, CV.AspNetUserID());
 
             return RedirectToAction("Index");
         }

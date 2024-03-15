@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HalloDoc_DAL.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace HalloDoc_DAL.ViewModels.AdminViewModels
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int status { get; set; }
-        public int role {  get; set; }
+       
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public string ConfirmedEmail { get; set; }
@@ -23,7 +24,14 @@ namespace HalloDoc_DAL.ViewModels.AdminViewModels
         public string state { get; set; }
         public string zipcode { get; set; }
         public string altPhone { get; set; }
-       
-            
+        public string? RoleId { get; set; }
+        public int AdminId { get; set; }
+        public string Aspnetuserid { get; set; }
+        public object Createdby { get; set; }
+        public int? Regionid { get; set; }
+        public DateTime? Modifieddate { get; set; }
+        public string? Modifiedby { get; set; }
+        public DateTime Createddate { get; set; }
+        public List<Region> Regionids { get; set; }
     }
 }

@@ -25,38 +25,44 @@
     </div>
 
     @* Account Information only ResetPassword *@
-    <form asp-action="ResetPasswordProfile" asp-controller="Admin" method="post" class="row bg-white shadow  form-admin">
+    <form asp-action="ResetPasswordProfile" asp-controller="AdminProfile" method="post" class="row bg-white shadow  form-admin">
         <input name="AdminId" hidden id="AdminId" value="@CV.AspNetUserID" />
 
         <div class="col-12 mb-3">
             <h3>Account Information </h3>
         </div>
+        <div class="col-12 mb-3">
+            <h4>@ViewBag.error</h4>
+        </div>
+        
         <div class=" col-md-6 col-sm-12 mb-3">
             <div class="form-floating ">
-                <input asp-for="UserName" class="form-control" id="UserName" placeholder="UserName" disabled />
+                <input asp-for="UserName" class="form-control inputAdmin" id="UserName" placeholder="UserName" disabled />
                 <label for="UserName" class="text-muted">UserName</label>
             </div>
         </div>
         <div class=" col-md-6 col-sm-12 mb-3">
             <div class="form-floating ">
-                <input  asp-for="Password"  type="password" class="form-control" placeholder="Password" id="password">
+                <input asp-for="Password" type="password" class="form-control inputAdmin" placeholder="Password" id="password">
                 <label for="password" class="text-muted">Password</label>
             </div>
         </div>
         <div class=" col-md-6 col-sm-12 mb-3">
             <div class="form-floating">
-                <select class="form-select" asp-for="status" id="Status" aria-label="select Status" disabled>
-                    <option selected>Active</option>
+                <select class="form-select inputAdmin" asp-for="status" id="Status" aria-label="select Status" disabled>
+                    <option value="1">Pending</option>
+                    <option value="2">Active</option>
+                    <option value="3">Not Active</option>
                 </select>
                 <label for="Status">Status</label>
             </div>
         </div>
         <div class=" col-md-6 col-sm-12 mb-3">
             <div class="form-floating">
-                <select class="form-select" asp-for="role" id="Role" aria-label="select Role" disabled>
-                    <option selected>Master Admin</option>
+                <select disabled class="form-select inputAdmin" required name="Status" asp-for="RoleId" data-allow-clear="true" tabindex="-1" onchange="myFunction()" id="roles" asp-items="@(new SelectList(ViewBag.RoleComboBox,"RoleId","RoleName"))" data-control="select2" data-placeholder="Select Level">
                 </select>
-                <label for="Role">Role</label>
+                
+                 <label for="Role">Role</label> 
             </div>
         </div>
         <div class="col-12 mb-3 d-flex flex-row-reverse">
@@ -66,38 +72,65 @@
 
 
     @*     @ Administrator information @
-    *@    <form asp-controller="Admin" asp-action="EditAdminInfo" method="post" enctype="multipart/form-data" class="row bg-white shadow form-admin">
+    *@    <form asp-controller="AdminProfile" asp-action="EditAdminInfo" method="post" enctype="multipart/form-data" class="row bg-white shadow form-admin">
         <div class="col-12 mb-3">
             <h3>Administrator Information</h3>
         </div>
         <div class=" col-md-6 col-sm-12 mb-3">
             <div class="form-floating ">
-                <input asp-for="FirstName" type="text" class="form-control" id="FirstName" placeholder="FirstName" disabled>
+                <input asp-for="FirstName" type="text" class="form-control inputAdmin" id="FirstName" placeholder="FirstName" disabled>
                 <label for="FirstName" class="text-muted">FirstName</label>
             </div>
         </div>
         <div class=" col-md-6 col-sm-12 mb-3">
             <div class="form-floating ">
-                <input asp-for="LastName" type="text" class="form-control" id="LastName" placeholder="LastName" disabled>
+                <input asp-for="LastName" type="text" class="form-control inputAdmin" id="LastName" placeholder="LastName" disabled>
                 <label for="LastName" class="text-muted">LastName</label>
             </div>
         </div>
         <div class="col-md-6 col-sm-12  mb-3">
             <div class="form-floating ">
-                <input asp-for="Email" id="Email" type="email" class="form-control" placeholder="Email" disabled>
+                <input asp-for="Email" id="Email" type="email" class="form-control inputAdmin" placeholder="Email" disabled>
                 <label for="Email" class="text-muted">Email</label>
             </div>
         </div>
         <div class="col-md-6 col-sm-12  mb-3">
             <div class="form-floating ">
-                <input asp-for="ConfirmedEmail" id="ConfirmEmail" type="email" class="form-control" placeholder="Confirm Email" disabled>
+                <input asp-for="ConfirmedEmail" id="ConfirmEmail" type="email" class="form-control inputAdmin" placeholder="Confirm Email" disabled>
                 <label for="ConfirmEmail" class="text-muted">Confirm Email</label>
             </div>
         </div>
         <div class="col-md-6 col-sm-12  mb-3">
             <div class="form-floating mb-3">
-                <input asp-for="PhoneNumber" id="phone" type="tel" class="form-control" disabled style="height:6vh">
+                <input asp-for="PhoneNumber" id="phone" type="tel" class="form-control inputAdmin" disabled style="height:6vh">
             </div>
+        </div>
+        <input asp-for="Regionids" type="hidden" id="regionids" />
+        <div class="col-md-6 d-flex">
+
+            @foreach (var cb in ViewBag.RegionComboBox)
+            {
+                @if (Model.Regionids.Exists(id => id.RegionId == cb.RegionId))
+                {
+                    <div class="form-check mx-2">
+                        <input class="form-check-input" value="@cb.RegionId" type="checkbox" name="Region" id="flexCheckDefault" checked disabled>
+                        <label class="form-check-label" for="flexCheckDefault">
+                            @cb.RegionName
+                        </label>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-check mx-2">
+                        <input class="form-check-input" value="@cb.RegionId" type="checkbox" name="Region" id="flexCheckDefault" disabled>
+                        <label class="form-check-label" for="flexCheckDefault">
+                            @cb.RegionName
+                        </label>
+                    </div>
+                }
+
+
+            }
         </div>
         <div class="col-12 mb-3 d-flex flex-row-reverse gap-3">
             <button class="btn btn-info text-white" id="Editbtn">Edit</button>
@@ -106,43 +139,46 @@
     </form>
 
     @*     @ Mailing & Billing Information @
-    *@    <form asp-controller="Admin" asp-action="EditBillingInfo" class="row bg-white shadow form-admin" method="post" enctype="multipart/form-data">
+    *@    <form asp-controller="AdminProfile" asp-action="EditBillingInfo" class="row bg-white shadow form-admin" method="post" enctype="multipart/form-data">
         <div class="col-12 mb-3">
             <h3>Mailing & Billing Information</h3>
         </div>
         <div class=" col-md-6 col-sm-12 mb-3">
             <div class="form-floating ">
-                <input  asp-for="Address1" type="text" class="form-control" id="Address1" placeholder="Address1" disabled>
+                <input asp-for="Address1" type="text" class="form-control inputAdmin" id="Address1" placeholder="Address1" disabled>
                 <label for="Address1" class="text-muted">Address1</label>
             </div>
         </div>
         <div class=" col-md-6 col-sm-12 mb-3">
             <div class="form-floating">
-                <input  asp-for="Address2" type="text" class="form-control" id="Address2" placeholder="Address2" disabled>
+                <input asp-for="Address2" type="text" class="form-control inputAdmin" id="Address2" placeholder="Address2" disabled>
                 <label for="Address2" class="text-muted">Address2</label>
             </div>
         </div>
         <div class=" col-md-6 col-sm-12 mb-3">
             <div class="form-floating">
-                <input asp-for="city" type="text" class="form-control" id="City" placeholder="City" disabled>
+                <input asp-for="city" type="text" class="form-control inputAdmin" id="City" placeholder="City" disabled>
                 <label for="City" class="text-muted">City</label>
             </div>
         </div>
         <div class=" col-md-6 col-sm-12 mb-3">
             <div class="form-floating">
-                <input asp-for="state" type="text" class="form-control" id="State" placeholder="State" disabled>
+                <select disabled class="form-select form-select-sm inputAdmin" data-allow-clear="true" tabindex="-1" id="State" asp-for="Regionid" onchange="captureSelectedRegion()" asp-items="@(new SelectList(ViewBag.RegionComboBox, "RegionId", "RegionName"))" data-control="select" data-placeholder="Region">
+                    <option id="defaultregion" value="">State</option>
+                </select>
                 <label for="State" class="text-muted">State</label>
             </div>
         </div>
         <div class=" col-md-6 col-sm-12 mb-3">
             <div class="form-floating">
-                <input  asp-for="zipcode"  type="text" class="form-control" id="ZipCode" placeholder="ZipCode" disabled>
+                <input asp-for="zipcode" type="text" class="form-control inputAdmin" id="ZipCode" placeholder="ZipCode" disabled>
                 <label for="ZipCode" class="text-muted">ZipCode</label>
             </div>
         </div>
         <div class=" col-md-6 col-sm-12 mb-3">
             <div class="form-floating">
-                <input  asp-for="altPhone"  type="tel" class="form-control" id="mobile" disabled style="height:6vh">
+                <input asp-for="altPhone" type="tel" class="form-control inputAdmin" id="Phone" disabled>
+                <label for="mobile" class="text-muted">Alternate PhoneNumber</label>
             </div>
         </div>
         @*         @ Save & Edit Button @
@@ -157,34 +193,32 @@
 
 @section scripts {
     <script type="text/javascript">
+        
+        $(document).ready(function () {
+            $("#Editbtn").click(function (event) {
+                event.preventDefault();
 
+                $("#FirstName").prop("disabled", false);
+                $("#LastName").prop("disabled", false);
+                $("#Email").prop("disabled", false);
+                $("#ConfirmEmail").prop("disabled", false);
+                $("#phone").prop("disabled", false);
+                $("#Savebtn").prop("disabled", false);
+                $(".form-check-input").prop("disabled", false);
+            });
 
+            $("#Editbtnbilling").click(function (event) {
+                event.preventDefault();
 
-        // On click of Edit remove readonly
-        document.getElementById("Editbtn").addEventListener("click", function (event) {
-            event.preventDefault();
-
-            document.getElementById("FirstName").removeAttribute("disabled");
-            document.getElementById("LastName").removeAttribute("disabled");
-            document.getElementById("Email").removeAttribute("disabled");
-            document.getElementById("ConfirmEmail").removeAttribute("disabled");
-            document.getElementById("phone").removeAttribute("disabled");
-            document.getElementById("Savebtn").removeAttribute("disabled");
+                $("#Address1").prop("disabled", false);
+                $("#Address2").prop("disabled", false);
+                $("#City").prop("disabled", false);
+                $("#State").prop("disabled", false);
+                $("#ZipCode").prop("disabled", false);
+                $("#Phone").prop("disabled", false);
+                $("#Savebtnbilling").prop("disabled", false);
+            });
         });
-
-
-        document.getElementById("Editbtnbilling").addEventListener("click", function (event) {
-            event.preventDefault();
-
-            document.getElementById("Address1").removeAttribute("disabled");
-            document.getElementById("Address2").removeAttribute("disabled");
-            document.getElementById("City").removeAttribute("disabled");
-            document.getElementById("State").removeAttribute("disabled");
-            document.getElementById("ZipCode").removeAttribute("disabled");
-            document.getElementById("mobile").removeAttribute("disabled");
-            document.getElementById("Savebtnbilling").removeAttribute("disabled");
-        });
-
 
 
     </script>

@@ -28,7 +28,7 @@ namespace HalloDoc_BAL.Repository
                 new Claim("FirstName", userInfo.FirstName),
                 new Claim("UserId", userInfo.UserId.ToString()),
                 new Claim("UserName", userInfo.UserName),
-                new Claim("AspNetUserId", userInfo.AspNetUserId.ToString()),
+                new Claim("AspNetUserID", userInfo.AspNetUserId.ToString()),
                 new Claim(JwtHeaderParameterNames.Jku, userInfo.FirstName),
                 new Claim(JwtHeaderParameterNames.Kid, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.NameIdentifier, userInfo.UserName)

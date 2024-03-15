@@ -49,7 +49,7 @@ namespace HalloDoc_MVC.Models.CV
             {
                 cookieValue = _contextAccessor.HttpContext.Request.Cookies["jwt"].ToString();
 
-                AspNetUserID = DecodedToken.DecodeJwt(DecodedToken.ConvertJwtStringToJwtSecurityToken(cookieValue)).claims.FirstOrDefault(t => t.Key == "UserID").Value;
+                AspNetUserID = DecodedToken.DecodeJwt(DecodedToken.ConvertJwtStringToJwtSecurityToken(cookieValue)).claims.FirstOrDefault(t => t.Key == "AspNetUserID").Value;
             }
 
             return AspNetUserID;
