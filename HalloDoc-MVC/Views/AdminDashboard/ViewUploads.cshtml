@@ -100,7 +100,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="email-popup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" ">
+<div class="modal fade" id="email-popup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-info">
@@ -110,7 +110,9 @@
             <div class="modal-body">
                     <div class="mb-3">
                         <label for="message-text" class="col-form-label">To</label>
-                    <input asp-for="Email" class="form-control" id="email-input">
+                    <input asp-for="Email" type="email" class="form-control" id="email-input" required />
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                    
                     </div>
                 <button id="submit-email-btn" class="btn btn-info text-light">Submit</button>
                 @* <input type="submit" class="btn btn-info text-light" value="Confirm" id="submit-email-btn"> *@

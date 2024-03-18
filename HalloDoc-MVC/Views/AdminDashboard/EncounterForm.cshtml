@@ -25,12 +25,13 @@
                 <div class="form-floating ">
                     <input asp-for="FirstName" type="text" class="form-control" id="FirstName" placeholder="First Name">
                     <label for="floatingInput" class="text-muted">First Name</label>
+                    <span asp-validation-for="FirstName" class="text-danger small"></span>
                 </div>
             </div>
             <div class=" col-md-6 col-sm-12 mb-3">
                 <div class="form-floating ">
                     <input  asp-for="LastName" type="text" class="form-control" id="LastName" placeholder="Last Name" >
-                    <label for="floatingInput" class="text-muted">Last Name</label>
+                    <label for="floatingInput" class="text-muted">Last Name</label><span asp-validation-for="LastName" class="text-danger small"></span>
                 </div>
             </div>
             <div class=" col-12 mb-3">
@@ -59,14 +60,14 @@
             <div class=" col-md-6 col-sm-12 mb-3">
                 <div class="form-floating ">
                     <input asp-for="Email"  id="Email" type="email" class="form-control"  placeholder="name@example.com" >
-                    <label for="floatingInput" class="text-muted">Email</label>
+                    <label for="floatingInput" class="text-muted">Email</label><span asp-validation-for="Email" class="text-danger small"></span>
                 </div>
             </div>
             <div class=" col-md-6 col-sm-12 mb-3">
                 <div class="form-floating">
                     <textarea asp-for="HistoryOfPresentIllnessOrInjury" class="form-control" placeholder="" id="floatingTextarea"
                               style="height: 100px" ></textarea>
-                    <label for="floatingTextarea" class="text-muted">history of Present illeness Or injury </label>
+                    <label for="floatingTextarea" class="text-muted">history of Present illeness Or injury </label><span asp-validation-for="HistoryOfPresentIllnessOrInjury" class="text-danger small"></span>
                 </div>
             </div>
             <div class=" col-md-6 col-sm-12 mb-3">
@@ -93,37 +94,37 @@
             <div class=" col-md-4 col-sm-6 mb-3">
                 <div class="form-floating">
                     <input asp-for="Temp" type="text" class="form-control" placeholder="">
-                    <label for="floatingInput" class="text-muted">Temp</label>
+                    <label for="floatingInput" class="text-muted">Temp</label><span asp-validation-for="Temp" class="text-danger small"></span>
                 </div>
             </div>
             <div class=" col-md-4 col-sm-6 mb-3">
                 <div class="form-floating">
                     <input asp-for="Hr" type="text" class="form-control" placeholder="">
-                    <label for="floatingInput" class="text-muted">HR</label>
+                    <label for="floatingInput" class="text-muted">HR</label><span asp-validation-for="Hr" class="text-danger small"></span>
                 </div>
             </div>
             <div class=" col-md-4 col-sm-6 mb-3">
                 <div class="form-floating">
                     <input asp-for="Rr" type="text" class="form-control" placeholder="">
-                    <label for="floatingInput" class="text-muted">RR</label>
+                    <label for="floatingInput" class="text-muted">RR</label><span asp-validation-for="Rr" class="text-danger small"></span>
                 </div>
             </div>
             <div class=" col-md-2 col-sm-6 mb-3">
                 <div class="form-floating">
                     <input asp-for="BloodPressureSystolic" type="text" class="form-control" placeholder="">
-                    <label for="floatingInput" class="text-muted">Blood pressure(Systolic)</label>
+                    <label for="floatingInput" class="text-muted">Blood pressure(Systolic)</label><span asp-validation-for="BloodPressureSystolic" class="text-danger small"></span>
                 </div>
             </div>
             <div class=" col-md-2 col-sm-6 mb-3">
                 <div class="form-floating">
                     <input asp-for="BloodPressureDiastolic" type="text" class="form-control" placeholder="">
-                    <label for="floatingInput" class="text-muted ">Blood pressure(Diastolic)</label>
+                    <label for="floatingInput" class="text-muted ">Blood pressure(Diastolic)</label><span asp-validation-for="BloodPressureDiastolic" class="text-danger small"></span>
                 </div>
             </div>
             <div class=" col-md-4 col-sm-6 mb-3">
                 <div class="form-floating">
                     <input asp-for="O2" type="text" class="form-control" placeholder="">
-                    <label for="floatingInput" class="text-muted">O2</label>
+                    <label for="floatingInput" class="text-muted">O2</label><span asp-validation-for="O2" class="text-danger small"></span>
                 </div>
             </div>
             <div class=" col-md-4 col-sm-6 mb-3">
@@ -192,34 +193,34 @@
                 <div class="form-floating">
                     <textarea asp-for="Diagnosis" class="form-control" placeholder="" id="floatingTextarea"
                               style="height: 75px" ></textarea>
-                    <label for="floatingTextarea" class="text-muted">Diognosis </label>
+                    <label for="floatingTextarea" class="text-muted">Diognosis </label><span asp-validation-for="Diagnosis" class="text-danger small"></span>
                 </div>
             </div>
             <div class=" col-md-6 col-sm-12 mb-3">
                 <div class="form-floating">
                     <textarea asp-for="TreatmentPlan" class="form-control" placeholder="" id="floatingTextarea"
                               style="height: 75px" ></textarea>
-                    <label for="floatingTextarea" class="text-muted">Treatment Plan </label>
+                    <label for="floatingTextarea" class="text-muted">Treatment Plan </label><span asp-validation-for="TreatmentPlan" class="text-danger small"></span>
                 </div>
             </div>
             <div class=" col-md-6 col-sm-12 mb-3">
                 <div class="form-floating">
                     <textarea asp-for="MedicationsDispensed" class="form-control" placeholder="" id="floatingTextarea"
                               style="height: 75px" ></textarea>
-                    <label for="floatingTextarea" class="text-muted">Medications Dispensed </label>
+                    <label for="floatingTextarea" class="text-muted">Medications Dispensed </label><span asp-validation-for="MedicationsDispensed" class="text-danger small"></span>
                 </div>
             </div>
             <div class=" col-md-6 col-sm-12 mb-3">
                 <div class="form-floating">
                     <textarea asp-for="Procedures" class="form-control" placeholder="" id="floatingTextarea"
                               style="height: 75px" ></textarea>
-                    <label for="floatingTextarea" class="text-muted">Procedures </label>
+                    <label for="floatingTextarea" class="text-muted">Procedures </label><span asp-validation-for="Procedures" class="text-danger small"></span>
                 </div>
             </div>
             <div class=" col-12 mb-3">
                 <div class="form-floating ">
                     <input asp-for="FollowUp" type="text" class="form-control" placeholder="Followup">
-                    <label for="floatingInput" class="text-muted">Followup</label>
+                    <label for="floatingInput" class="text-muted">Followup</label><span asp-validation-for="FollowUp" class="text-danger small"></span>
                 </div>
             </div>
             
@@ -232,7 +233,7 @@
                     }
 
                 }
-                @* <input class="btn btn-lg btn-dark" type="submit" id="finalizebtn"  value="Finalize"> *@
+         
                    
                 <input class="btn btn-lg btn-info" type="submit" id="savebtn"  value="Save Changes">
             </div>

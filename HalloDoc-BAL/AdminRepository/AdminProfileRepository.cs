@@ -95,7 +95,10 @@ namespace HalloDoc_BAL.AdminRepository
             _context.SaveChanges();
             List<int> list = model.Regionsid.Split(',').Select(int.Parse).ToList();
             List<int> adminsoldregion = new List<int>();
+
             adminsoldregion = _context.AdminRegions.Where(r => r.AdminId == admin.AdminId).Select(e => e.RegionId).ToList(); 
+
+
             foreach (var value in adminsoldregion)
             {
                 if (!list.Contains(value))
@@ -137,25 +140,6 @@ namespace HalloDoc_BAL.AdminRepository
             
             return true;
         }
-        //public bool CheckCheckbox(int value, string id)
-        //{
-        //    var admin = _context.Admins.FirstOrDefault(e => e.AspNetUserId == id);
-        //    AdminRegion ar = new AdminRegion
-        //    {
-        //        AdminId = admin.AdminId,
-        //        RegionId = value
-        //    };
-        //    _context.AdminRegions.Add(ar);
-        //    _context.SaveChangesAsync();
-        //    return true;
-        //}
-        //public bool UnCheckCheckbox(int value, string id)
-        //{
-        //    var admin = _context.Admins.FirstOrDefault(e => e.AspNetUserId == id);
-        //    var AdminRegion = _context.AdminRegions.FirstOrDefault(e => e.AdminId == admin.AdminId && e.RegionId == value);
-        //    _context.AdminRegions.Remove(AdminRegion);
-        //    _context.SaveChangesAsync();
-        //    return true;
-        //}
+        
     }
 }

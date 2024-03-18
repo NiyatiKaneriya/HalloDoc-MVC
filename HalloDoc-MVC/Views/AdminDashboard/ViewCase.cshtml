@@ -29,18 +29,19 @@
                     <textarea asp-for="Notes" class="form-control" placeholder="" id="floatingTextarea"
                               style="height: 100px" readonly></textarea>
                     <label for="floatingTextarea" class="text-muted">Brief Details of symptoms (optional) </label>
+                    <span asp-validation-for="Notes" class="text-danger small"></span>
                 </div>
             </div>
             <div class=" col-md-6 col-sm-12 mb-3">
                 <div class="form-floating ">
                     <input asp-for="PatientF" type="text" class="form-control" id="FirstName" placeholder="First Name" readonly>
-                    <label for="floatingInput" class="text-muted">First Name</label>
+                    <label for="floatingInput" class="text-muted">First Name</label><span asp-validation-for="PatientF" class="text-danger small"></span>
                 </div>
             </div>
             <div class=" col-md-6 col-sm-12 mb-3">
                 <div class="form-floating ">
                     <input asp-for="PatientL" type="text" class="form-control" id="LastName" placeholder="Last Name" readonly>
-                    <label for="floatingInput" class="text-muted">Last Name</label>
+                    <label for="floatingInput" class="text-muted">Last Name</label><span asp-validation-for="PatientL" class="text-danger small"></span>
                 </div>
             </div>
             <div class=" col-md-6 col-sm-12 mb-3">
@@ -51,13 +52,13 @@
             </div>
             <div class=" col-md-6 col-sm-12 mb-3">
                 <div class="form-floating mb-3">
-                    <input asp-for="Phone" id="phone" type="tel" class="form-control" readonly>
+                    <input asp-for="Phone" id="phone" type="tel" class="form-control" readonly><span asp-validation-for="Phone" class="text-danger small"></span>
                 </div>
             </div>
             <div class=" col-md-6 col-sm-12 mb-3">
                 <div class="form-floating ">
                     <input asp-for="Email" id="Email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com" readonly>
-                    <label for="floatingInput" class="text-muted">Email</label>
+                    <label for="floatingInput" class="text-muted">Email</label><span asp-validation-for="Email" class="text-danger small"></span>
                 </div>
             </div>
             <div class=" col-md-6 col-sm-12 mb-3">
@@ -73,13 +74,13 @@
             <div class=" col-md-6 col-sm-12 mb-3">
                 <div class="form-floating ">
                     <input asp-for="Region" type="text" class="form-control" id="Region" placeholder="Street" readonly>
-                    <label for="floatingInput" class="text-muted">Region</label>
+                    <label for="floatingInput" class="text-muted">Region</label><span asp-validation-for="Region" class="text-danger small"></span>
                 </div>
             </div>
             <div class=" col-md-6 col-sm-12 mb-3">
                 <div class="form-floating">
                     <input asp-for="Address" type="text" class="form-control" id="Address" placeholder="Room" readonly>
-                    <label for="floatingInput" class="text-muted">Business Name / Address</label>
+                    <label for="floatingInput" class="text-muted">Business Name / Address</label><span asp-validation-for="Address" class="text-danger small"></span>
                 </div>
             </div>
 

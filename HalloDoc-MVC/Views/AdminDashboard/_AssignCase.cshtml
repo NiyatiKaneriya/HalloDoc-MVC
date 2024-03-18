@@ -23,16 +23,19 @@
                         <select class="form-select form-select-sm mt-3 p-2" required data-allow-clear="true" tabindex="-1" onchange="myFunction()" id="region1" asp-for="RegionId" asp-items="@(new SelectList(ViewBag.RegionComboBox,"RegionId","RegionName"))" data-control="select2" data-placeholder="Select Level">
                             <option>All Region</option>
                         </select>
+                        <span asp-validation-for="RegionId" class="text-danger small"></span>
                     </div>
                     <div class="mb-3">
                        
                         <select class="form-select form-select-sm mt-3 p-2" required data-allow-clear="true" tabindex="-1" id="Physician" asp-for="PhysicianId" asp-items="@(new SelectList(ViewBag.PhysiciansByRegion,"PhysicianId","PhysicianId"))" data-control="select2" data-placeholder="Select Level">
                             <option>Physician</option>
                         </select>
+                        <span asp-validation-for="PhysicianId" class="text-danger small"></span>
                     </div>
                     <div class="mb-3">
                         <label for="message-text" class="col-form-label">Description</label>
                         <textarea asp-for="Notes" name="Notes" class="form-control" id="message-text" style="height: 100px"></textarea>
+                        <span asp-validation-for="Notes" class="text-danger small"></span>
                     </div>
 
                     <div class="modal-footer">

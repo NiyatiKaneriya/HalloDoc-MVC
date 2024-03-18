@@ -19,10 +19,12 @@
                     <div class="mb-3">
                         <label for="message-text" class="col-form-label">Phone Number</label>
                         <input name="Phone" class="form-control" id="Phone-input">
+                        @* <span asp-validation-for="Phone" class="text-danger small"></span> *@
                     </div>
                     <div class="mb-3">
                         <label for="message-text" class="col-form-label">Email</label>
                         <input name="Email" asp-for="Email" class="form-control" id="email-input">
+                        <span asp-validation-for="Email" class="text-danger small"></span>
                     </div>
 
                     <input type="submit" class="btn btn-info text-light" value="send" id="submit-email-btn">

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,32 +9,25 @@ namespace HalloDoc_DAL.ViewModels.AdminViewModels
 {
     public class ViewCaseModel
     {
+        [Required]
         public string PatientF { get; set; }
+        [Required]
         public string? PatientL { get; set; }
-        //public string Patient => $"{PatientF} {PatientL}";
-
-        //public string? RequestorF { get; set; }
-        //public string? RequestorL { get; set; }
-        //public string Requestor => $"{RequestorF} {RequestorL}";
-
-        //public DateTime RequestedDate { get; set; }
-
-        //public string PhysicianF { get; set; }
-        //public string? PhysicianL { get; set; }
-        //public string Physician => $"{PhysicianF} {PhysicianL}";
-
+    
         public DateOnly? DOB { get; set; }
-
+        [Required]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$", ErrorMessage = "Invalid phone number")]
         public string Phone { get; set; }
-
+        [Required]
+        [EmailAddress]
         public string Email { get; set; }
-
+        
         public short Status { get; set; }
-
+        [Required]
         public string Region { get; set; }
-
+        [Required]
         public string? Notes { get; set; }
-
+        [Required]
         public string? Address { get; set; }
 
 

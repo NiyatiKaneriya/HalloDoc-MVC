@@ -10,20 +10,22 @@ namespace HalloDoc_DAL.ViewModels.AdminViewModels
 {
     public class OrdersModel
     {
+        [Required]
         public int Profession { get; set; }
         public int Id { get; set; }
-
+        [Required]
         public int? VendorId { get; set; }
+        [Required]
         public string? VendorName { get; set; }
 
         public int? RequestId { get; set; }
 
         [StringLength(50)]
         public string? FaxNumber { get; set; }
-
+        [Required]
         [StringLength(50)]
         public string? Email { get; set; }
-
+        [Required]
         [StringLength(100)]
         public string? BusinessContact { get; set; }
 
