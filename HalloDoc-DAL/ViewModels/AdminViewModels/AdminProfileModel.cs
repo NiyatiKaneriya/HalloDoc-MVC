@@ -32,6 +32,12 @@ namespace HalloDoc_DAL.ViewModels.AdminViewModels
         public DateTime? Modifieddate { get; set; }
         public string? Modifiedby { get; set; }
         public DateTime Createddate { get; set; }
-        public List<Region> Regionids { get; set; }
+        public string? Regionsid { get; set; }
+        public List<Regions>? Regionids { get; set; }
+        public class Regions
+        {
+            public int? Regionid {  get; set; }
+            public string Regionname { get; set; }
+        }
     }
 }

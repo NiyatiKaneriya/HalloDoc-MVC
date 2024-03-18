@@ -72,7 +72,9 @@
 
 
     @*     @ Administrator information @
-    *@    <form asp-controller="AdminProfile" asp-action="EditAdminInfo" method="post" enctype="multipart/form-data" class="row bg-white shadow form-admin">
+    
+    *@    <form id="admininfo" asp-controller="AdminProfile" asp-action="EditAdminInfo" class="row bg-white shadow form-admin" data-ajax="true" method="post">
+        
         <div class="col-12 mb-3">
             <h3>Administrator Information</h3>
         </div>
@@ -105,15 +107,15 @@
                 <input asp-for="PhoneNumber" id="phone" type="tel" class="form-control inputAdmin" disabled style="height:6vh">
             </div>
         </div>
-        <input asp-for="Regionids" type="hidden" id="regionids" />
+        <input asp-for="Regionsid" type="hidden" id="regionids" />
         <div class="col-md-6 d-flex">
 
             @foreach (var cb in ViewBag.RegionComboBox)
             {
-                @if (Model.Regionids.Exists(id => id.RegionId == cb.RegionId))
+                @if (Model.Regionids.Exists(id => id.Regionid == cb.RegionId))
                 {
                     <div class="form-check mx-2">
-                        <input class="form-check-input" value="@cb.RegionId" type="checkbox" name="Region" id="flexCheckDefault" checked disabled>
+                        <input class="form-check-input"  value="@cb.RegionId" type="checkbox" name="Region"  checked disabled>
                         <label class="form-check-label" for="flexCheckDefault">
                             @cb.RegionName
                         </label>
@@ -122,7 +124,7 @@
                 else
                 {
                     <div class="form-check mx-2">
-                        <input class="form-check-input" value="@cb.RegionId" type="checkbox" name="Region" id="flexCheckDefault" disabled>
+                        <input class="form-check-input"  value="@cb.RegionId" type="checkbox" name="Region" disabled>
                         <label class="form-check-label" for="flexCheckDefault">
                             @cb.RegionName
                         </label>
@@ -139,7 +141,7 @@
     </form>
 
     @*     @ Mailing & Billing Information @
-    *@    <form asp-controller="AdminProfile" asp-action="EditBillingInfo" class="row bg-white shadow form-admin" method="post" enctype="multipart/form-data">
+    *@    <form asp-controller="AdminProfile" asp-action="EditBillingInfo" id="mailinginfo" class="row bg-white shadow form-admin" method="post" enctype="multipart/form-data">
         <div class="col-12 mb-3">
             <h3>Mailing & Billing Information</h3>
         </div>
@@ -197,7 +199,7 @@
         $(document).ready(function () {
             $("#Editbtn").click(function (event) {
                 event.preventDefault();
-
+                
                 $("#FirstName").prop("disabled", false);
                 $("#LastName").prop("disabled", false);
                 $("#Email").prop("disabled", false);
@@ -218,6 +220,77 @@
                 $("#Phone").prop("disabled", false);
                 $("#Savebtnbilling").prop("disabled", false);
             });
+            
+            $("#Savebtn").click(function (event) {
+                
+                event.preventDefault();
+                
+
+                var formData = $("#admininfo").serialize();
+                
+
+                console.log(formData);
+                
+                $.ajax({
+                    url: $('#admininfo').attr('action'),
+                    type: "POST",
+                    data: formData,                   
+                    success: function (response) {
+                        // Handle success response
+                        console.log(response);
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle error
+                        console.error(xhr.responseText);
+                    }
+                });
+                $("#FirstName").prop("disabled", true);
+                $("#LastName").prop("disabled", true);
+                $("#Email").prop("disabled", true);
+                $("#ConfirmEmail").prop("disabled", true);
+                $("#phone").prop("disabled", true);
+                $("#Savebtn").prop("disabled", true);
+                $(".form-check-input").prop("disabled", true);
+            });
+            $("#Savebtnbilling").click(function (event) {
+
+                event.preventDefault();
+
+                var formData = $("#mailinginfo").serialize();
+                console.log(formData);
+                $.ajax({
+                    url: $('#mailinginfo').attr('action'),
+                    type: "POST",
+                    data: formData,
+
+                    success: function (response) {
+                        // Handle success response
+                        console.log(response);
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle error
+                        console.error(xhr.responseText);
+                    }
+                });
+                $("#Address1").prop("disabled", true);
+                $("#Address2").prop("disabled", true);
+                $("#City").prop("disabled", true);
+                $("#State").prop("disabled", true);
+                $("#ZipCode").prop("disabled", true);
+                $("#Phone").prop("disabled", true);
+                $("#Savebtnbilling").prop("disabled", true);
+            });
+            
+                // Select the checkbox by its ID
+            $('.form-check-input').change(function () {
+                let regionIds = $('input[name="Region"]:checked').map(function () {
+                    return $(this).val();
+                }).get().join(',');
+                $('#regionids').val(regionIds);
+                console.log(regionIds);
+            });
+            
+
         });
 
 

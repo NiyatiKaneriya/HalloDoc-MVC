@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static HalloDoc_DAL.ViewModels.AdminViewModels.AdminProfileModel;
 
 namespace HalloDoc_BAL.AdminRepository
 {
@@ -51,15 +52,14 @@ namespace HalloDoc_BAL.AdminRepository
                                            status = (int)r.Status,
                                            zipcode = r.Zip
                                        }).FirstOrDefault();
-            List<Region> regions = new List<Region>();
+            List<Regions> regions = new List<Regions>();
 
-            regions =  _context.AdminRegions
+            regions = _context.AdminRegions
                   .Where(r => r.AdminId == query.AdminId)
-                  .Select(req => new Region()
+                  .Select(req => new Regions()
                   {
-                      RegionId = req.RegionId
-                  })
-                  .ToList();
+                      Regionid = req.RegionId
+                  }).ToList();
 
             query.Regionids = regions ;
             return query;
@@ -93,6 +93,33 @@ namespace HalloDoc_BAL.AdminRepository
             admin.Mobile = model.PhoneNumber;
             _context.Admins.Update(admin);
             _context.SaveChanges();
+            List<int> list = model.Regionsid.Split(',').Select(int.Parse).ToList();
+            List<int> adminsoldregion = new List<int>();
+            adminsoldregion = _context.AdminRegions.Where(r => r.AdminId == admin.AdminId).Select(e => e.RegionId).ToList(); 
+            foreach (var value in adminsoldregion)
+            {
+                if (!list.Contains(value))
+                {
+                    var AdminRegion = _context.AdminRegions.FirstOrDefault(e => e.AdminId == admin.AdminId && e.RegionId == value);
+                       _context.AdminRegions.Remove(AdminRegion);
+                       _context.SaveChangesAsync();
+                    
+                }
+                list.Remove(value);
+            }
+            foreach (var value in list)
+            {
+                AdminRegion ar = new AdminRegion
+                {
+                    AdminId = admin.AdminId,
+                    RegionId = Convert.ToInt32(value),
+                };
+                _context.AdminRegions.Add(ar);
+                _context.SaveChangesAsync();
+
+            }
+
+
             return true;
         }
         public bool EditBillingInfo(AdminProfileModel model, string id)
@@ -106,7 +133,29 @@ namespace HalloDoc_BAL.AdminRepository
             admin.AltPhone = model.altPhone;
             _context.Admins.Update(admin);
             _context.SaveChanges();
+
+            
             return true;
         }
+        //public bool CheckCheckbox(int value, string id)
+        //{
+        //    var admin = _context.Admins.FirstOrDefault(e => e.AspNetUserId == id);
+        //    AdminRegion ar = new AdminRegion
+        //    {
+        //        AdminId = admin.AdminId,
+        //        RegionId = value
+        //    };
+        //    _context.AdminRegions.Add(ar);
+        //    _context.SaveChangesAsync();
+        //    return true;
+        //}
+        //public bool UnCheckCheckbox(int value, string id)
+        //{
+        //    var admin = _context.Admins.FirstOrDefault(e => e.AspNetUserId == id);
+        //    var AdminRegion = _context.AdminRegions.FirstOrDefault(e => e.AdminId == admin.AdminId && e.RegionId == value);
+        //    _context.AdminRegions.Remove(AdminRegion);
+        //    _context.SaveChangesAsync();
+        //    return true;
+        //}
     }
 }

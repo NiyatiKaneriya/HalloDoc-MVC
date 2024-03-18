@@ -14,7 +14,9 @@ namespace HalloDoc_BAL.AdminRepository.AdminInterfaces
         public bool ResetPasswordProfile(string id, string Password);
         public bool EditAdminInfo(AdminProfileModel model, string id);
         public bool EditBillingInfo(AdminProfileModel model, string id);
+        //public bool CheckCheckbox(int value, string id);
 
+        //public bool UnCheckCheckbox(int value, string id);
 
     }
 }

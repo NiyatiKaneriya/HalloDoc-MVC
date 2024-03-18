@@ -30,9 +30,9 @@ namespace HalloDoc_MVC.Controllers.AdminController
             _adminProfileRepository.ResetPasswordProfile(CV.AspNetUserID(), password);
             return RedirectToAction("Index");
         }
-        public IActionResult EditAdminInfo(AdminProfileModel model)
+        public IActionResult EditAdminInfo(AdminProfileModel formData)
         {
-            _adminProfileRepository.EditAdminInfo(model, CV.AspNetUserID());
+            _adminProfileRepository.EditAdminInfo(formData, CV.AspNetUserID());
             return RedirectToAction("Index");
         }
         public IActionResult EditBillingInfo(AdminProfileModel model)
@@ -40,5 +40,15 @@ namespace HalloDoc_MVC.Controllers.AdminController
             _adminProfileRepository.EditBillingInfo(model,CV.AspNetUserID());
             return RedirectToAction("Index");
         }
+        //public IActionResult CheckCheckbox(int value)
+        //{
+        //    _adminProfileRepository.CheckCheckbox(value, CV.AspNetUserID());
+        //    return RedirectToAction("Index");
+        //}
+        //public IActionResult UnCheckCheckbox(int value)
+        //{
+        //    _adminProfileRepository.UnCheckCheckbox(value, CV.AspNetUserID());
+        //    return RedirectToAction("Index");
+        //}
     }
 }
