@@ -1,4 +1,5 @@
 ﻿
+using HalloDoc_BAL.AdminRepository.AdminInterfaces;
 using HalloDoc_BAL.Repository.Interfaces;
 using HalloDoc_DAL.DataContext;
 using HalloDoc_DAL.Models;
@@ -15,15 +16,18 @@ namespace HalloDoc_MVC.Controllers
     {
 
         private readonly ICreateRequestsRepository _createRequestsRepository;
+        private readonly IActionRepository _actionRepository;
       
 
-        public RequestByPatientController(ICreateRequestsRepository createRequestsRepository, IWebHostEnvironment webHostEnvironment)
+        public RequestByPatientController(ICreateRequestsRepository createRequestsRepository, IWebHostEnvironment webHostEnvironment,IActionRepository actionRepository)
         {
            
             _createRequestsRepository = createRequestsRepository;
+            _actionRepository = actionRepository;
         }
         public async Task<IActionResult> RequestForMe()
         {
+            ViewBag.RegionCombobox = await _actionRepository.RegionComboBox();
             User user = await _createRequestsRepository.RequestForMe(Convert.ToInt32(CV.UserID()));
             DateTime date1 = DateTime.MinValue;
             if (user.IntDate.HasValue || user.IntYear.HasValue)
@@ -65,9 +69,9 @@ namespace HalloDoc_MVC.Controllers
                 return RedirectToAction("Index", "Dashboard");
             }
         }
-        public IActionResult RequestForSomeone()
+        public async Task<IActionResult> RequestForSomeone()
         {
-            
+            ViewBag.RegionCombobox = await _actionRepository.RegionComboBox();
             return View();
         }
         public async Task<IActionResult> CreateForSomeoneAsync(ViewPatientRequest model)

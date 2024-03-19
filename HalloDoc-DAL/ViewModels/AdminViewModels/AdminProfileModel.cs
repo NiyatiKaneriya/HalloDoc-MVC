@@ -24,7 +24,7 @@ namespace HalloDoc_DAL.ViewModels.AdminViewModels
         [EmailAddress]
         public string Email { get; set; }
         [Required]
-        [RegularExpression(@"^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$", ErrorMessage = "Invalid phone number")]
+         
         public string PhoneNumber { get; set; }
         [Required]
         public string ConfirmedEmail { get; set; }
@@ -37,9 +37,9 @@ namespace HalloDoc_DAL.ViewModels.AdminViewModels
         [Required]
         public string state { get; set; }
         [Required]
-        [RegularExpression(@"^\d{5}(?:[-\s]\d{4})?$", ErrorMessage = "Invalid zip code")]
+         
         public string zipcode { get; set; }
-        [RegularExpression(@"^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$", ErrorMessage = "Invalid phone number")]
+         
         public string altPhone { get; set; }
         [Required]
         public string? RoleId { get; set; }

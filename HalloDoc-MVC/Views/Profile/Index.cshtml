@@ -74,16 +74,25 @@
         </div>
         <div class=" col-md-6 col-sm-12 mb-3">
             <div class="form-floating">
-                <input asp-for="State" type="text" class="form-control" id="State" placeholder="State" readonly>
-                <label for="floatingInput" class="text-muted">State</label><span asp-validation-for="State" class="text-danger small"></span>
+                @* <input asp-for="State" type="text" class="form-control" id="State" placeholder="State" readonly> *@
+                <select class="form-select form-select-sm " data-allow-clear="true" tabindex="-1" id="regionProfile" onchange="captureSelectedRegion()" asp-items="@(new SelectList(ViewBag.RegionComboBox, "RegionId", "RegionName"))" data-control="select" data-placeholder="Region">
+                    <option id="defaultregion" value="">Regions</option>
+                </select>
+                <label for="floatingInput" class="text-muted ">State</label><span asp-validation-for="State" class="text-danger small"></span>
+                
             </div>
         </div>
-        <div class=" col-md-6 col-sm-12 mb-3">
+        <div class=" col-md-5 col-sm-11 mb-3">
             <div class="form-floating">
                 <input asp-for="ZipCode" type="text" class="form-control" id="ZipCode" placeholder="Zip Code" readonly>
                 <label for="floatingInput" class="text-muted">ZipCode</label><span asp-validation-for="ZipCode" class="text-danger small"></span>
             </div>
-        </div>       
+        </div>
+        <div class=" col-1 mb-3">
+            <div class=" btn btn-lg btn-outline-info" id="map">
+                <i class="fa fa-solid fa-map-location-dot"></i>
+            </div>
+        </div>
         <div class="col-12 mb-3 d-flex flex-row-reverse gap-3"> 
             <button class="btn btn-info text-white" id="Editbtn">Edit</button>
             <input type="submit" class="btn btn-info text-white" id="Savebtn" value="Save" disabled>
@@ -106,6 +115,38 @@
             document.getElementById("ZipCode").removeAttribute("readonly");
             document.getElementById("Savebtn").removeAttribute("disabled");
         }) ;
+        document.getElementById("map").addEventListener("click", function (e) {
+            var street = document.getElementById("Street").value;
+            console.log(street)
+            var city = document.getElementById("City").value;
+            console.log(city)
+            var state = document.getElementById("State").value;
+            console.log(state)
+            var zip = document.getElementById("ZipCode").value;
+            console.log(zip)
+
+            var mapurl = "https://www.google.com/maps/search/?api=1&query=";
+
+            if (street != null) {
+                mapurl = mapurl + street.replace(" ", "") + "," + "+";
+            }
+            console.log(mapurl)
+            if (city != null) {
+                mapurl = mapurl + city.replace(" ", "") + "," + "+";
+            }
+            console.log(mapurl)
+            if (state != null) {
+                mapurl = mapurl + state.replace(" ", "") + "," + "+";
+            }
+            console.log(mapurl)
+            if (zip != null) {
+                mapurl = mapurl + zip.replace(" ", "") + "," + "+";
+            }
+
+            window.open(mapurl, '_blank');
+
+            e.preventDefault();
+        })
 
 
 

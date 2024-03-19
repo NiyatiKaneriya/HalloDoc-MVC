@@ -14,28 +14,28 @@ namespace HalloDoc_DAL.ViewModels.AdminViewModels
         [Required]
         public string? PatientL { get; set; }
     
-        public DateOnly? DOB { get; set; }
+        public DateTime DOB { get; set; }
         [Required]
-        [RegularExpression(@"^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$", ErrorMessage = "Invalid phone number")]
+         
         public string Phone { get; set; }
         [Required]
         [EmailAddress]
         public string Email { get; set; }
-        
+        public string confirmationNumber { get; set; }
         public short Status { get; set; }
         [Required]
-        public string Region { get; set; }
-        [Required]
+        public int RegionId { get; set; }
+      
         public string? Notes { get; set; }
         [Required]
         public string? Address { get; set; }
 
-
+        [Required]
         public int RequestTypeId { get; set; }
         public int RequestId { get; set; }
 
         public int RequestClientId { get; set; }
-
+        public AssignCaseModel? viewassigncase { get; set; }
         public int state
         {
             get

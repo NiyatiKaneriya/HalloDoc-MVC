@@ -10,7 +10,7 @@ namespace HalloDoc_DAL.ViewModels.PatientViewModels
         [Required]
         public required string FLastname { get; set; }
         [Required]
-        [RegularExpression(@"^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$", ErrorMessage = "Invalid phone number")]
+         
         public required string FPhoneNumber { get; set; }
         [Required]
         [EmailAddress]
@@ -28,16 +28,17 @@ namespace HalloDoc_DAL.ViewModels.PatientViewModels
         [EmailAddress]
         public required string Email { get; set; }
         [Required]
-        [RegularExpression(@"^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$", ErrorMessage = "Invalid phone number")]
+         
         public required string PhoneNumber { get; set; }
         [Required]
         public required string Street { get; set; }
         [Required]
         public required string City { get; set; }
+    
+        public string? State { get; set; }
+        public int RegionId { get; set; }
         [Required]
-        public required string State { get; set; }
-        [Required]
-        [RegularExpression(@"^\d{5}(?:[-\s]\d{4})?$", ErrorMessage = "Invalid zip code")]
+         
         public required string Zipcode { get; set; }
         
         public string? Room { get; set; }

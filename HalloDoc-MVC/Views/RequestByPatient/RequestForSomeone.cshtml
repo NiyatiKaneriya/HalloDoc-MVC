@@ -83,8 +83,12 @@
         </div>
         <div class=" col-md-6 col-sm-12 mb-3">
             <div class="form-floating">
-                <input asp-for="State" type="text" class="form-control" id="floatingInput" placeholder="State">
-                <label for="floatingInput" class="text-muted">State</label><span asp-validation-for="State" class="text-danger small"></span>
+                @* <input asp-for="State" type="text" class="form-control" id="floatingInput" placeholder="State"> *@
+                <select class="form-select form-select-sm " asp-for="RegionId" data-allow-clear="true" tabindex="-1" id="region" onchange="captureSelectedRegion()" asp-items="@(new SelectList(ViewBag.RegionComboBox, "RegionId", "RegionName"))" data-control="select" data-placeholder="Region">
+                    
+                </select>
+                <label for="floatingInput" class="text-muted ">State</label><span asp-validation-for="RegionId" class="text-danger small"></span>
+                
             </div>
         </div>
         <div class=" col-md-6 col-sm-12 mb-3">

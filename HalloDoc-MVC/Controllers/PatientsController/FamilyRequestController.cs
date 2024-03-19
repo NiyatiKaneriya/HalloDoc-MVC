@@ -1,4 +1,5 @@
-﻿using HalloDoc_BAL.Repository.Interfaces;
+﻿using HalloDoc_BAL.AdminRepository.AdminInterfaces;
+using HalloDoc_BAL.Repository.Interfaces;
 using HalloDoc_DAL.ViewModels.PatientViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,13 +9,16 @@ namespace HalloDoc_MVC.Controllers
     {
 
         private readonly ICreateRequestsRepository _createRequestsRepository;
-        public FamilyRequestController(ICreateRequestsRepository createRequestsRepository)
+        private readonly IActionRepository _actionRepository;
+        public FamilyRequestController(ICreateRequestsRepository createRequestsRepository,IActionRepository actionRepository)
         {
          
             _createRequestsRepository = createRequestsRepository;
+            _actionRepository = actionRepository;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            ViewBag.RegionCombobox = await _actionRepository.RegionComboBox();
             return View();
         }
 

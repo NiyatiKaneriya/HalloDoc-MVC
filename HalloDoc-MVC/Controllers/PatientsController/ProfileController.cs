@@ -1,4 +1,5 @@
-﻿using HalloDoc_BAL.Interfaces;
+﻿using HalloDoc_BAL.AdminRepository.AdminInterfaces;
+using HalloDoc_BAL.Interfaces;
 using HalloDoc_DAL.DataContext;
 using HalloDoc_DAL.Models;
 using HalloDoc_DAL.ViewModels.PatientViewModels;
@@ -14,15 +15,18 @@ namespace HalloDoc_MVC.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IProfileRepository _profileRepository;
+        private readonly IActionRepository _actionRepository;
 
 
-        public ProfileController(ApplicationDbContext context,IProfileRepository profileRepository)
+        public ProfileController(ApplicationDbContext context,IProfileRepository profileRepository,IActionRepository actionRepository)
         {
             _context = context;
             _profileRepository = profileRepository;
+            _actionRepository = actionRepository;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            ViewBag.RegionCombobox = await _actionRepository.RegionComboBox();
             var userId = Convert.ToInt32(CV.UserID()); 
             return View(_profileRepository.GetProfile(userId));
         }

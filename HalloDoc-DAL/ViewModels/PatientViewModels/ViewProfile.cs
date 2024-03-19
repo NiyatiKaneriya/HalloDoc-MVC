@@ -14,7 +14,7 @@ namespace HalloDoc_DAL.ViewModels.PatientViewModels
 
         public DateTime DOB { get; set; }
         [Required]
-        [RegularExpression(@"^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$", ErrorMessage = "Invalid phone number")]
+         
         public string? PhoneNumber { get; set; }
         [Required]
         [EmailAddress]
@@ -25,8 +25,9 @@ namespace HalloDoc_DAL.ViewModels.PatientViewModels
         public required string City { get; set; }
         [Required]
         public required string State { get; set; }
+        public int RegionId { get; set; }
         [Required]
-        [RegularExpression(@"^\d{5}(?:[-\s]\d{4})?$", ErrorMessage = "Invalid zip code")]
+         
         public required string ZipCode { get; set; }
 
 

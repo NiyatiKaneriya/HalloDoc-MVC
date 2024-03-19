@@ -90,7 +90,7 @@ namespace HalloDoc_BAL.AdminRepository
                     statusList.Add(9);
                 }
                 
-                List<ViewDashboradList> mappeddata;
+               
 
                 if (requesttype == 0)
                 {

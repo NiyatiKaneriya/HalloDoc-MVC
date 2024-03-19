@@ -16,6 +16,8 @@
                 <form asp-action="SendAgreement" asp-controller="SendAgreement" method="post">
                     <input type="hidden" id="sendrequestid" name="RequestId" asp-for="Requestid">
                     <input type="text" id="names" asp-for="name" name="name" />
+                    
+                    <div>To send agreement please make sure you are updating the current contact information below for the responsible party</div>
                     <div class="mb-3">
                         <label for="message-text" class="col-form-label">Phone Number</label>
                         <input name="Phone" class="form-control" id="Phone-input">

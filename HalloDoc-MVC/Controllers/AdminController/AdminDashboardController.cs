@@ -41,7 +41,7 @@ namespace HalloDoc_MVC.Controllers.AdminController
             ViewBag.ToCloseCount = await _requestRepository.ToCloseCount();
             ViewBag.UnpaidCount = await _requestRepository.UnpaidCount();
             ViewBag.CaseTagCombobox = await _actionRepository.CaseTagComboBox();
-            ViewBag.RegionCombobox = _actionRepository.RegionComboBox();
+            ViewBag.RegionCombobox = await _actionRepository.RegionComboBox();
             ViewBag.ProfessionComboBox = await _actionRepository.ProfessionComboBox();
             ViewBag.PhysiciansByRegion = new SelectList(Enumerable.Empty<SelectListItem>());
             ViewBag.HealthProfessional = new SelectList(Enumerable.Empty<SelectListItem>());
@@ -57,14 +57,15 @@ namespace HalloDoc_MVC.Controllers.AdminController
         public async Task<IActionResult> ViewCase(int requestclientid)
         {
             ViewCaseModel viewCaseModel = await _actionRepository.GetViewCase(requestclientid);
-
+            ViewBag.RegionCombobox = await _actionRepository.RegionComboBox();
+            ViewBag.PhysiciansByRegion = new SelectList(Enumerable.Empty<SelectListItem>());
             return View("ViewCase", viewCaseModel);
         }
         public async Task<IActionResult> SaveViewCase(ViewCaseModel viewCaseModel)
         {
             await _actionRepository.SaveViewCase(viewCaseModel);
 
-            return View("ViewCase");
+            return RedirectToAction("ViewCase",new { requestclientid = viewCaseModel.RequestClientId } );
         }
         public async Task<IActionResult> ViewNotes(int id)
         {

@@ -21,9 +21,9 @@ namespace HalloDoc_DAL.ViewModels.AdminViewModels
         [EmailAddress]
         public string? Email {  get; set; }
         [Required]
-        [RegularExpression(@"^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$", ErrorMessage = "Invalid phone number")]
+         
         public string? Phone { get; set; }
-        public DateOnly? DOB { get; set; }
+        public DateTime? DOB { get; set; }
         public List<Documents>? DocumentsList { get; set; }
 
         public class Documents

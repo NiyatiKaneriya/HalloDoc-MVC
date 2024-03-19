@@ -67,6 +67,7 @@ namespace HalloDoc_BAL.Repository
         {
             if (model.Password != null)
             {
+                var region = _context.Regions.FirstOrDefault(e => e.RegionId == model.RegionId);
                 var newaspNetUser = new AspNetUser
                 {
                     Id = Guid.NewGuid().ToString(),
@@ -87,6 +88,14 @@ namespace HalloDoc_BAL.Repository
                     LastName = model.LastName,
                     Email = model.Email,
                     Mobile = model.PhoneNumber,
+                    IntDate = model.DOB.Day,
+                    StrMonth = Convert.ToString(model.DOB.Month),
+                    IntYear = model.DOB.Year,
+                    Street = model.Street,
+                    City = model.City,
+                    State = region.Name,
+                    ZipCode = model.Zipcode,
+                    
                     CreatedBy = newaspNetUser.Id,
                     CreatedDate = DateTime.Now,
                 };
@@ -104,14 +113,15 @@ namespace HalloDoc_BAL.Repository
                     Email = model.Email,
                     Status = 1,
                     CreatedDate = DateTime.Now,
+                    
                     IsUrgentEmailSent = new BitArray(1),
-                    ConfirmationNumber = GetConfirmationNumber(model.State, model.LastName, model.FirstName),
+                    ConfirmationNumber = GetConfirmationNumber(region.Name, model.LastName, model.FirstName),
 
                 };
 
                 _context.Requests.Add(request);
                 _context.SaveChanges();
-
+                
                 var requestClient = new RequestClient
                 {
                     RequestId = request.RequestId,
@@ -119,6 +129,12 @@ namespace HalloDoc_BAL.Repository
                     LastName = model.LastName,
                     PhoneNumber = model.PhoneNumber,
                     Email = model.Email,
+                    IntDate = model.DOB.Day,
+                    StrMonth = Convert.ToString(model.DOB.Month),
+                    IntYear = model.DOB.Year,
+                    RegionId = region.RegionId,
+                    Street = model.Street, City = model.City, State = region.Name, ZipCode = model.Zipcode,
+                    Address = model.Street + "," + model.City + "," + region.Name + "," + model.Zipcode,
                     Notes = model.symptoms
 
                 };
@@ -163,11 +179,9 @@ namespace HalloDoc_BAL.Repository
             }
             else if (model.Password == null)
             {
-                var IsBlocked =  _context.BlockRequests.Where(e => e.Email == model.Email);
-                if(IsBlocked != null)
-                {
+                
                     var user = await _context.Users.FirstOrDefaultAsync(m => m.Email == model.Email);
-
+                    var region = _context.Regions.FirstOrDefault(e => e.RegionId == model.RegionId);
                     var request = new Request
                     {
                         RequestTypeId = 1,
@@ -179,7 +193,7 @@ namespace HalloDoc_BAL.Repository
                         Status = 1,
                         CreatedDate = DateTime.Now,
                         IsUrgentEmailSent = new BitArray(1),
-                        ConfirmationNumber = GetConfirmationNumber(model.State, model.LastName, model.FirstName),
+                        ConfirmationNumber = GetConfirmationNumber(region.Name, model.LastName, model.FirstName),
 
                     };
 
@@ -192,6 +206,15 @@ namespace HalloDoc_BAL.Repository
                         FirstName = model.FirstName,
                         LastName = model.LastName,
                         PhoneNumber = model.PhoneNumber,
+                        IntDate = model.DOB.Day,
+                        StrMonth = Convert.ToString(model.DOB.Month),
+                        IntYear = model.DOB.Year,
+                        Street = model.Street,
+                        City = model.City,
+                        State = region.Name,
+                        ZipCode = model.Zipcode,
+                        RegionId = region.RegionId,
+                        Address = model.Street + "," + model.City + "," + region.Name + "," + model.Zipcode,
                         Email = model.Email,
                         Notes = model.symptoms,
 
@@ -232,11 +255,7 @@ namespace HalloDoc_BAL.Repository
                         _context.SaveChanges();
 
                     }
-                }
-                else
-                {
-                    return false;
-                }
+                
                 
                 return true;
             }
@@ -250,9 +269,8 @@ namespace HalloDoc_BAL.Repository
 
         public async Task<Boolean> CreateFamilyRequest(ViewFamilyRequest model)
         {
-            var IsBlocked = _context.BlockRequests.Where(e => e.Email == model.Email);
-            if (IsBlocked == null)
-            {
+           
+                var region = _context.Regions.FirstOrDefault(e => e.RegionId == model.RegionId);
                 var request = new Request
                 {
                     RequestTypeId = 2,
@@ -262,7 +280,7 @@ namespace HalloDoc_BAL.Repository
                     Email = model.FEmail,
                     Status = 1,
                     CreatedDate = DateTime.Now,
-                    ConfirmationNumber = GetConfirmationNumber(model.State, model.LastName, model.FirstName),
+                    ConfirmationNumber = GetConfirmationNumber(region.Name, model.LastName, model.FirstName),
                     IsUrgentEmailSent = new BitArray(1),
 
                 };
@@ -276,6 +294,15 @@ namespace HalloDoc_BAL.Repository
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     PhoneNumber = model.PhoneNumber,
+                    IntDate = model.DOB.Day,
+                    StrMonth = Convert.ToString(model.DOB.Month),
+                    IntYear = model.DOB.Year,
+                    Street = model.Street,
+                    City = model.City,
+                    State = region.Name,
+                    ZipCode = model.Zipcode,
+                    RegionId = region.RegionId,
+                    Address = model.Street + "," + model.City + "," + region.Name + "," + model.Zipcode,
                     Email = model.Email,
                     Notes = model.symptoms,
 
@@ -317,27 +344,22 @@ namespace HalloDoc_BAL.Repository
 
                 return true;
 
-            }
-            else
-            {
-                return false;
-            }
+           
            
         }
         public async Task<Boolean> CreateConciergeRequest(ViewConciergeRequest model)
         {
-            var IsBlocked = _context.BlockRequests.Where(e => e.Email == model.Email);
-            if (IsBlocked == null)
-            {
+         
+                var region = _context.Regions.FirstOrDefault(e => e.RegionId == model.RegionId);
                 var concierge = new Concierge
                 {
                     ConciergeName = model.FullName,
-                    Street = "abc",
-                    City = "abc",
-                    State = "abc",
-                    ZipCode = "abc",
+                    Street = model.Street,
+                    City = model.City,
+                    State = region.Name,
+                    ZipCode = model.Zipcode,
                     CreatedDate = DateTime.Now,
-                    RegionId = 1,
+                    RegionId = region.RegionId,
 
                 };
                 _context.Concierges.Add(concierge);
@@ -352,7 +374,7 @@ namespace HalloDoc_BAL.Repository
                     Email = model.CEmail,
                     Status = 1,
                     CreatedDate = DateTime.Now,
-                    ConfirmationNumber = GetConfirmationNumber(model.State, model.LastName, model.FirstName),
+                    ConfirmationNumber = GetConfirmationNumber(region.Name, model.LastName, model.FirstName),
                     IsUrgentEmailSent = new BitArray(1),
 
                 };
@@ -375,6 +397,15 @@ namespace HalloDoc_BAL.Repository
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     PhoneNumber = model.PhoneNumber,
+                    IntDate = model.DOB.Day,
+                    StrMonth = Convert.ToString(model.DOB.Month),
+                    IntYear = model.DOB.Year,
+                    Street = model.Street,
+                    City = model.City,
+                    State =region.Name,
+                    ZipCode = model.Zipcode,
+                    RegionId= region.RegionId,
+                    Address = model.Street + "," + model.City + "," + region.Name + "," + model.Zipcode,
                     Email = model.Email,
                     Notes = model.symptoms,
 
@@ -383,15 +414,13 @@ namespace HalloDoc_BAL.Repository
                 _context.SaveChanges();
 
                 return true;
-            }
-            else { return false; }
+            
         }
 
         public async Task<Boolean> CreateBusinessPartnerRequest(ViewBusinessPartnerRequest model)
         {
-            var IsBlocked = _context.BlockRequests.Where(e => e.Email == model.Email);
-            if (IsBlocked == null)
-            {
+            
+                var region = _context.Regions.FirstOrDefault(e => e.RegionId == model.RegionId);
                 var business = new Business
                 {
                     Name = model.FullName,
@@ -410,7 +439,7 @@ namespace HalloDoc_BAL.Repository
                     Email = model.Email,
                     Status = 1,
                     CreatedDate = DateTime.Now,
-                    ConfirmationNumber = GetConfirmationNumber(model.State, model.LastName, model.FirstName),
+                    ConfirmationNumber = GetConfirmationNumber(region.Name, model.LastName, model.FirstName),
                     IsUrgentEmailSent = new BitArray(1),
 
                 };
@@ -433,6 +462,15 @@ namespace HalloDoc_BAL.Repository
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     PhoneNumber = model.PhoneNumber,
+                    IntDate = model.DOB.Day,
+                    StrMonth = Convert.ToString(model.DOB.Month),
+                    IntYear = model.DOB.Year,
+                    Street = model.Street,
+                    City = model.City,
+                    State = region.Name,
+                    ZipCode = model.Zipcode,
+                    Address = model.Street + "," + model.City + "," + region.Name + "," + model.Zipcode,
+                    RegionId = region.RegionId,
                     Email = model.Email,
                     Notes = model.symptoms,
 
@@ -441,88 +479,93 @@ namespace HalloDoc_BAL.Repository
                 _context.SaveChanges();
 
                 return true;
-            }
-            else { return false; }
+           
         }
 
-        public async Task<Boolean> CreateForSomeone(ViewPatientRequest model , string UserName)
+        public async Task<Boolean> CreateForSomeone(ViewPatientRequest model, string UserName)
         {
-            var IsBlocked = _context.BlockRequests.Where(e => e.Email == model.Email);
-            if (IsBlocked == null)
+
+            var user = await _context.Users.FirstOrDefaultAsync(m => m.Email == UserName);
+            var region = _context.Regions.FirstOrDefault(e => e.RegionId == model.RegionId);
+            var request = new Request
             {
-                var user = await _context.Users.FirstOrDefaultAsync(m => m.Email == UserName);
+                RequestTypeId = 2,
+                UserId = user.UserId,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = model.PhoneNumber,
+                Email = user.Email,
+                Status = 1,
+                CreatedDate = DateTime.Now,
+                ConfirmationNumber = GetConfirmationNumber(model.State, model.LastName, model.FirstName),
+                IsUrgentEmailSent = new BitArray(1),
 
-                var request = new Request
+            };
+
+            _context.Requests.Add(request);
+            _context.SaveChanges();
+
+            var requestClient = new RequestClient
+            {
+                RequestId = request.RequestId,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                PhoneNumber = model.PhoneNumber,
+                Email = model.Email,
+                IntDate = model.DOB.Day,
+                StrMonth = Convert.ToString(model.DOB.Month),
+                IntYear = model.DOB.Year,
+                Street = model.Street,
+                City = model.City,
+                State = region.Name,
+                ZipCode = model.Zipcode,
+                Address = model.Street + "," + model.City + "," + region.Name + "," + model.Zipcode,
+                RegionId = region.RegionId,
+                Notes = model.symptoms,
+
+            };
+            _context.RequestClients.Add(requestClient);
+            _context.SaveChanges();
+
+            if (model.UploadFile != null)
+            {
+
+
+                string FilePath = "wwwroot\\UploadedFiles\\" + request.RequestId;
+                string path = Path.Combine(Directory.GetCurrentDirectory(), FilePath);
+
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+
+                string newfilename = $"{Path.GetFileNameWithoutExtension(model.UploadFile.FileName)}-{DateTime.Now.ToString("yyyyMMddhhmmss")}.{Path.GetExtension(model.UploadFile.FileName).Trim('.')}";
+
+                string fileNameWithPath = Path.Combine(path, newfilename);
+                model.UploadImage = FilePath.Replace("wwwroot\\UploadedFiles\\", "/UploadedFiles/") + "/" + newfilename;
+
+
+                using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
                 {
-                    RequestTypeId = 1,
-                    UserId = user.UserId,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    PhoneNumber = model.PhoneNumber,
-                    Email = user.Email,
-                    Status = 1,
-                    CreatedDate = DateTime.Now,
-                    ConfirmationNumber = GetConfirmationNumber(model.State, model.LastName, model.FirstName),
-                    IsUrgentEmailSent = new BitArray(1),
-
-                };
-
-                _context.Requests.Add(request);
-                _context.SaveChanges();
-
-                var requestClient = new RequestClient
-                {
-                    RequestId = request.RequestId,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    PhoneNumber = model.PhoneNumber,
-                    Email = model.Email,
-                    Notes = model.symptoms,
-
-                };
-                _context.RequestClients.Add(requestClient);
-                _context.SaveChanges();
-
-                if (model.UploadFile != null)
-                {
-
-
-                    string FilePath = "wwwroot\\UploadedFiles\\" + request.RequestId;
-                    string path = Path.Combine(Directory.GetCurrentDirectory(), FilePath);
-
-                    if (!Directory.Exists(path))
-                        Directory.CreateDirectory(path);
-
-                    string newfilename = $"{Path.GetFileNameWithoutExtension(model.UploadFile.FileName)}-{DateTime.Now.ToString("yyyyMMddhhmmss")}.{Path.GetExtension(model.UploadFile.FileName).Trim('.')}";
-
-                    string fileNameWithPath = Path.Combine(path, newfilename);
-                    model.UploadImage = FilePath.Replace("wwwroot\\UploadedFiles\\", "/UploadedFiles/") + "/" + newfilename;
-
-
-                    using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
-                    {
-                        model.UploadFile.CopyTo(stream);
-                    }
-
-                    var requestwisefile = new RequestWiseFile
-                    {
-                        RequestId = request.RequestId,
-                        FileName = model.UploadImage,
-                        CreatedDate = DateTime.Now,
-                    };
-                    _context.RequestWiseFiles.Add(requestwisefile);
-                    _context.SaveChanges();
-
+                    model.UploadFile.CopyTo(stream);
                 }
 
-                return true;
-            }else {  return false; }
+                var requestwisefile = new RequestWiseFile
+                {
+                    RequestId = request.RequestId,
+                    FileName = model.UploadImage,
+                    CreatedDate = DateTime.Now,
+                };
+                _context.RequestWiseFiles.Add(requestwisefile);
+                _context.SaveChanges();
+
+            }
+
+            return true;
         }
 
         public async Task<Boolean> CreateForMe(ViewPatientRequest model , string UserName)
         {
             var user = await _context.Users.FirstOrDefaultAsync(m => m.Email == UserName);
-
+            var region = _context.Regions.FirstOrDefault(e => e.RegionId == model.RegionId);
 
             var request = new Request
             {
@@ -535,7 +578,7 @@ namespace HalloDoc_BAL.Repository
                 RelationName = model.Relation,
                 Status = 1,
                 CreatedDate = DateTime.Now,
-                ConfirmationNumber = GetConfirmationNumber(model.State, model.LastName, model.FirstName),
+                ConfirmationNumber = GetConfirmationNumber(region.Name, model.LastName, model.FirstName),
                 IsUrgentEmailSent = new BitArray(1),
 
             };
@@ -550,6 +593,15 @@ namespace HalloDoc_BAL.Repository
                 LastName = user.LastName,
                 PhoneNumber = model.PhoneNumber,
                 Email = model.Email,
+                IntDate = model.DOB.Day,
+                StrMonth = Convert.ToString(model.DOB.Month),
+                IntYear = model.DOB.Year,
+                Street = model.Street,
+                City = model.City,
+                State = region.Name,
+                ZipCode = model.Zipcode,
+                Address = model.Street + "," + model.City + "," + region.Name + "," + model.Zipcode,
+                RegionId = region.RegionId,
                 Notes = model.symptoms,
 
             };

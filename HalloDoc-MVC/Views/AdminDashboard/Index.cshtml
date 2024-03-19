@@ -142,14 +142,42 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-      
-            var state = "1"; // Variable to store the selected state
+
+       /*  var state = 1; */// Variable to store the selected state
+        var state = localStorage.getItem("state");
+        if (state == 1) {
+            $("#new").click();
+            $(".btn-state").removeClass("active");
+            $("#new").addClass("active");
+        } else if (state == 2) {
+            $("#active").click();
+            $(".btn-state").removeClass("active");
+            $("#active").addClass("active");
+        } else if (state == 3) {
+            $("#pending").click();
+            $(".btn-state").removeClass("active");
+            $("#pending").addClass("active");
+        } else if (state == 4) {
+            $("#conclude").click();
+            $(".btn-state").removeClass("active");
+            $("#conclude").addClass("active");
+        } else if (state == 5) {
+            $("#toclose").click();
+            $(".btn-state").removeClass("active");
+            $("#toclose").addClass("active");
+        } else  {
+            $("#unpaid").click();
+            $(".btn-state").removeClass("active");
+            $("#unpaid").addClass("active");
+        }
             var requesttype = 0;
         $(document).ready(function () {
             // Event handler for state buttons
             filterData(state, requesttype);
             $(".btn-state").click(function () {
                 state = $(this).data("state");
+                $(".btn-state").removeClass("active");
+                $(this).addClass("active");
                 filterData(state, requesttype);
             });
 
@@ -158,6 +186,7 @@
                 var requesttype = $(this).data("requesttype");
                 filterData(state, requesttype);
             });
+            
         });
 
         function filterData(state, requesttype) {
@@ -167,31 +196,21 @@
                 data: { state: state, requesttype: requesttype },
                 success: function (data) {
                     $('#data-table').html(data);
+                    localStorage.setItem("state", state);
                 },
                 error: function (xhr, status, error) {
                     console.error("Error occurred: " + error);
                 }
             });
         }
-   
-        $(document).ready(function () {
-            
-            $(".btn-state").click(function () {
-                
-                $(".btn-state").removeClass("active");
 
-                $(this).addClass("active");
-            });
-        });
-    
         document.addEventListener('click', function (e) {
             if (e.target.tagName === 'BUTTON') {
                 e.target.style.outline = 'none';
-                // Add any other styles you want to remove default decoration
+                
             }
         });
 
-    
         $(document).ready(function () {
             $("#search-input").on("input", function () {
                 var searchText = $(this).val().toLowerCase();
@@ -210,7 +229,6 @@
             });
         }
 
-        
         const cancelmodal = document.getElementById('cancelmodal')
         if (cancelmodal) {
             cancelmodal.addEventListener('show.bs.modal', event => {
@@ -229,11 +247,6 @@
             })
         }
 
-
-
-
-        
-        
     </script>
 
 }

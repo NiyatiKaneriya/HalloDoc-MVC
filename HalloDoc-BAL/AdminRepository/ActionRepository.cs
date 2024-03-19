@@ -26,8 +26,6 @@ namespace HalloDoc_BAL.AdminRepository
         {
             var query = await (from r in _context.Requests
                                join rc in _context.RequestClients on r.RequestId equals rc.RequestId
-                               join re in _context.Regions on rc.RegionId equals re.RegionId into regionGroup
-                               from region in regionGroup.DefaultIfEmpty()
                                where rc.RequestClientId == requestclientid
                                select new ViewCaseModel
                                {
@@ -36,12 +34,13 @@ namespace HalloDoc_BAL.AdminRepository
                                    PatientL = rc.LastName,
                                    Email = r.Email,
                                    Status = r.Status,
-                                   DOB = new DateOnly((int)rc.IntYear, Convert.ToInt32(rc.StrMonth), (int)rc.IntDate),
+                                   DOB = new DateTime((int)rc.IntYear, Convert.ToInt32(rc.StrMonth), (int)rc.IntDate),
                                    Phone = rc.PhoneNumber,
-
+                                   confirmationNumber = r.ConfirmationNumber,
+                                   RequestTypeId = r.RequestTypeId,
                                    Address = rc.Address,
                                    Notes = rc.Notes,
-                                   Region = region.Name
+                                   RegionId = (int)rc.RegionId,
                                }).FirstOrDefaultAsync();
             return query;
 
@@ -54,8 +53,11 @@ namespace HalloDoc_BAL.AdminRepository
             requestclient.FirstName = viewCase.PatientF;
             requestclient.LastName = viewCase.PatientL;
             requestclient.PhoneNumber = viewCase.Phone;
+            requestclient.IntDate = viewCase.DOB.Day;
+            requestclient.StrMonth = Convert.ToString(viewCase.DOB.Month);
+            requestclient.IntYear = viewCase.DOB.Year;
             requestclient.Address = viewCase.Address;
-            //requestclient.Region = viewCase.Region;
+            requestclient.RegionId = viewCase.RegionId;
             _context.RequestClients.Update(requestclient);
             await _context.SaveChangesAsync();
 
@@ -296,14 +298,14 @@ namespace HalloDoc_BAL.AdminRepository
             }).ToListAsync();
 
         }
-        public  List<RegionComboBox> RegionComboBox()
+        public async  Task<List<RegionComboBox>> RegionComboBox()
         {
-            return  _context.Regions.Select(req => new RegionComboBox()
+            return await  _context.Regions.Select(req => new RegionComboBox()
             {
                 RegionId = req.RegionId,
                 RegionName = req.Name,
                 RegionAbbr = req.Abbreviation,
-            }).ToList();
+            }).ToListAsync();
         }
         public List<Physician> GetPhysicianByRegion(int RegionId)
         {
