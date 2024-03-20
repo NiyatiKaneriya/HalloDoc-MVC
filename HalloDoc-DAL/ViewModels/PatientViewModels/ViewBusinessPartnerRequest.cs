@@ -25,7 +25,7 @@ namespace HalloDoc_DAL.ViewModels.PatientViewModels
         [Required]
         public required string LastName { get; set; }
 
-        public DateOnly DOB { get; set; }
+        public DateTime DOB { get; set; }
         [Required]
         [EmailAddress]
         public required string Email { get; set; }

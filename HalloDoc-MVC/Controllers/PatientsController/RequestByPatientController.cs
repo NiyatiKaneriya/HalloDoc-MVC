@@ -27,7 +27,7 @@ namespace HalloDoc_MVC.Controllers
         }
         public async Task<IActionResult> RequestForMe()
         {
-            ViewBag.RegionCombobox = await _actionRepository.RegionComboBox();
+            ViewBag.RegionCombobox =  _actionRepository.RegionComboBox();
             User user = await _createRequestsRepository.RequestForMe(Convert.ToInt32(CV.UserID()));
             DateTime date1 = DateTime.MinValue;
             if (user.IntDate.HasValue || user.IntYear.HasValue)
@@ -71,7 +71,7 @@ namespace HalloDoc_MVC.Controllers
         }
         public async Task<IActionResult> RequestForSomeone()
         {
-            ViewBag.RegionCombobox = await _actionRepository.RegionComboBox();
+            ViewBag.RegionCombobox =  _actionRepository.RegionComboBox();
             return View();
         }
         public async Task<IActionResult> CreateForSomeoneAsync(ViewPatientRequest model)

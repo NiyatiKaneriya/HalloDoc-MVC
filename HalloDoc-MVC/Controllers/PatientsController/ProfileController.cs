@@ -26,7 +26,7 @@ namespace HalloDoc_MVC.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            ViewBag.RegionCombobox = await _actionRepository.RegionComboBox();
+            ViewBag.RegionCombobox =  _actionRepository.RegionComboBox();
             var userId = Convert.ToInt32(CV.UserID()); 
             return View(_profileRepository.GetProfile(userId));
         }

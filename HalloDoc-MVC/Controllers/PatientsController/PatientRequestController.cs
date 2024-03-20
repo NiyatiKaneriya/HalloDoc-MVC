@@ -23,7 +23,7 @@ namespace HalloDoc_MVC.Controllers
 
         public async Task<IActionResult> Index()
         {
-            ViewBag.RegionCombobox = await _actionRepository.RegionComboBox();
+            ViewBag.RegionCombobox =  _actionRepository.RegionComboBox();
             return View();
         }
 

@@ -80,7 +80,7 @@
         <div class=" col-md-6 col-sm-12 mb-3">
             <div class="form-floating">
                 @* <input asp-for="State" type="text" class="form-control" id="floatingInput" placeholder="State" readonly> *@
-                <select class="form-select form-select-sm " asp-for="RegionId" data-allow-clear="true" tabindex="-1" id="regionme" onchange="captureSelectedRegion()" asp-items="@(new SelectList(ViewBag.RegionComboBox, "RegionId", "RegionName"))" data-control="select" data-placeholder="Region">
+                <select class="form-select form-select-sm " asp-for="RegionId" disabled data-allow-clear="true" tabindex="-1" id="regionme" onchange="captureSelectedRegion()" asp-items="@(new SelectList(ViewBag.RegionComboBox, "RegionId", "RegionName"))" data-control="select" data-placeholder="Region">
                     <option id="defaultregion" value="">Regions</option>
                 </select>
                 <label for="floatingInput" class="text-muted ">State</label><span asp-validation-for="RegionId" class="text-danger small"></span>

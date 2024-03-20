@@ -24,7 +24,6 @@ namespace HalloDoc_DAL.ViewModels.AdminViewModels
         [EmailAddress]
         public string Email { get; set; }
         [Required]
-         
         public string PhoneNumber { get; set; }
         [Required]
         public string ConfirmedEmail { get; set; }
@@ -37,7 +36,6 @@ namespace HalloDoc_DAL.ViewModels.AdminViewModels
         [Required]
         public string state { get; set; }
         [Required]
-         
         public string zipcode { get; set; }
          
         public string altPhone { get; set; }

@@ -22,7 +22,7 @@ namespace HalloDoc_DAL.ViewModels.AdminViewModels
         public string? PhysicianL { get; set; }
         public string Physician => $"{PhysicianF} {PhysicianL}";
 
-        public DateOnly? DOB { get; set; }
+        public DateTime? DOB { get; set; }
 
         public string Phone { get; set; }
 

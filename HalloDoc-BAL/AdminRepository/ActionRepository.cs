@@ -298,14 +298,14 @@ namespace HalloDoc_BAL.AdminRepository
             }).ToListAsync();
 
         }
-        public async  Task<List<RegionComboBox>> RegionComboBox()
+        public   List<RegionComboBox> RegionComboBox()
         {
-            return await  _context.Regions.Select(req => new RegionComboBox()
+            return   _context.Regions.Select(req => new RegionComboBox()
             {
                 RegionId = req.RegionId,
                 RegionName = req.Name,
                 RegionAbbr = req.Abbreviation,
-            }).ToListAsync();
+            }).ToList();
         }
         public List<Physician> GetPhysicianByRegion(int RegionId)
         {
