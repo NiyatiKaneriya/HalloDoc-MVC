@@ -16,6 +16,7 @@
                     <th class="d-none">RequestId</th>
                     <th class="d-none">RequestClientId</th>
                     <th class="d-none">requesttypeid</th>
+                    <th class="d-none">regionid</th>
                     <th>Name</th>
                     <th class="mx-3"></th>
                     @if (Model[0].state == 1 || Model[0].state == 2 || Model[0].state == 3 || Model[0].state == 4 || Model[0].state == 5)
@@ -59,11 +60,13 @@
                         <td class="d-none"></td>
                         <td class="d-none">@item.RequestClientId</td>
                         <td class="d-none">@item.RequestTypeId</td>
+                        <td class="d-none "><input class="regionId" value="@item.RegionId" /></td>
                         <td id="PatientName" class="p-2">@item.Patient</td>
                         <td class="mx-3"> <a href="mailto:@item.Email?subject=Comments" class="text-white"><i class="fa-regular fa-envelope"></i></a> </td>
                         @if (item.state == 1 || item.state == 2 || item.state == 3 || item.state == 4 || item.state == 5)
                         {
-                            <td>@item.DOB </td>
+                            
+                            <td>  @item.DateOfBirth</td>
                         }
                         @if (item.state == 1 || item.state == 2 || item.state == 3)
                         {
@@ -174,6 +177,20 @@
             </tbody>
             
         </table>
-        
+        @if (ViewBag.TotalPages > 1)
+        {
+            <!-- Pagination controls -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        <li class="page-item @(ViewBag.CurrentPage == i ? "active" : "")">
+                            <a class="page-link" href="#" onclick="filterData(@ViewBag.State, @ViewBag.RequestType, @i)">@i</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        }
+       
     }
 </div>

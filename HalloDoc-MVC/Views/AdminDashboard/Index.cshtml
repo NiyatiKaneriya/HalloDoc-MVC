@@ -45,11 +45,14 @@
     
     <div class="mt-4 d-flex flex-row justify-content-between">
 
-        <div>
+        <div class=" d-flex flex-row justify-content-center align-items-baseline">
             <h4>Patients  </h4>
+            <div>
+                <span class="fw-bold h6 mx-2" id="dataState"> </span>
+            </div>
         </div>
         <div>
-            <div class="btn btn-info text-white" >
+            <div class="btn btn-info text-white" data-bs-toggle="modal" data-bs-target="#sendlink">
                 <i class="fa-regular fa-share-from-square"></i>
                 <span class="top-btn p-2">
                     send link
@@ -95,8 +98,8 @@
             <div class="col-sm-6">
                 <div class="">
                     
-                    <select class="form-select form-select-sm p-2 mt-3 mb-3 w-100" data-allow-clear="true" tabindex="-1" id="regionDashboard" onchange="captureSelectedRegion()" asp-items="@(new SelectList(ViewBag.RegionComboBox, "RegionId", "RegionName"))" data-control="select" data-placeholder="Region">
-                        <option id="defaultregion" value="">Regions</option>
+                    <select class="form-select form-select-sm p-2 mt-3 mb-3 w-100" data-allow-clear="true" tabindex="-1" id="regionDashboard"  asp-items="@(new SelectList(ViewBag.RegionComboBox, "RegionId", "RegionName"))"  data-control="select" data-placeholder="Region">
+                        <option id="defaultregion" value="0">Regions</option>
                     </select> 
                 </div>
             </div>
@@ -136,6 +139,7 @@
     <partial name="_ClearCase"/>
     <partial name="_SendAgreement"/>
     <partial name="_EncounterPOPUP"/>
+    <partial name="_SendLink" />
 
 </section>
 @section scripts{
@@ -145,55 +149,86 @@
 
        /*  var state = 1; */// Variable to store the selected state
         var state = localStorage.getItem("state");
+        //var dataState = document.getElementById("datastate");
         if (state == 1) {
             $("#new").click();
             $(".btn-state").removeClass("active");
             $("#new").addClass("active");
+            $("#dataState").html("(NEW)");
+            //dataState.innerHTML = "NEW"
         } else if (state == 2) {
             $("#active").click();
             $(".btn-state").removeClass("active");
             $("#active").addClass("active");
+            $("#dataState").html("(ACTIVE)");
+            //dataState.innerHTML = "ACTIVE"
         } else if (state == 3) {
             $("#pending").click();
             $(".btn-state").removeClass("active");
             $("#pending").addClass("active");
+            $("#dataState").html("(PENDING)");
+            //dataState.innerHTML = "PENDING"
         } else if (state == 4) {
             $("#conclude").click();
             $(".btn-state").removeClass("active");
             $("#conclude").addClass("active");
+            $("#dataState").html("(CONCLUDE)");
+            //dataState.innerHTML = "CONCLUDE"
         } else if (state == 5) {
             $("#toclose").click();
             $(".btn-state").removeClass("active");
             $("#toclose").addClass("active");
+            $("#dataState").html("TOCLOSE");
+            //dataState.innerHTML = "TOCLOSE"
         } else  {
             $("#unpaid").click();
             $(".btn-state").removeClass("active");
             $("#unpaid").addClass("active");
+            $("#dataState").html("(UNPAID)");
+            //dataState.innerHTML = "UNPAID"
         }
             var requesttype = 0;
         $(document).ready(function () {
             // Event handler for state buttons
-            filterData(state, requesttype);
+            filterData(state, requesttype,1);
             $(".btn-state").click(function () {
                 state = $(this).data("state");
                 $(".btn-state").removeClass("active");
                 $(this).addClass("active");
-                filterData(state, requesttype);
+                if (state == 1) {
+                    $("#dataState").html("(NEW)");
+                } else if (state == 2) {
+                    $("#dataState").html("(ACTIVE)");
+                    //dataState.innerHTML = "ACTIVE"
+                } else if (state == 3) {
+                    $("#dataState").html("(PENDING)");
+                    //dataState.innerHTML = "PENDING"
+                } else if (state == 4) {
+                    $("#dataState").html("(CONCLUDE)");
+                    //dataState.innerHTML = "CONCLUDE"
+                } else if (state == 5) {
+                    $("#dataState").html("(TOCLOSE)");
+                    //dataState.innerHTML = "TOCLOSE"
+                } else {
+                    $("#dataState").html("(UNPAID)");
+                    //dataState.innerHTML = "UNPAID"
+                }
+                filterData(state, requesttype,1);
             });
 
             // Event handler for request type buttons
             $(".request-type-btn").click(function () {
                 var requesttype = $(this).data("requesttype");
-                filterData(state, requesttype);
+                filterData(state, requesttype,1);
             });
             
         });
 
-        function filterData(state, requesttype) {
+        function filterData(state, requesttype,page) {
             $.ajax({
                 url: '/AdminDashboard/GetRequestTable',
                 type: 'GET',
-                data: { state: state, requesttype: requesttype },
+                data: { state: state, requesttype: requesttype, page: page },
                 success: function (data) {
                     $('#data-table').html(data);
                     localStorage.setItem("state", state);
@@ -229,6 +264,29 @@
             });
         }
 
+        $(document).ready(function () {
+            $("#regionDashboard").change(function () {
+                var selectregion = $(this).val();
+                filterByregion(selectregion);
+            })
+        })
+        function filterByregion(selectregion) {
+            var rows = $("#data-table tbody tr");
+
+            if (selectregion>0) {
+                rows.each(function () {
+                    // Check if the region of the row matches the selected region
+                    if ($(this).find(".regionId").val() == selectregion) {
+                        $(this).show(); // Show the row if it matches the selected region
+                    } else {
+                        $(this).hide(); // Otherwise, hide the row
+                    }
+                });
+            } else {
+                // If no region is selected, show all rows
+                rows.show();
+            }
+        }
         const cancelmodal = document.getElementById('cancelmodal')
         if (cancelmodal) {
             cancelmodal.addEventListener('show.bs.modal', event => {

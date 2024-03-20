@@ -1,0 +1,45 @@
+﻿@* 
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model HalloDoc_DAL.ViewModels.PatientViewModels.SendEmailModel
+
+<div class="modal fade" id="sendlink" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-info">
+                <h1 class="modal-title text-light  fs-5" id="exampleModalLabel">Send Agreement</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form asp-action="SendLink" asp-controller="SendAgreement" method="post">
+                        <div class="mb-3">
+                        <label for="Firstname" class="col-form-label">FirstName</label>
+                        <input name="Firstname" class="form-control">
+                        
+                    </div>
+                    <div class="mb-3">
+                        <label for="Lastname" class="col-form-label">LastName</label>
+                        <input name="Lastname"  class="form-control" >
+                        
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Phone Number</label>
+                        <input name="Phone"  class="form-control" id="Phone-input">
+                        
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Email</label>
+                        <input name="Email" asp-for="Email" class="form-control" id="email-input">
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+
+                    <input type="submit" class="btn btn-info text-light" value="send" id="submit-email-btn">
+                    <button type="button" class="btn btn-outline-info" data-bs-dismiss="modal">Cancel</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div> 

@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Drawing.Printing;
 using HalloDoc_MVC.Models.CV;
 using Rotativa.AspNetCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace HalloDoc_MVC.Controllers.AdminController
 {
@@ -45,15 +46,23 @@ namespace HalloDoc_MVC.Controllers.AdminController
             ViewBag.ProfessionComboBox = await _actionRepository.ProfessionComboBox();
             ViewBag.PhysiciansByRegion = new SelectList(Enumerable.Empty<SelectListItem>());
             ViewBag.HealthProfessional = new SelectList(Enumerable.Empty<SelectListItem>());
+          
             return View();
         }
       
-        public async Task<IActionResult> GetRequestTable(int state, int requesttype)
+        public async Task<IActionResult> GetRequestTable(int state, int requesttype, int page = 1, int pageSize = 10)
         {
-             List<ViewDashboradList> requestTableData = await _requestRepository.RequestTable(state, requesttype);
-            
+            int totalCount =  _requestRepository.TotalCount(state,requesttype);
+            int totalpages = (int)Math.Ceiling(totalCount/(double)pageSize);
+
+            List<ViewDashboradList> requestTableData = await _requestRepository.RequestTable(state, requesttype, page, pageSize);
+            ViewBag.TotalPages = totalpages;
+            ViewBag.CurrentPage = page;
+            ViewBag.State = state;
+            ViewBag.RequestType = requesttype;
             return PartialView("_DashboardTable", requestTableData);
         }
+        
         public async Task<IActionResult> ViewCase(int requestclientid)
         {
             ViewCaseModel viewCaseModel = await _actionRepository.GetViewCase(requestclientid);

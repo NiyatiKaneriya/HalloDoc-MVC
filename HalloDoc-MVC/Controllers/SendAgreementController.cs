@@ -62,6 +62,27 @@ namespace HalloDoc_MVC.Controllers
 
             return RedirectToAction("Index","AdminDashboard");
         }
+        public IActionResult SendLink(string email,  SendEmailModel sendEmailModel)
+        {
+            MailMessage message = new MailMessage();
+            message.From = new MailAddress(_emailConfig.From);
+            message.Subject = "Submit the Request";
+            message.To.Add(new MailAddress(email));
+            //message.Body = "Please Accept the Agreement to process your Request.";
+            var Body = "<html><body> Please submit a request in <a href='https://localhost:44312/Home/submit_request_screen'>this</a> </body></html>"; ;
+            message.Body = Body;
+            message.IsBodyHtml = true;
+            using (var smtpClient = new SmtpClient(_emailConfig.SmtpServer))
+            {
+                smtpClient.Port = 587;
+                smtpClient.Credentials = new NetworkCredential(_emailConfig.Username, _emailConfig.Password);
+                smtpClient.EnableSsl = true;
+
+                smtpClient.Send(message);
+            }
+
+            return RedirectToAction("Index", "AdminDashboard");
+        }
         public IActionResult Accept(int RequestId)
         {
             _actionRepository.Accept(RequestId);

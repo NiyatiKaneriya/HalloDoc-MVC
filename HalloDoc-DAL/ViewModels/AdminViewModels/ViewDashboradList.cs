@@ -23,6 +23,7 @@ namespace HalloDoc_DAL.ViewModels.AdminViewModels
         public string Physician => $"{PhysicianF} {PhysicianL}";
 
         public DateTime? DOB { get; set; }
+        public DateOnly? DateOfBirth { get; set; }
 
         public string Phone { get; set; }
 
@@ -78,6 +79,7 @@ namespace HalloDoc_DAL.ViewModels.AdminViewModels
         public int IntYear { get; set; }
         public bool StrMonth { get; set; }
         public int IntDate { get; set; }
+        public int RegionId { get; set; }
     }
 
 }
