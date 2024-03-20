@@ -60,8 +60,12 @@ namespace HalloDoc_MVC.Controllers
             if (ModelState.IsValid)
             {
                 var UserName = CV.UserName();
-                await _createRequestsRepository.CreateForMe(model, UserName);
-                return RedirectToAction("Index","Dashboard");
+                if(await _createRequestsRepository.CreateForMe(model, UserName))
+                {
+                    return RedirectToAction("Index", "Dashboard");
+                }
+                ViewData["error"] = "Can't Process Your Request, Try Again";
+                return RedirectToAction("Index", "Dashboard");
             }
             else
             {
@@ -81,14 +85,18 @@ namespace HalloDoc_MVC.Controllers
             {
 
                 var UserName = CV.UserName();
-                await _createRequestsRepository.CreateForSomeone(model,UserName);
-                return RedirectToAction("Index", "Dashboard");
+                if(await _createRequestsRepository.CreateForSomeone(model, UserName))
+                {
+                    return RedirectToAction("Index", "Dashboard");
+                }
 
+                ViewData["error"] = "Can't Process Your Request, Try Again";
+                return RedirectToAction("Index","Dashboard");
             }            
             else
             {
                 ViewData["error"] = "Can't Process Your Request, Try Again";
-                return View("Index");
+                return RedirectToAction("Index","Dashboard");
             }
         }
     }

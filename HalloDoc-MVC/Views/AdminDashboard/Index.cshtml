@@ -65,13 +65,13 @@
                 </span>
 
             </div>
-            <div class="btn btn-info text-white">
+            <a class="btn btn-info text-white" id="export" onclick="exportToExcel()">
                 <i class="fa-solid fa-arrows-turn-right"></i>
                 <span class="top-btn p-2">
                     export
                 </span>
 
-            </div>
+            </a>
             <div class="btn btn-info text-white">
                 <i class="fa-solid fa-file-export"></i>
                 
@@ -142,11 +142,13 @@
     <partial name="_SendLink" />
 
 </section>
+
 @section scripts{
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
     <script>
-
+        
        /*  var state = 1; */// Variable to store the selected state
         var state = localStorage.getItem("state");
         //var dataState = document.getElementById("datastate");
@@ -186,7 +188,7 @@
             $("#unpaid").addClass("active");
             $("#dataState").html("(UNPAID)");
             //dataState.innerHTML = "UNPAID"
-        }
+        };
             var requesttype = 0;
         $(document).ready(function () {
             // Event handler for state buttons
@@ -237,7 +239,7 @@
                     console.error("Error occurred: " + error);
                 }
             });
-        }
+        };
 
         document.addEventListener('click', function (e) {
             if (e.target.tagName === 'BUTTON') {
@@ -262,14 +264,14 @@
                     $(this).show();
                 }
             });
-        }
+        };
 
         $(document).ready(function () {
             $("#regionDashboard").change(function () {
                 var selectregion = $(this).val();
                 filterByregion(selectregion);
             })
-        })
+        });
         function filterByregion(selectregion) {
             var rows = $("#data-table tbody tr");
 
@@ -286,7 +288,18 @@
                 // If no region is selected, show all rows
                 rows.show();
             }
+        };
+        function exportToExcel() {
+            // Get table element
+            var table = document.getElementById("data-table");
+
+            // Convert table to workbook
+            var wb = XLSX.utils.table_to_book(table);
+
+            // Generate Excel file
+            XLSX.writeFile(wb, "table_data.xlsx");
         }
+
         const cancelmodal = document.getElementById('cancelmodal')
         if (cancelmodal) {
             cancelmodal.addEventListener('show.bs.modal', event => {

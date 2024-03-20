@@ -15,6 +15,10 @@ using System.Drawing.Printing;
 using HalloDoc_MVC.Models.CV;
 using Rotativa.AspNetCore;
 using Microsoft.EntityFrameworkCore;
+using static System.Net.Mime.MediaTypeNames;
+using System.Text;
+using Syncfusion.XlsIO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace HalloDoc_MVC.Controllers.AdminController
 {
@@ -25,12 +29,14 @@ namespace HalloDoc_MVC.Controllers.AdminController
         private readonly IRequestRepository _requestRepository;
         private readonly IActionRepository _actionRepository;
         private readonly SendEmailModel _emailConfig;
-        public AdminDashboardController(IRequestRepository requestRepository, IActionRepository actionRepository,SendEmailModel emailConfig)
+        private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _hostingEnvironment;
+        public AdminDashboardController(IRequestRepository requestRepository, Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnvironment , IActionRepository actionRepository,SendEmailModel emailConfig)
         {
 
             _requestRepository = requestRepository;
             _actionRepository = actionRepository;
             _emailConfig = emailConfig;
+            _hostingEnvironment = hostingEnvironment;
         }
         public async Task<IActionResult> Index()
         {
@@ -49,7 +55,7 @@ namespace HalloDoc_MVC.Controllers.AdminController
           
             return View();
         }
-      
+        
         public async Task<IActionResult> GetRequestTable(int state, int requesttype, int page = 1, int pageSize = 10)
         {
             int totalCount =  _requestRepository.TotalCount(state,requesttype);
@@ -193,6 +199,8 @@ namespace HalloDoc_MVC.Controllers.AdminController
 
             return RedirectToAction("ViewUploads", new { Requestid = RequestId });
         }
+
+        #region Orders
         public async Task<IActionResult> Orders(int? requestid)
         {
             ViewBag.ProfessionComboBox = await _actionRepository.ProfessionComboBox();
@@ -202,6 +210,9 @@ namespace HalloDoc_MVC.Controllers.AdminController
                 ordersModel.RequestId = requestid;
             return View();  
         }
+        #endregion
+
+
         public IActionResult GetHealthProfessional(int Profession)
         {
             var HealthProfessional = _actionRepository.GetHealthProfessional(Profession);

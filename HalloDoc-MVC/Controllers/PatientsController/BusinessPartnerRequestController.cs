@@ -24,7 +24,7 @@ namespace HalloDoc_MVC.Controllers
         public async Task<IActionResult> Create(ViewBusinessPartnerRequest model)
         {
 
-                if (await _createrequestsRepository.CreateBusinessPartnerRequest(model))
+                if (ModelState.IsValid && await _createrequestsRepository.CreateBusinessPartnerRequest(model))
                 {
                     
 
@@ -33,7 +33,7 @@ namespace HalloDoc_MVC.Controllers
                 else
                 {
                     ViewData["error"] = "Can't Process Your Request, Try Again";
-                    return View("Index");
+                    return RedirectToAction("Index");
                 }
             }
 

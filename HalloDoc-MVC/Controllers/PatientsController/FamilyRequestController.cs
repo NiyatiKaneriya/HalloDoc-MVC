@@ -25,15 +25,15 @@ namespace HalloDoc_MVC.Controllers
         public async Task<IActionResult> Create(ViewFamilyRequest model)
         {
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && await _createRequestsRepository.CreateFamilyRequest(model))
             {
-                await _createRequestsRepository.CreateFamilyRequest(model);
+                
                 return RedirectToAction("Index");
             }
             else
             {
                 ViewData["error"] = "Can't Process Your Request, Try Again";
-                return View("Index");
+                return RedirectToAction("Index");
             }
         }
 

@@ -28,8 +28,8 @@ namespace HalloDoc_DAL.ViewModels.PatientViewModels
         public required string Street { get; set; }
         [Required]
         public required string City { get; set; }
-        [Required]
-        public required string State { get; set; }
+        
+        public  string? State { get; set; }
         public int RegionId { get; set; }
         [Required]
          

@@ -52,14 +52,14 @@ namespace HalloDoc_MVC.Controllers
 
         public async Task<IActionResult> createAsync(ViewPatientRequest model)
         {
-            if ( await _createRequestsRepository.CreatePatientRequest(model))
+            if (ModelState.IsValid && await _createRequestsRepository.CreatePatientRequest(model))
             {
-                return RedirectToAction("index");
+                return RedirectToAction("Index");
             }
             else
             {
                 ViewData["error"] = "Can't Process Your Request, Try Again";
-                return View("Index");
+                return RedirectToAction("Index");
             }
 
         }

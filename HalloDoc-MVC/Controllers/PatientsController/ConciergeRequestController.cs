@@ -26,14 +26,15 @@ namespace HalloDoc_MVC.Controllers
         public async Task<IActionResult> Create(ViewConciergeRequest model)
         {
             
-                if (await _createRequestsRepository.CreateConciergeRequest(model))
+                if (ModelState.IsValid && await _createRequestsRepository.CreateConciergeRequest(model))
                 {
+                    
                     return RedirectToAction("Index");
                 }
                 else
                 {
                     ViewData["error"] = "Can't Process Your Request, Try Again";
-                    return View("Index");
+                    return RedirectToAction("Index");
                 }
         }
             

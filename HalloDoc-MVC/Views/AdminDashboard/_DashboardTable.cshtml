@@ -10,7 +10,7 @@
 <div class="w-100 ">
     @if (Model.Count > 0)
     {
-        <table class=" w-100">
+        <table class=" w-100" id="datatablehtml">
             <thead>
                 <tr class="border-bottom p-2">
                     <th class="d-none">RequestId</th>
@@ -174,9 +174,11 @@
                         </td>
                     </tr>
                 }
+                
             </tbody>
             
         </table>
+        <input name="tableHTML" id="tbl" hidden="hidden" />
         @if (ViewBag.TotalPages > 1)
         {
             <!-- Pagination controls -->
