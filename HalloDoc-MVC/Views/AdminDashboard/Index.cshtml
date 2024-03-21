@@ -49,6 +49,7 @@
             <h4>Patients  </h4>
             <div>
                 <span class="fw-bold h6 mx-2" id="dataState"> </span>
+                <input hidden id="DashboardState"/>
             </div>
         </div>
         <div>
@@ -65,16 +66,14 @@
                 </span>
 
             </div>
-            <a class="btn btn-info text-white" id="export" onclick="exportToExcel()">
+            <div class="btn btn-info text-white" id="export" >
                 <i class="fa-solid fa-arrows-turn-right"></i>
                 <span class="top-btn p-2">
                     export
                 </span>
-
-            </a>
-            <div class="btn btn-info text-white">
+            </div>
+            <div class="btn btn-info text-white" id="exportall">
                 <i class="fa-solid fa-file-export"></i>
-                
                 <span class="top-btn p-2">
                     export all
                 </span>
@@ -98,7 +97,7 @@
             <div class="col-sm-6">
                 <div class="">
                     
-                    <select class="form-select form-select-sm p-2 mt-3 mb-3 w-100" data-allow-clear="true" tabindex="-1" id="regionDashboard"  asp-items="@(new SelectList(ViewBag.RegionComboBox, "RegionId", "RegionName"))"  data-control="select" data-placeholder="Region">
+                    <select class="form-select form-select-sm p-2 mt-3 mb-3 w-100" data-allow-clear="true"  tabindex="-1" id="regionDashboard"  asp-items="@(new SelectList(ViewBag.RegionComboBox, "RegionId", "RegionName"))"  data-control="select" data-placeholder="Region">
                         <option id="defaultregion" value="0">Regions</option>
                     </select> 
                 </div>
@@ -107,6 +106,7 @@
 
 
         <div class="col-xl-6 d-flex justify-content-xl-end justify-content-center gap-2 gap-sm-3 gap-xl-4 p-0">
+            <input hidden id="DashboardRequesttype"/>
             <div class="btn btn-transparent d-flex align-items-center justify-content-center flex-column flex-lg-row request-type-btn" data-requesttype="0">
                 <span> All </span>
             </div>
@@ -151,6 +151,7 @@
         
        /*  var state = 1; */// Variable to store the selected state
         var state = localStorage.getItem("state");
+
         //var dataState = document.getElementById("datastate");
         if (state == 1) {
             $("#new").click();
@@ -227,10 +228,12 @@
         });
 
         function filterData(state, requesttype,page) {
+            var searchstring = $("#search-input").val().toLowerCase();
+            var RegionId = $("#regionDashboard").val();
             $.ajax({
                 url: '/AdminDashboard/GetRequestTable',
                 type: 'GET',
-                data: { state: state, requesttype: requesttype, page: page },
+                data: { state: state, requesttype: requesttype, page: page, searchstring: searchstring, RegionId: RegionId },
                 success: function (data) {
                     $('#data-table').html(data);
                     localStorage.setItem("state", state);
@@ -240,6 +243,68 @@
                 }
             });
         };
+        // $("#export").click(function () {
+            
+        //     var state = localStorage.getItem("state");
+        //     var requesttype = 0;
+        //     exportdata(state, requesttype);
+        // });
+
+
+
+        // function exportdata(state, requesttype) {
+        //     var searchstring = $("#search-input").val().toLowerCase();
+        //     var RegionId = $("#regionDashboard").val();
+        //     $.ajax({
+        //         url: '/AdminDashboard/Export',
+        //         type: 'GET',
+        //         data: { state: state, requesttype: requesttype, searchstring: searchstring, RegionId: RegionId },
+        //         success: function (data) {
+        //             $('#data-table').html(data);
+
+        //         },
+        //         error: function (xhr, status, error) {
+        //             console.error("Error occurred: " + error);
+        //         }
+        //     });
+        // };
+        $("#export").click(function () {
+            var state = localStorage.getItem("state");
+            $(".request-type-btn").click(function () {
+                var requesttype = $(this).data("requesttype");
+            });
+            var searchstring = $("#search-input").val().toLowerCase();
+            var RegionId = $("#regionDashboard").val();
+            console.log(state + " " + requesttype + " " + searchstring + " " + RegionId);
+            $.ajax({
+                url: '/AdminDashboard/Export',
+                type: 'GET',
+                data: { state: state, requesttype: requesttype, searchstring: searchstring, RegionId: RegionId },
+                success: function (data) {
+                    // Redirect to the generated file URL
+                    window.location.href = data;
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error occurred: " + error);
+                }
+            });
+        });
+        $("#exportall").click(function () {
+            var state = localStorage.getItem("state");
+            
+            $.ajax({
+                url: '/AdminDashboard/ExportAll',
+                type: 'GET',
+                data: { state: state},
+                success: function (data) {
+                    // Redirect to the generated file URL
+                    window.location.href = data;
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error occurred: " + error);
+                }
+            });
+        });
 
         document.addEventListener('click', function (e) {
             if (e.target.tagName === 'BUTTON') {
@@ -250,55 +315,54 @@
 
         $(document).ready(function () {
             $("#search-input").on("input", function () {
-                var searchText = $(this).val().toLowerCase();
-                filterTable(searchText);
+                filterData(state, requesttype, 1);
             });
         });
 
-        function filterTable(searchText) {
-            $("#data-table tbody tr").each(function () {
-                var rowText = $(this).find("#PatientName").text().toLowerCase();
-                if (rowText.indexOf(searchText) === -1) {
-                    $(this).hide();
-                } else {
-                    $(this).show();
-                }
-            });
-        };
+        // function filterTable(searchText) {
+        //     $("#data-table tbody tr").each(function () {
+        //         var rowText = $(this).find("#PatientName").text().toLowerCase();
+        //         if (rowText.indexOf(searchText) === -1) {
+        //             $(this).hide();
+        //         } else {
+        //             $(this).show();
+        //         }
+        //     });
+        // };
 
         $(document).ready(function () {
             $("#regionDashboard").change(function () {
-                var selectregion = $(this).val();
-                filterByregion(selectregion);
+                filterData(state, requesttype, 1,);
             })
         });
-        function filterByregion(selectregion) {
-            var rows = $("#data-table tbody tr");
+        // function filterByregion(selectregion) {
+        //     var rows = $("#data-table tbody tr");
 
-            if (selectregion>0) {
-                rows.each(function () {
-                    // Check if the region of the row matches the selected region
-                    if ($(this).find(".regionId").val() == selectregion) {
-                        $(this).show(); // Show the row if it matches the selected region
-                    } else {
-                        $(this).hide(); // Otherwise, hide the row
-                    }
-                });
-            } else {
-                // If no region is selected, show all rows
-                rows.show();
-            }
-        };
-        function exportToExcel() {
-            // Get table element
-            var table = document.getElementById("data-table");
+        //     if (selectregion>0) {
+        //         rows.each(function () {
+        //             // Check if the region of the row matches the selected region
+        //             if ($(this).find(".regionId").val() == selectregion) {
+        //                 $(this).show(); // Show the row if it matches the selected region
+        //             } else {
+        //                 $(this).hide(); // Otherwise, hide the row
+        //             }
+        //         });
+        //     } else {
+        //         // If no region is selected, show all rows
+        //         rows.show();
+        //     }
+        // };
+        // function exportToExcel() {
+        //     // Get table element
+        //     var table = document.getElementById("data-table");
 
-            // Convert table to workbook
-            var wb = XLSX.utils.table_to_book(table);
+        //     // Convert table to workbook
+        //     var wb = XLSX.utils.table_to_book(table);
 
-            // Generate Excel file
-            XLSX.writeFile(wb, "table_data.xlsx");
-        }
+        //     // Generate Excel file
+        //     XLSX.writeFile(wb, "table_data.xlsx");
+        // }
+        
 
         const cancelmodal = document.getElementById('cancelmodal')
         if (cancelmodal) {

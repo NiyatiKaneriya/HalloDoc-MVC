@@ -11,9 +11,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static HalloDoc_DAL.ViewModels.AdminViewModels.AdminProfileModel;
 using static HalloDoc_DAL.ViewModels.AdminViewModels.ViewNotesModel;
 
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace HalloDoc_BAL.AdminRepository
 {
@@ -25,7 +27,7 @@ namespace HalloDoc_BAL.AdminRepository
         {
             _context = context;
         }
-
+        #region Count
         public async Task<int> NewCount()
         {
             var query = await _context.Requests.CountAsync(e => e.Status == 1);
@@ -56,8 +58,10 @@ namespace HalloDoc_BAL.AdminRepository
             var query = await _context.Requests.CountAsync(e => e.Status == 9);
             return query;
         }
+        #endregion
 
-        public async Task<List<ViewDashboradList>> RequestTable(int state, int requesttype, int page = 1,int pageSize = 10)
+        #region RequestTable
+        public async Task<List<ViewDashboradList>> RequestTable(int state, int requesttype, string searchstring, int RegionId, int page = 1, int pageSize = 10)
         {
             try
             {
@@ -92,86 +96,52 @@ namespace HalloDoc_BAL.AdminRepository
 
 
                 var query = new List<ViewDashboradList>();
-                if (requesttype == 0)
-                {
+                
                    
-                    query = (from r in _context.Requests
-                             join rc in _context.RequestClients on r.RequestId equals rc.RequestId
-                             join p in _context.Physicians on r.PhysicianId equals p.PhysicianId into physicianGroup
-                             from physician in physicianGroup.DefaultIfEmpty()
-                             join re in _context.Regions on rc.RegionId equals re.RegionId into regionGroup
-                             from region in regionGroup.DefaultIfEmpty()
-                             where statusList.Contains(r.Status)
-                             select new ViewDashboradList
-                             {
-                                 RequestClientId = rc.RequestClientId,
-                                 RequestId = r.RequestId,
-                                 PatientF = rc.FirstName,
-                                 PatientL = rc.LastName,
-                                 Email = r.Email,
-                                 Status = r.Status,
-                                 DOB = new DateTime((int)rc.IntYear, Convert.ToInt32(rc.StrMonth), (int)rc.IntDate),
-                                 DateOfBirth = new DateOnly((int)rc.IntYear, Convert.ToInt32(rc.StrMonth), (int)rc.IntDate),
-                                 RequestTypeId = r.RequestTypeId,
-                                 RequestorF = r.FirstName,
-                                 RequestorL = r.LastName,
-                                 RequestedDate = r.CreatedDate,
-                                 Phone = rc.PhoneNumber,
-                                 PhoneO = r.PhoneNumber,
-                                 PhysicianF = physician.FirstName,
-                                 PhysicianL = physician.LastName,
-                                 Address = rc.Address,
-                                 Notes = rc.Notes,
-                                 Region = region.Name,
-                                 RegionId = region.RegionId,
-                             }).ToList();
+                    query = await (from req in _context.Requests
+                                   join reqClient in _context.RequestClients
+                                   on req.RequestId equals reqClient.RequestId into reqClientGroup
+                                   from rc in reqClientGroup.DefaultIfEmpty()
+                                   join phys in _context.Physicians
+                                   on req.PhysicianId equals phys.PhysicianId into physGroup
+                                   from p in physGroup.DefaultIfEmpty()
+                                   join reg in _context.Regions
+                                   on rc.RegionId equals reg.RegionId into RegGroup
+                                    from rg in RegGroup.DefaultIfEmpty()
+                                     where statusList.Contains(req.Status) && (searchstring == null ||
+                                    rc.FirstName.ToLower().Contains(searchstring) || rc.LastName.ToLower().Contains(searchstring) ) && (RegionId == 0 || rc.RegionId == RegionId)
+                                    && (requesttype == 0 || req.RequestTypeId == requesttype)
+                                    select new ViewDashboradList
+                                    {
+                                        RequestClientId = rc.RequestClientId,
+                                        RequestId = req.RequestId,
+                                        PatientF = rc.FirstName,
+                                        PatientL = rc.LastName,
+                                        Email = req.Email,
+                                        Status = req.Status,
+                                        DOB = new DateTime((int)rc.IntYear, Convert.ToInt32(rc.StrMonth), (int)rc.IntDate),
+                                        DateOfBirth = new DateOnly((int)rc.IntYear, Convert.ToInt32(rc.StrMonth), (int)rc.IntDate),
+                                        RequestTypeId = req.RequestTypeId,
+                                        RequestorF = req.FirstName,
+                                        RequestorL = req.LastName,
+                                        RequestedDate = req.CreatedDate,
+                                        Phone = rc.PhoneNumber,
+                                        PhoneO = req.PhoneNumber,
+                                        PhysicianF = p.FirstName,
+                                        PhysicianL = p.LastName,
+                                        Address = rc.Address,
+                                        Notes = rc.Notes,
+                                        Region = rg.Name,
+                                        RegionId = rg.RegionId,
+                                    }).ToListAsync();
                     foreach (var item in query)
                     {
                         item.IsFinalize = GetIsFinalize(item.RequestId);
                     }
                    
                     
-                }
-
-                else
-                {
-                     query = (from r in _context.Requests
-                             join rc in _context.RequestClients on r.RequestId equals rc.RequestId
-                             join p in _context.Physicians on r.PhysicianId equals p.PhysicianId into physicianGroup
-                             from physician in physicianGroup.DefaultIfEmpty()
-                             join re in _context.Regions on rc.RegionId equals re.RegionId into regionGroup
-                             from region in regionGroup.DefaultIfEmpty()
-                             where statusList.Contains(r.Status) && r.RequestTypeId == requesttype
-                             select new ViewDashboradList
-                             {
-                                 RequestClientId = rc.RequestClientId,
-                                 RequestId = r.RequestId,
-                                 PatientF = rc.FirstName,
-                                 PatientL = rc.LastName,
-                                 Email = r.Email,
-                                 Status = r.Status,
-                                 DOB = new DateTime((int)rc.IntYear, Convert.ToInt32(rc.StrMonth), (int)rc.IntDate),
-                                 DateOfBirth = new DateOnly((int)rc.IntYear, Convert.ToInt32(rc.StrMonth), (int)rc.IntDate),
-                                 RequestTypeId = r.RequestTypeId,
-                                 RequestorF = r.FirstName,
-                                 RequestorL = r.LastName,
-                                 RequestedDate = r.CreatedDate,
-                                 Phone = rc.PhoneNumber,
-                                 PhoneO = r.PhoneNumber,
-                                 PhysicianF = physician.FirstName,
-                                 PhysicianL = physician.LastName,
-                                 Address = rc.Address,
-                                 Notes = rc.Notes,
-                                 Region = region.Name,
-                                 RegionId = region.RegionId,
-                                 
-                             }).ToList();
-                    foreach (var item in query)
-                    {
-                        item.IsFinalize = GetIsFinalize(item.RequestId);
-                    }
-                    
-                }
+                
+               
                 List<ViewDashboradList> paginatedData =  query.Skip((page - 1) * pageSize).Take(pageSize).ToList();
                 return paginatedData;
 
@@ -182,7 +152,10 @@ namespace HalloDoc_BAL.AdminRepository
             }
         
         }
-        public  int TotalCount(int state, int requesttype)
+        #endregion
+
+        #region TotalCount
+        public int TotalCount(int state, int requesttype, string searchstring, int RegionId, int page = 1, int pageSize = 10)
         {
             try
             {
@@ -217,82 +190,28 @@ namespace HalloDoc_BAL.AdminRepository
 
 
                 var query = new List<ViewDashboradList>();
-                if (requesttype == 0)
-                {
+               
 
-                    query = (from r in _context.Requests
-                             join rc in _context.RequestClients on r.RequestId equals rc.RequestId
-                             join p in _context.Physicians on r.PhysicianId equals p.PhysicianId into physicianGroup
-                             from physician in physicianGroup.DefaultIfEmpty()
-                             join re in _context.Regions on rc.RegionId equals re.RegionId into regionGroup
-                             from region in regionGroup.DefaultIfEmpty()
-                             where statusList.Contains(r.Status)
-                             select new ViewDashboradList
+                    query =  (from req in _context.Requests
+                            join reqClient in _context.RequestClients
+                            on req.RequestId equals reqClient.RequestId into reqClientGroup
+                            from rc in reqClientGroup.DefaultIfEmpty()
+                            join phys in _context.Physicians
+                            on req.PhysicianId equals phys.PhysicianId into physGroup
+                            from p in physGroup.DefaultIfEmpty()
+                            join reg in _context.Regions
+                            on rc.RegionId equals reg.RegionId into RegGroup
+                            from rg in RegGroup.DefaultIfEmpty()
+                            where statusList.Contains(req.Status) && (searchstring == null ||
+                           rc.FirstName.ToLower().Contains(searchstring) || rc.LastName.ToLower().Contains(searchstring) ) && (RegionId == 0 || rc.RegionId == RegionId)
+                           && (requesttype == 0 || req.RequestTypeId == requesttype)
+                            select new ViewDashboradList
                              {
                                  RequestClientId = rc.RequestClientId,
-                                 RequestId = r.RequestId,
-                                 PatientF = rc.FirstName,
-                                 PatientL = rc.LastName,
-                                 Email = r.Email,
-                                 Status = r.Status,
-                                 DOB = new DateTime((int)rc.IntYear, Convert.ToInt32(rc.StrMonth), (int)rc.IntDate),
-                                 RequestTypeId = r.RequestTypeId,
-                                 RequestorF = r.FirstName,
-                                 RequestorL = r.LastName,
-                                 RequestedDate = r.CreatedDate,
-                                 Phone = rc.PhoneNumber,
-                                 PhoneO = r.PhoneNumber,
-                                 PhysicianF = physician.FirstName,
-                                 PhysicianL = physician.LastName,
-                                 Address = rc.Address,
-                                 Notes = rc.Notes,
-                                 Region = region.Name
+                                 
                              }).ToList();
-                    foreach (var item in query)
-                    {
-                        item.IsFinalize = GetIsFinalize(item.RequestId);
-                    }
+               
 
-
-                }
-
-                else
-                {
-                    query = (from r in _context.Requests
-                             join rc in _context.RequestClients on r.RequestId equals rc.RequestId
-                             join p in _context.Physicians on r.PhysicianId equals p.PhysicianId into physicianGroup
-                             from physician in physicianGroup.DefaultIfEmpty()
-                             join re in _context.Regions on rc.RegionId equals re.RegionId into regionGroup
-                             from region in regionGroup.DefaultIfEmpty()
-                             where statusList.Contains(r.Status) && r.RequestTypeId == requesttype
-                             select new ViewDashboradList
-                             {
-                                 RequestClientId = rc.RequestClientId,
-                                 RequestId = r.RequestId,
-                                 PatientF = rc.FirstName,
-                                 PatientL = rc.LastName,
-                                 Email = r.Email,
-                                 Status = r.Status,
-                                 DOB = new DateTime((int)rc.IntYear, Convert.ToInt32(rc.StrMonth), (int)rc.IntDate),
-                                 RequestTypeId = r.RequestTypeId,
-                                 RequestorF = r.FirstName,
-                                 RequestorL = r.LastName,
-                                 RequestedDate = r.CreatedDate,
-                                 Phone = rc.PhoneNumber,
-                                 PhoneO = r.PhoneNumber,
-                                 PhysicianF = physician.FirstName,
-                                 PhysicianL = physician.LastName,
-                                 Address = rc.Address,
-                                 Notes = rc.Notes,
-                                 Region = region.Name,
-
-                             }).ToList();
-                    foreach (var item in query)
-                    {
-                        item.IsFinalize = GetIsFinalize(item.RequestId);
-                    }
-
-                }
                 
                 return query.Count;
 
@@ -303,6 +222,87 @@ namespace HalloDoc_BAL.AdminRepository
             }
 
         }
+
+        #endregion
+
+        #region ExportData
+        public List<ViewDashboradList> ExportData(int state, int requesttype, string searchstring, int RegionId)
+            {
+                var query = new List<ViewDashboradList>();
+
+                List<int> statusList = new List<int>();
+                if (state == 5)
+                {
+                    statusList.Add(3);
+                    statusList.Add(7);
+                    statusList.Add(8);
+                }
+                else if (state == 2)
+                {
+                    statusList.Add(4);
+                    statusList.Add(5);
+                }
+                else if (state == 1)
+                {
+                    statusList.Add(1);
+                }
+                else if (state == 3)
+                {
+                    statusList.Add(2);
+                }
+                else if (state == 4)
+                {
+                    statusList.Add(6);
+                }
+                else if (state == 6)
+                {
+                    statusList.Add(9);
+                }
+
+                query = (from req in _context.Requests
+                              join reqClient in _context.RequestClients
+                              on req.RequestId equals reqClient.RequestId into reqClientGroup
+                              from rc in reqClientGroup.DefaultIfEmpty()
+                              join phys in _context.Physicians
+                              on req.PhysicianId equals phys.PhysicianId into physGroup
+                              from p in physGroup.DefaultIfEmpty()
+                              join reg in _context.Regions
+                              on rc.RegionId equals reg.RegionId into RegGroup
+                              from rg in RegGroup.DefaultIfEmpty()
+                              where statusList.Contains(req.Status) && (searchstring == null ||
+                             rc.FirstName.ToLower().Contains(searchstring) || rc.LastName.ToLower().Contains(searchstring)) && (RegionId == 0 || rc.RegionId == RegionId)
+                             && (requesttype == 0 || req.RequestTypeId == requesttype)
+                              select new ViewDashboradList
+                              {
+                                  RequestClientId = rc.RequestClientId,
+                                  RequestId = req.RequestId,
+                                  PatientF = rc.FirstName,
+                                  PatientL = rc.LastName,
+                                  Email = req.Email,
+                                  Status = req.Status,
+                                  DateOfBirth = new DateOnly((int)rc.IntYear, Convert.ToInt32(rc.StrMonth),(int)rc.IntDate),
+                                  RequestTypeId = req.RequestTypeId,
+                                  RequestorF = req.FirstName,
+                                  RequestorL = req.LastName,
+                                  RequestedDate = req.CreatedDate,
+                                  Phone = rc.PhoneNumber,
+                                  PhoneO = req.PhoneNumber,
+                                  PhysicianF = p.FirstName,
+                                  PhysicianL = p.LastName,
+                                  Address = rc.Address,
+                                  Notes = rc.Notes,
+                                  Region = rg.Name,
+                                  RegionId = rg.RegionId,
+                              }).ToList();
+                foreach (var item in query)
+                {
+                    item.IsFinalize = GetIsFinalize(item.RequestId);
+                }
+                return query;
+        }
+        #endregion
+
+        #region IsFinalize
         public bool GetIsFinalize(int Requestid)
         {
             var a = _context.EncounterForms.FirstOrDefault(e => e.RequestId == Requestid);
@@ -316,7 +316,7 @@ namespace HalloDoc_BAL.AdminRepository
             }
 
         }
-
+        #endregion
 
     }
 }

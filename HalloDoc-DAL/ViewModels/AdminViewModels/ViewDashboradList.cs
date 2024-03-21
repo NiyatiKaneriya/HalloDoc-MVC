@@ -11,38 +11,24 @@ namespace HalloDoc_DAL.ViewModels.AdminViewModels
         public string PatientF { get; set; }
         public string? PatientL { get; set; }
         public string Patient => $"{PatientF} {PatientL}";
-
         public string? RequestorF { get; set; }
         public string? RequestorL { get; set; }
         public string Requestor => $"{RequestorF} {RequestorL}";
-
         public DateTime RequestedDate { get; set; }
-
         public string PhysicianF { get; set; }
         public string? PhysicianL { get; set; }
         public string Physician => $"{PhysicianF} {PhysicianL}";
-
         public DateTime? DOB { get; set; }
         public DateOnly? DateOfBirth { get; set; }
-
         public string Phone { get; set; }
-
         public string? Email { get; set; }
-
         public short Status { get; set; }
-
         public string Region { get; set; }
-
         public string? Notes { get; set; }
-
         public string? Address { get; set; }
-
-
         public int RequestTypeId { get; set; }
         public int RequestId { get; set; }
-
         public bool IsFinalize { get; set; }
-
         public int state
         {
             get
@@ -73,7 +59,6 @@ namespace HalloDoc_DAL.ViewModels.AdminViewModels
             }
             set { Status = (short)value; } // Set the db status here
         }
-
         public int RequestClientId { get; set; }
         public string? PhoneO { get; set; }
         public int IntYear { get; set; }
@@ -81,5 +66,7 @@ namespace HalloDoc_DAL.ViewModels.AdminViewModels
         public int IntDate { get; set; }
         public int RegionId { get; set; }
     }
+        
+    
 
 }
