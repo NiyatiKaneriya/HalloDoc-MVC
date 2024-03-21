@@ -3,7 +3,7 @@
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
-<div class="shadow ">
+<div class="shadow">
     <hr class="m-0">
     <div>
         <ul id="tab-toggle" class="nav nav-tab">
@@ -16,8 +16,14 @@
             <li class="">
                 <a data-toggle="tab" class="text-muted tab-link nav-link"  asp-action="Index" asp-controller="AdminProfile">My Profile</a>
             </li>
-            <li class="">
-                <a data-toggle="tab" class="text-muted tab-link nav-link" asp-action="Index" asp-controller="Providers">Providers</a>
+            <li class="dropdown">
+                <a data-toggle="tab" class="text-muted tab-link nav-link dropdown-toggle"  id="dropdownMenuButton11" data-bs-toggle="dropdown" aria-expanded="false">Providers</a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+
+                    <li><a class="dropdown-item " asp-action="Index" asp-controller="Providers">Provider</a></li>
+                    <li><a class="dropdown-item" >Scheduling</a></li>
+                    <li><a class="dropdown-item " >Invoicing</a></li>
+                </ul>
             </li>
             <li class="">
                 <a data-toggle="tab" class="text-muted tab-link nav-link" asp-action="Index" asp-controller="Partners">Partners</a>

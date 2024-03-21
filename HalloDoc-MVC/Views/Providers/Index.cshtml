@@ -1,0 +1,51 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model HalloDoc_DAL.ViewModels.AdminViewModels.ProvidersModel
+<section class="container-fluid w-75 my-5">
+    <h3>Provider Information</h3>
+    <div class="d-flex justify-content-between align-items-baseline">
+        <div class="w-25">
+            <select class="form-select form-select-sm p-2 mt-3 mb-3 " data-allow-clear="true" tabindex="-1" id="regionProvider" asp-items="@(new SelectList(ViewBag.RegionComboBox, "RegionId", "RegionName"))" data-control="select" data-placeholder="Region">
+                <option id="defaultregion" value="0">All</option>
+            </select>
+        </div>
+        
+        <div class="btn btn-info text-black text-white fw-bold">Create Provider Account</div>
+    </div>
+    <div class="table" id="Providerdata-table">
+
+    </div>
+    <partial name="_ContactProviderModal"/>
+</section>
+@section Scripts{
+
+
+<script>
+        
+    $(document).ready(function () {
+            filterProviderData()
+            $("#regionProvider").change(function () {
+                filterProviderData();
+            });
+    });
+        function filterProviderData() {
+
+            var RegionId = $("#regionProvider").val();
+            $.ajax({
+                url: '/Providers/GetProviders',
+                type: 'GET',
+                data: { RegionId: RegionId },
+                success: function (data) {
+                    $('#Providerdata-table').html(data);
+
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error occurred: " + error);
+                }
+            });
+        };
+</script>
+}

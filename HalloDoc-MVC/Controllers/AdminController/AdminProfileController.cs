@@ -7,6 +7,7 @@ using HalloDoc_DAL.ViewModels.AdminViewModels;
 
 namespace HalloDoc_MVC.Controllers.AdminController
 {
+    [CustomAuthorize("Admin")]
     public class AdminProfileController : Controller
     {
        

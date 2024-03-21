@@ -1,0 +1,69 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model List<HalloDoc_DAL.ViewModels.AdminViewModels.ProvidersModel>
+<div class="table-responsive mt-3 ">
+    <table class="table">
+        <thead class="border-0">
+            <tr class="table-secondary">
+                <th scope="col" class="table-text-header px-3">
+                    Stop Notification
+                </th>
+                <th scope="col" class="table-text-header d-none">PhysicianId</th>
+                <th scope="col" class="table-text-header d-none">RegionId</th>
+                <th scope="col" class="table-text-header ">Provider Name</th>
+                <th scope="col" class="table-text-header ">Role</th>
+                <th scope="col" class="table-text-header ">On Call Status</th>
+                <th scope="col" class="table-text-header ">Status</th>
+                <th scope="col" class="table-text-header ">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item2 in Model)
+            {
+                <tr>
+                    <td scope="col" class="table-text px-3">
+                        <div class="form-check">
+                            <input class="form-check-input subcheckbox" type="checkbox" value="@item2.IsNotificationStopped"  id="flexCheckDefault">
+                        </div>
+                    </td>
+
+                    <td scope="col" class="table-text d-none">@item2.PhysicianId</td>
+                    <td scope="col" class="table-text d-none">@item2.RegionId</td>
+                    <td scope="col" class="table-text ">@item2.Physician</td>
+                    <td scope="col" class="table-text ">@item2.RoleName</td>
+                    <td scope="col" class="table-text ">@item2.OnCallStatus</td>
+                    <td scope="col" class="table-text ">@item2.Status</td>
+                    <td scope="col" class="table-text ">
+                        <button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-Physician="@item2.Physician" data-bs-target="#contactprovidermodal">Contact</button>
+                        <button class="btn btn-outline-info">Edit</button>
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+</div>
+<script>
+    const contactprovidermodal = document.getElementById('contactprovidermodal')
+    if (contactprovidermodal) {
+        contactprovidermodal.addEventListener('show.bs.modal', event => {
+            // Button that triggered the modal
+            const button = event.relatedTarget
+            // Extract info from data-bs-* attributes
+            const patient = button.getAttribute('data-bs-patientname')
+            const requestid = button.getAttribute('data-bs-requestid')
+            // If necessary, you could initiate an Ajax request here
+            // and then do the updating in a callback.
+            // Update the modal's content.
+            const name = cancelmodal.querySelector('.modal-body #name')
+            document.getElementById('cancelreq').value = requestid;
+            //modalTitle.textContent = `New message to ${recipient}`
+            name.textContent = patient
+            
+           
+        })
+    }
+</script>
