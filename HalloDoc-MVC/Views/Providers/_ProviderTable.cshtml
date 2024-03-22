@@ -35,10 +35,23 @@
                     <td scope="col" class="table-text ">@item2.Physician</td>
                     <td scope="col" class="table-text ">@item2.RoleName</td>
                     <td scope="col" class="table-text ">@item2.OnCallStatus</td>
-                    <td scope="col" class="table-text ">@item2.Status</td>
                     <td scope="col" class="table-text ">
-                        <button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-Physician="@item2.Physician" data-bs-target="#contactprovidermodal">Contact</button>
-                        <button class="btn btn-outline-info">Edit</button>
+                        @if(item2.Status == 1)
+                        {
+                            <p>Pending</p>
+                        }
+                        @if (item2.Status == 2)
+                        {
+                            <p>Active</p>
+                        }
+                        @if (item2.Status == 3)
+                        {
+                            <p>Not Active</p>
+                        }
+                    </td>
+                    <td scope="col" class="table-text ">
+                        <button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-Physicianemail="@item2.email" data-bs-PhysicianId="@item2.PhysicianId" data-bs-Physician="@item2.Physician" data-bs-target="#contactprovidermodal">Contact</button>
+                        <a class="btn btn-outline-info" asp-action="EditPhysician" asp-controller="Providers" asp-route-physicianid="@item2.PhysicianId"> Edit</a>
                     </td>
                 </tr>
 
@@ -53,15 +66,20 @@
             // Button that triggered the modal
             const button = event.relatedTarget
             // Extract info from data-bs-* attributes
-            const patient = button.getAttribute('data-bs-patientname')
-            const requestid = button.getAttribute('data-bs-requestid')
+            const Physician = button.getAttribute('data-bs-Physician')
+            const Physicianemail = button.getAttribute('data-bs-Physicianemail')
+            const PhysicianId = button.getAttribute('data-bs-PhysicianId')
+            console.log(Physician);
+            console.log(Physicianemail);
             // If necessary, you could initiate an Ajax request here
             // and then do the updating in a callback.
             // Update the modal's content.
-            const name = cancelmodal.querySelector('.modal-body #name')
-            document.getElementById('cancelreq').value = requestid;
+            const name = contactprovidermodal.querySelector('.modal-body #name')
+            document.getElementById('Physicianemail').value = Physicianemail;
+            document.getElementById('PhysicianId').value = PhysicianId;
+            document.getElementById('Physician').value = Physician;
             //modalTitle.textContent = `New message to ${recipient}`
-            name.textContent = patient
+            name.textContent = Physician
             
            
         })

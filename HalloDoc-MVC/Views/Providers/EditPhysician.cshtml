@@ -1,50 +1,37 @@
-﻿@*
+﻿@* @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
 }
-@using HalloDoc_MVC.Models.CV
-@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
-@model HalloDoc_DAL.ViewModels.AdminViewModels.AdminProfileModel
-@{
-    ViewData["Title"] = "Admin Profile";
-
-}
-@{
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
-}
+ @using HalloDoc_MVC.Models.CV
+ @model HalloDoc_DAL.ViewModels.AdminViewModels.EditCreatePhysician
 <section class="container-fluid w-75 my-5">
-    
+
     <div class=" d-flex flex-row-reverse justify-content-between form-admin mb-3">
-        <a asp-controller="AdminDashboard" asp-action="Index" class="text-decoration-none text-info ">
+        <a asp-controller="Providers" asp-action="Index" class="text-decoration-none text-info ">
             <span class="ml-5 btn btn-outline-info">
                 <i class="fa fa-solid fa-angle-left"></i> Back
             </span>
         </a>
-        <h4>My Profile</h4>
+        <h3>Edit Physician Account</h3>
     </div>
 
-    @* Account Information only ResetPassword *@
-    <form asp-action="ResetPasswordProfile" asp-controller="AdminProfile" method="post" class="row bg-white shadow  form-admin">
+   <form asp-action="ResetPasswordPhysicianProfile" asp-controller="Providers" method="post" class="row bg-white shadow  form-physician">
         <input name="AdminId" hidden id="AdminId" value="@CV.AspNetUserID" />
 
         <div class="col-12 mb-3">
-            <h3>Account Information </h3>
+            <h4>Account Information </h4>
         </div>
-        <div class="col-12 mb-3">
-            <h4>@ViewBag.error</h4>
-        </div>
-        
         <div class=" col-md-6 col-sm-12 mb-3">
             <div class="form-floating ">
                 <input asp-for="UserName" class="form-control " id="UserName" placeholder="UserName" disabled />
                 <label for="UserName" class="text-muted">UserName</label>
-                
+
             </div>
         </div>
         <div class=" col-md-6 col-sm-12 mb-3">
             <div class="form-floating ">
-                <input name="Password" type="password" class="form-control " placeholder="Password" id="password">
+                <input asp-for="Password" type="password" class="form-control " placeholder="Password" id="password">
                 <label for="password" class="text-muted">Password</label><span asp-validation-for="Password" class="text-danger small"></span>
             </div>
         </div>
@@ -60,24 +47,20 @@
         </div>
         <div class=" col-md-6 col-sm-12 mb-3">
             <div class="form-floating">
-                <select disabled class="form-select " required name="Status" asp-for="RoleId" data-allow-clear="true" tabindex="-1" onchange="myFunction()" id="roles" asp-items="@(new SelectList(ViewBag.RoleComboBox,"RoleId","RoleName"))" data-control="select2" data-placeholder="Select Level">
+                <select disabled class="form-select "  name="Status" asp-for="RoleId" data-allow-clear="true" tabindex="-1" onchange="myFunction()" id="Providerroles" asp-items="@(new SelectList(ViewBag.RoleComboBox,"RoleId","RoleName"))" data-control="select2" data-placeholder="Select Level">
                 </select>
-                
-                 <label for="Role">Role</label> 
+
+                <label for="Role">Role</label>
             </div>
         </div>
         <div class="col-12 mb-3 d-flex flex-row-reverse">
             <input type="submit" class="btn btn-outline-info bg-white text-info" value="Reset Password">
         </div>
     </form>
+    <form id="physicianinfo" asp-controller="Providers" asp-action="EditPhysicianInfo" class="row bg-white shadow form-admin" data-ajax="true" method="post">
 
-
-    @*     @ Administrator information @
-    
-    *@    <form id="admininfo" asp-controller="AdminProfile" asp-action="EditAdminInfo" class="row bg-white shadow form-admin" data-ajax="true" method="post">
-        
         <div class="col-12 mb-3">
-            <h3>Administrator Information</h3>
+            <h4>Physician Information</h4>
         </div>
         <div class=" col-md-6 col-sm-12 mb-3">
             <div class="form-floating ">
@@ -97,26 +80,39 @@
                 <label for="Email" class="text-muted">Email</label><span asp-validation-for="Email" class="text-danger small"></span>
             </div>
         </div>
-        <div class="col-md-6 col-sm-12  mb-3">
-            <div class="form-floating ">
-                <input asp-for="ConfirmedEmail" id="ConfirmEmail" type="email" class="form-control inputAdmin" placeholder="Confirm Email" disabled>
-                <label for="ConfirmEmail" class="text-muted">Confirm Email</label><span asp-validation-for="ConfirmedEmail" class="text-danger small"></span>
-            </div>
-        </div>
+       
         <div class="col-md-6 col-sm-12  mb-3">
             <div class="form-floating mb-3">
                 <input asp-for="PhoneNumber" id="phone" type="tel" class="form-control inputAdmin" disabled style="height:6vh"><span asp-validation-for="PhoneNumber" class="text-danger small"></span>
             </div>
         </div>
+        <div class=" col-md-6 col-sm-12 mb-3">
+            <div class="form-floating ">
+                <input asp-for="MedicalLicense" type="text" class="form-control inputAdmin" id="MedicalLicence" placeholder="MedicalLicense" disabled>
+                <label for="MedicalLicense" class="text-muted">Medical License</label><span asp-validation-for="MedicalLicense" class="text-danger small"></span>
+            </div>
+        </div>
+        <div class=" col-md-6 col-sm-12 mb-3">
+            <div class="form-floating ">
+                <input asp-for="NPINumber" type="text" class="form-control inputAdmin" id="NPINumber" placeholder="NPINumber" disabled>
+                <label for="NPINumber" class="text-muted">NPINumber</label><span asp-validation-for="NPINumber" class="text-danger small"></span>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12  mb-3">
+            <div class="form-floating ">
+                <input asp-for="ConfirmedEmail" id="ConfirmEmail" type="email" class="form-control inputAdmin" placeholder="Synchronization Email" disabled>
+                <label for="ConfirmEmail" class="text-muted">Synchronization Email</label><span asp-validation-for="ConfirmedEmail" class="text-danger small"></span>
+            </div>
+        </div>
         <input asp-for="Regionsid" type="hidden" id="regionids" />
         <div class="col-md-6 d-flex">
 
-            @foreach (var cb in ViewBag.RegionComboBox)
+            @* @foreach (var cb in ViewBag.RegionComboBox)
             {
                 @if (Model.Regionids.Exists(id => id.Regionid == cb.RegionId))
                 {
                     <div class="form-check mx-2">
-                        <input class="form-check-input"  value="@cb.RegionId" type="checkbox" name="Region"  checked disabled>
+                        <input class="form-check-input" value="@cb.RegionId" type="checkbox" name="Region" checked disabled>
                         <label class="form-check-label" for="flexCheckDefault">
                             @cb.RegionName
                         </label>
@@ -125,26 +121,22 @@
                 else
                 {
                     <div class="form-check mx-2">
-                        <input class="form-check-input"  value="@cb.RegionId" type="checkbox" name="Region" disabled>
+                        <input class="form-check-input" value="@cb.RegionId" type="checkbox" name="Region" disabled>
                         <label class="form-check-label" for="flexCheckDefault">
                             @cb.RegionName
                         </label>
                     </div>
                 }
-
-
-            }
+            } *@
         </div>
         <div class="col-12 mb-3 d-flex flex-row-reverse gap-3">
             <button class="btn btn-info text-white" id="Editbtn">Edit</button>
             <input type="submit" class="btn btn-info text-white" id="Savebtn" value="Save" disabled>
         </div>
     </form>
-
-    @*     @ Mailing & Billing Information @
-    *@    <form asp-controller="AdminProfile" asp-action="EditBillingInfo" id="mailinginfo" class="row bg-white shadow form-admin" method="post" enctype="multipart/form-data">
+   <form asp-controller="Providers" asp-action="EditBillingInfoPhysician" id="mailinginfo" class="row bg-white shadow form-admin" method="post" enctype="multipart/form-data">
         <div class="col-12 mb-3">
-            <h3>Mailing & Billing Information</h3>
+            <h4>Mailing & Billing Information</h4>
         </div>
         <div class=" col-md-6 col-sm-12 mb-3">
             <div class="form-floating ">
@@ -166,7 +158,7 @@
         </div>
         <div class=" col-md-6 col-sm-12 mb-3">
             <div class="form-floating">
-                <select disabled class="form-select form-select-sm inputAdmin" data-allow-clear="true" tabindex="-1" id="State" asp-for="Regionid" onchange="captureSelectedRegion()" asp-items="@(new SelectList(ViewBag.RegionComboBox, "RegionId", "RegionName"))" data-control="select" data-placeholder="Region">
+                <select disabled class="form-select form-select-sm inputAdmin" data-allow-clear="true" tabindex="-1" id="ProvidersState" asp-for="Regionid" onchange="captureSelectedRegion()" asp-items="@(new SelectList(ViewBag.RegionComboBox, "RegionId", "RegionName"))" data-control="select" data-placeholder="Region">
                     <option id="defaultregion" value="">State</option>
                 </select>
                 <label for="State" class="text-muted">State</label><span asp-validation-for="Regionid" class="text-danger small"></span>
@@ -184,23 +176,23 @@
                 <label for="mobile" class="text-muted">Alternate PhoneNumber</label>
             </div>
         </div>
-        @*         @ Save & Edit Button @
-        *@        <div class="col-12 mb-3 d-flex flex-row-reverse gap-3">
+        
+          <div class="col-12 mb-3 d-flex flex-row-reverse gap-3">
             <button class="btn btn-info text-white" id="Editbtnbilling">Edit</button>
             <input type="submit" class="btn btn-info text-white" id="Savebtnbilling" value="Save" disabled>
         </div>
-    </form>
+    </form> 
 
-</section>
+ </section> 
 
 
-@section scripts {
+ @section scripts {
     <script type="text/javascript">
-        
+
         $(document).ready(function () {
             $("#Editbtn").click(function (event) {
                 event.preventDefault();
-                
+
                 $("#FirstName").prop("disabled", false);
                 $("#LastName").prop("disabled", false);
                 $("#Email").prop("disabled", false);
@@ -221,21 +213,21 @@
                 $("#Phone").prop("disabled", false);
                 $("#Savebtnbilling").prop("disabled", false);
             });
-            
-            $("#Savebtn").click(function (event) {
-                
-                event.preventDefault();
-                
 
-                var formData = $("#admininfo").serialize();
-                
+            $("#Savebtn").click(function (event) {
+
+                event.preventDefault();
+
+
+                var formData = $("#physicianinfo").serialize();
+
 
                 console.log(formData);
-                
+
                 $.ajax({
-                    url: $('#admininfo').attr('action'),
+                    url: $('#physicianinfo').attr('action'),
                     type: "POST",
-                    data: formData,                   
+                    data: formData,
                     success: function (response) {
                         // Handle success response
                         console.log(response);
@@ -257,10 +249,10 @@
 
                 event.preventDefault();
 
-                var formData = $("#mailinginfo").serialize();
+                var formData = $("#mailinginfoPhysician").serialize();
                 console.log(formData);
                 $.ajax({
-                    url: $('#mailinginfo').attr('action'),
+                    url: $('#mailinginfoPhysician').attr('action'),
                     type: "POST",
                     data: formData,
 
@@ -281,8 +273,8 @@
                 $("#Phone").prop("disabled", true);
                 $("#Savebtnbilling").prop("disabled", true);
             });
-            
-                // Select the checkbox by its ID
+
+            // Select the checkbox by its ID
             $('.form-check-input').change(function () {
                 let regionIds = $('input[name="Region"]:checked').map(function () {
                     return $(this).val();
@@ -290,7 +282,7 @@
                 $('#regionids').val(regionIds);
                 console.log(regionIds);
             });
-            
+
 
         });
 

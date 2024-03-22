@@ -24,8 +24,8 @@ namespace HalloDoc_BAL.AdminRepository
         {
 
             var query =  (from r in _context.Admins
-                                       join AspNetUser in _context.AspNetUsers
-                                       on r.AspNetUserId equals AspNetUser.Id into aspGroup
+                                       join As in _context.AspNetUsers
+                                       on r.AspNetUserId equals As.Id into aspGroup
                                        from asp in aspGroup.DefaultIfEmpty()
                                        where r.AspNetUserId == id
                                        select new AdminProfileModel

@@ -13,9 +13,11 @@ namespace HalloDoc_DAL.ViewModels.AdminViewModels
         public int PhysicianId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Physician => $"{FirstName} {LastName}";
+        public string Physician { get; set; } /*=> $"{FirstName} {LastName}";*/
         public int RoleId { get; set; }
-        public string Role {  get; set; }
+        public string email { get; set; }
+        public string msgBody { get; set; }
+        public string PhoneNumber { get; set; }
         public string OnCallStatus { get; set; }
         public int Status { get; set; }
         public int RegionId { get; set; }

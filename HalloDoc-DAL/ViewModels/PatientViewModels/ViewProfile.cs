@@ -25,7 +25,7 @@ namespace HalloDoc_DAL.ViewModels.PatientViewModels
         public required string City { get; set; }
         
         public string? State { get; set; }
-        public int RegionId { get; set; }
+        public int? RegionId { get; set; }
         [Required]
          
         public required string ZipCode { get; set; }

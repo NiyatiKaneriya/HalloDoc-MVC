@@ -98,7 +98,7 @@
                 <div class="">
                     
                     <select class="form-select form-select-sm p-2 mt-3 mb-3 w-100" data-allow-clear="true"  tabindex="-1" id="regionDashboard"  asp-items="@(new SelectList(ViewBag.RegionComboBox, "RegionId", "RegionName"))"  data-control="select" data-placeholder="Region">
-                        <option id="defaultregion" value="0">Regions</option>
+                        <option id="defaultregion" value="0">All Regions</option>
                     </select> 
                 </div>
             </div>
@@ -155,36 +155,42 @@
         //var dataState = document.getElementById("datastate");
         if (state == 1) {
             $("#new").click();
+            localStorage.setItem("requesttype", 0);
             $(".btn-state").removeClass("active");
             $("#new").addClass("active");
             $("#dataState").html("(NEW)");
             //dataState.innerHTML = "NEW"
         } else if (state == 2) {
             $("#active").click();
+            localStorage.setItem("requesttype", 0);
             $(".btn-state").removeClass("active");
             $("#active").addClass("active");
             $("#dataState").html("(ACTIVE)");
             //dataState.innerHTML = "ACTIVE"
         } else if (state == 3) {
             $("#pending").click();
+            localStorage.setItem("requesttype", 0);
             $(".btn-state").removeClass("active");
             $("#pending").addClass("active");
             $("#dataState").html("(PENDING)");
             //dataState.innerHTML = "PENDING"
         } else if (state == 4) {
             $("#conclude").click();
+            localStorage.setItem("requesttype", 0);
             $(".btn-state").removeClass("active");
             $("#conclude").addClass("active");
             $("#dataState").html("(CONCLUDE)");
             //dataState.innerHTML = "CONCLUDE"
         } else if (state == 5) {
             $("#toclose").click();
+            localStorage.setItem("requesttype", 0);
             $(".btn-state").removeClass("active");
             $("#toclose").addClass("active");
             $("#dataState").html("TOCLOSE");
             //dataState.innerHTML = "TOCLOSE"
         } else  {
             $("#unpaid").click();
+            localStorage.setItem("requesttype", 0);
             $(".btn-state").removeClass("active");
             $("#unpaid").addClass("active");
             $("#dataState").html("(UNPAID)");
@@ -196,6 +202,7 @@
             filterData(state, requesttype,1);
             $(".btn-state").click(function () {
                 state = $(this).data("state");
+                localStorage.setItem("requesttype", 0);
                 $(".btn-state").removeClass("active");
                 $(this).addClass("active");
                 if (state == 1) {
@@ -222,6 +229,7 @@
             // Event handler for request type buttons
             $(".request-type-btn").click(function () {
                 var requesttype = $(this).data("requesttype");
+                localStorage.setItem("requesttype", requesttype);
                 filterData(state, requesttype,1);
             });
             
@@ -230,6 +238,7 @@
         function filterData(state, requesttype,page) {
             var searchstring = $("#search-input").val().toLowerCase();
             var RegionId = $("#regionDashboard").val();
+            console.log(RegionId + " "+requesttype);
             $.ajax({
                 url: '/AdminDashboard/GetRequestTable',
                 type: 'GET',
@@ -243,36 +252,13 @@
                 }
             });
         };
-        // $("#export").click(function () {
-            
-        //     var state = localStorage.getItem("state");
-        //     var requesttype = 0;
-        //     exportdata(state, requesttype);
-        // });
-
-
-
-        // function exportdata(state, requesttype) {
-        //     var searchstring = $("#search-input").val().toLowerCase();
-        //     var RegionId = $("#regionDashboard").val();
-        //     $.ajax({
-        //         url: '/AdminDashboard/Export',
-        //         type: 'GET',
-        //         data: { state: state, requesttype: requesttype, searchstring: searchstring, RegionId: RegionId },
-        //         success: function (data) {
-        //             $('#data-table').html(data);
-
-        //         },
-        //         error: function (xhr, status, error) {
-        //             console.error("Error occurred: " + error);
-        //         }
-        //     });
-        // };
+       
         $("#export").click(function () {
             var state = localStorage.getItem("state");
-            $(".request-type-btn").click(function () {
-                var requesttype = $(this).data("requesttype");
-            });
+            // $(".request-type-btn").click(function () {
+            //     var requesttype = $(this).data("requesttype");
+            // });
+            var requesttype = localStorage.getItem("requesttype");
             var searchstring = $("#search-input").val().toLowerCase();
             var RegionId = $("#regionDashboard").val();
             console.log(state + " " + requesttype + " " + searchstring + " " + RegionId);
@@ -315,55 +301,18 @@
 
         $(document).ready(function () {
             $("#search-input").on("input", function () {
+                requesttype = localStorage.getItem("requesttype");
                 filterData(state, requesttype, 1);
             });
         });
 
-        // function filterTable(searchText) {
-        //     $("#data-table tbody tr").each(function () {
-        //         var rowText = $(this).find("#PatientName").text().toLowerCase();
-        //         if (rowText.indexOf(searchText) === -1) {
-        //             $(this).hide();
-        //         } else {
-        //             $(this).show();
-        //         }
-        //     });
-        // };
 
         $(document).ready(function () {
             $("#regionDashboard").change(function () {
+                requesttype = localStorage.getItem("requesttype");
                 filterData(state, requesttype, 1,);
             })
         });
-        // function filterByregion(selectregion) {
-        //     var rows = $("#data-table tbody tr");
-
-        //     if (selectregion>0) {
-        //         rows.each(function () {
-        //             // Check if the region of the row matches the selected region
-        //             if ($(this).find(".regionId").val() == selectregion) {
-        //                 $(this).show(); // Show the row if it matches the selected region
-        //             } else {
-        //                 $(this).hide(); // Otherwise, hide the row
-        //             }
-        //         });
-        //     } else {
-        //         // If no region is selected, show all rows
-        //         rows.show();
-        //     }
-        // };
-        // function exportToExcel() {
-        //     // Get table element
-        //     var table = document.getElementById("data-table");
-
-        //     // Convert table to workbook
-        //     var wb = XLSX.utils.table_to_book(table);
-
-        //     // Generate Excel file
-        //     XLSX.writeFile(wb, "table_data.xlsx");
-        // }
-        
-
         const cancelmodal = document.getElementById('cancelmodal')
         if (cancelmodal) {
             cancelmodal.addEventListener('show.bs.modal', event => {

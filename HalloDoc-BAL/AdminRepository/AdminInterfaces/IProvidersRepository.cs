@@ -10,5 +10,6 @@ namespace HalloDoc_BAL.AdminRepository.AdminInterfaces
     public interface IProvidersRepository
     {
         public List<ProvidersModel> GetProviders(int RegionId);
+        public EditCreatePhysician GetEditPhysician(int physicianid);
     }
 }

@@ -4,6 +4,7 @@ using System.Net.Mail;
 using System.Net;
 using HalloDoc_BAL.AdminRepository.AdminInterfaces;
 using HalloDoc_BAL.Interfaces;
+using HalloDoc_DAL.ViewModels.AdminViewModels;
 
 namespace HalloDoc_MVC.Controllers
 {
@@ -92,6 +93,27 @@ namespace HalloDoc_MVC.Controllers
         {
             _actionRepository.CancelAgreement(RequestId,Notes);
             return RedirectToAction("Index", "Login");
+        }
+        public IActionResult ContactProvider(ProvidersModel model)
+        {
+            MailMessage message = new MailMessage();
+            message.From = new MailAddress(_emailConfig.From);
+            message.Subject = "Contact Your PRovider";
+            message.To.Add(new MailAddress(model.email));
+            //message.Body = "Please Accept the Agreement to process your Request.";
+            var Body = "<html><body> hello, "+model.Physician+" "+ model.msgBody +"</body></html>"; ;
+            message.Body = Body;
+            message.IsBodyHtml = true;
+            using (var smtpClient = new SmtpClient(_emailConfig.SmtpServer))
+            {
+                smtpClient.Port = 587;
+                smtpClient.Credentials = new NetworkCredential(_emailConfig.Username, _emailConfig.Password);
+                smtpClient.EnableSsl = true;
+
+                smtpClient.Send(message);
+            }
+
+            return RedirectToAction("Index", "Providers");
         }
     }
 }

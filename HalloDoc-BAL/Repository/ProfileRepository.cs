@@ -43,6 +43,7 @@ namespace HalloDoc_BAL.Repository
                 PhoneNumber = userProfile.Mobile,
                 Street = userProfile.Street,
                 City = userProfile.City,
+                RegionId = (int)userProfile.RegionId,
                 State = userProfile.State,
                 ZipCode = userProfile.ZipCode,
             };
