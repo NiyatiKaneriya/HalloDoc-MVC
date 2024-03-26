@@ -1,0 +1,59 @@
+﻿<style>
+    #marker {
+        background-image: url("/images/freesvgorg45786-removebg-preview.png");
+        background-size: cover;
+        width: 30px;
+        height: 30px;
+    }
+</style>
+
+<section class="h-100">
+    <div id="mapAreash" style="height: 65vh; width: 75vw; margin: 3rem auto;"></div>
+    
+</section>
+<script src="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.25.0/maps/maps-web.min.js"></script>
+<script src="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.25.0/services/services-web.min.js"></script>
+<script>
+    const APIKey = "bmULYKyU2sYwUF1NFjiJ6Fdc3OrqHyWo";
+    var Lagos = { lat: 20.000000, lng: 77.000000 };
+    var map = tt.map({
+        key: APIKey,
+        container: "mapAreash",
+        center: Lagos,
+        zoom: 5
+    });
+
+    var sites = [
+    ];
+    @if (@ViewBag.Locations != null)
+    {
+        foreach (var location in ViewBag.Locations)
+        {
+            <text>
+                console.log(sites);
+            sites.push({
+                lat: @location.Latitude,
+                lng: @location.Longitude,
+                name: '@location.PhysicianName'
+            });
+            </text>
+        }
+    }
+   
+    // Add event listener for map load
+    map.on('load', function () {
+        // Iterate through each location and add a marker with a popup
+      
+            sites.forEach(function (site) {
+            var element = document.createElement("div");
+            element.id = "marker";
+            var marker = new tt.Marker({ element: element }).setLngLat([site.lng, site.lat]).addTo(map);
+            var marker = new tt.Marker({ element: element }).setLngLat([site.lng, site.lat]).addTo(map);
+            var popup = new tt.Popup({ anchor: 'top' }).setHTML("<b>" + site.name + "</b>");
+            marker.setPopup(popup).togglePopup();
+            });
+            
+        });
+
+    
+</script>

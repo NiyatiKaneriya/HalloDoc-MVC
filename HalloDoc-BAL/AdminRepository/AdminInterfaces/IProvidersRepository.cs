@@ -11,5 +11,7 @@ namespace HalloDoc_BAL.AdminRepository.AdminInterfaces
     {
         public List<ProvidersModel> GetProviders(int RegionId);
         public EditCreatePhysician GetEditPhysician(int physicianid);
+        public Boolean CreatePhysicianAcc(EditCreatePhysician model);
+
     }
 }

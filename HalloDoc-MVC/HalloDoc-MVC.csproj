@@ -85,6 +85,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\UploadedFilesByPhysician\" />
     <Folder Include="wwwroot\tempFiles\" />
   </ItemGroup>
 

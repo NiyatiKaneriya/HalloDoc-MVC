@@ -38,5 +38,17 @@ namespace HalloDoc_MVC.Controllers.AdminController
             var data = _providersRepository.GetEditPhysician(physicianid);
             return View(data);
         }
+        public IActionResult CreatePhysician()
+        {
+            ViewBag.RoleComboBox = _adminProfileRepository.RoleComboBox();
+            ViewBag.RegionCombobox = _actionRepository.RegionComboBox();
+            return View();
+        }
+        public IActionResult CreatePhysicianAcc(EditCreatePhysician model)
+        {
+            _providersRepository.CreatePhysicianAcc(model);
+            return RedirectToAction("Index");
+        }
+
     }
 }

@@ -1,0 +1,410 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model HalloDoc_DAL.ViewModels.AdminViewModels.EditCreatePhysician
+<section class="container-fluid w-75 my-5">
+
+    <div class=" d-flex flex-row-reverse justify-content-between form-admin mb-3">
+        <a asp-controller="AdminDashboard" asp-action="Index" class="text-decoration-none text-info ">
+            <span class="ml-5 btn btn-outline-info">
+                <i class="fa fa-solid fa-angle-left"></i> Back
+            </span>
+        </a>
+        <h4>My Profile</h4>
+    </div>
+
+    @* Account Information only ResetPassword *@
+    <form asp-action="CreatePhysicianAcc" asp-controller="Providers" method="post" class="row bg-white shadow  form-admin" enctype="multipart/form-data">
+        
+        <div class="col-12 mb-3">
+            <h3>Account Information </h3>
+        </div>
+        <div class=" col-md-4 col-sm-12 mb-3">
+            <div class="form-floating ">
+                <input class="form-control inputAdmin" asp-for="UserName" id="UserName" placeholder="UserName" disabled />
+                <label for="UserName" class="text-muted">UserName</label>
+            </div>
+        </div>
+        <div class=" col-md-4 col-sm-12 mb-3">
+            <div class="form-floating ">
+                <input type="password" class="form-control inputAdmin" asp-for="Password" placeholder="Password" id="password">
+                <label for="password" class="text-muted">Password</label>
+            </div>
+        </div>
+        
+        <div class=" col-md-4 col-sm-12 mb-3">
+            <div class="form-floating">
+                <select  class="form-select inputAdmin" required asp-for="RoleId"   data-allow-clear="true" tabindex="-1" onchange="myFunction()" id="roles" asp-items="@(new SelectList(ViewBag.RoleComboBox,"RoleId","RoleName"))" data-control="select2" data-placeholder="Select Level">
+                </select>
+
+                <label for="Role">Role</label>
+            </div>
+        </div>
+        <div class="col-12 mb-3">
+            <h3>Administrator Information</h3>
+        </div>
+        <div class=" col-md-6 col-sm-12 mb-3">
+            <div class="form-floating ">
+                <input  type="text" class="form-control  inputAdmin" asp-for="FirstName" id="FirstName" placeholder="FirstName" >
+                <label for="FirstName" class="text-muted">FirstName</label>
+            </div>
+        </div>
+        <div class=" col-md-6 col-sm-12 mb-3">
+            <div class="form-floating ">
+                <input  type="text" class="form-control inputAdmin" asp-for="LastName" id="LastName" placeholder="LastName" >
+                <label for="LastName" class="text-muted">LastName</label>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12  mb-3">
+            <div class="form-floating ">
+                <input  id="Email" type="email" asp-for="Email" class="form-control inputAdmin" placeholder="Email" >
+                <label for="Email" class="text-muted">Email</label>
+            </div>
+        </div>
+       
+        <div class="col-md-6 col-sm-12  mb-3">
+            <div class="form-floating mb-3">
+                <input  id="phone" asp-for="PhoneNumber" type="tel" class="form-control inputAdmin"  style="height:6vh">
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12  mb-3">
+            <div class="form-floating ">
+                <input id="MedicalLicense" asp-for="MedicalLicense" type="text" class="form-control inputAdmin" placeholder="Medical License" >
+                <label for="MedicalLicense" class="text-muted">Medical License</label>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12  mb-3">
+            <div class="form-floating ">
+                <input id="ConfirmEmail" asp-for="NPINumber" type="text" class="form-control inputAdmin" placeholder="Confirm Email" >
+                <label for="ConfirmEmail" class="text-muted">NPI Number</label>
+            </div>
+        </div>
+        <input type="hidden" asp-for="Regionsid" id="regionids1" />
+        <div class="col-md-6 mb-3 d-flex">
+
+            @foreach (var cb in ViewBag.RegionComboBox)
+            {
+                <div class="form-check mx-2">
+                    <input class="form-check-input regioncheckbox" value="@cb.RegionId" type="checkbox" name="Region1" >
+                        <label class="form-check-label" for="regioncheckbox">
+                            @cb.RegionName
+                        </label>
+                </div>
+            }
+        </div>
+        <div class="col-12 mb-3">
+            <h3>Mailing & Billing Information</h3>
+        </div>
+        <div class=" col-md-6 col-sm-12 mb-3">
+            <div class="form-floating ">
+                <input  type="text" asp-for="Address1" class="form-control inputAdmin" id="Address1" placeholder="Address1" >
+                <label for="Address1" class="text-muted">Address1</label>
+            </div>
+        </div>
+        <div class=" col-md-6 col-sm-12 mb-3">
+            <div class="form-floating">
+                <input  type="text"asp-for="Address2" class="form-control inputAdmin" id="Address2" placeholder="Address2" >
+                <label for="Address2" class="text-muted">Address2</label>
+            </div>
+        </div>
+        <div class=" col-md-6 col-sm-12 mb-3">
+            <div class="form-floating">
+                <input  type="text" asp-for="city" class="form-control inputAdmin" id="City" placeholder="City" >
+                <label for="City" class="text-muted">City</label>
+            </div>
+        </div>
+        <div class=" col-md-6 col-sm-12 mb-3">
+            <div class="form-floating">
+                <select asp-for="Regionid"  class="form-select form-select-sm inputAdmin" data-allow-clear="true" tabindex="-1" id="State" onchange="captureSelectedRegion()" asp-items="@(new SelectList(ViewBag.RegionComboBox, "RegionId", "RegionName"))" data-control="select" data-placeholder="Region">
+                    <option id="defaultregion" value="">State</option>
+                </select>
+                <label for="State" class="text-muted">State</label>
+        </div></div>
+        <div class=" col-md-6 col-sm-12 mb-3">
+            <div class="form-floating">
+                <input  type="text" asp-for="zipcode" class="form-control inputAdmin" id="ZipCode" placeholder="ZipCode" >
+                <label for="ZipCode" class="text-muted">ZipCode</label>
+            </div>
+        </div>
+        <div class=" col-md-6 col-sm-12 mb-3">
+            <div class="form-floating">
+                <input  type="tel" asp-for="altPhone" class="form-control inputAdmin" id="Phone" >
+                <label for="mobile" class="text-muted">Alternate PhoneNumber</label>
+            </div>
+        </div>
+        <div class="col-12 mb-3">
+            <h3>Provider Profile</h3>
+        </div>
+        <div class=" col-md-6 col-sm-12 mb-3">
+            <div class="form-floating ">
+                <input type="text" asp-for="BusinessName" class="form-control inputAdmin" id="BusinessName" placeholder="BusinessName">
+                <label for="BusinessName" class="text-muted">Business Name</label>
+            </div>
+        </div>
+        <div class=" col-md-6 col-sm-12 mb-3">
+            <div class="form-floating">
+                <input type="text" asp-for="BusinessWebsite" class="form-control inputAdmin" id="Website" placeholder="Website">
+                <label for="Website" class="text-muted">Business Website</label>
+            </div>
+        </div>
+
+        <div class="w-100 col-md-6 col-sm-12 d-flex col-lg-6">
+            <div class="col-md-5 col-sm-10 mb-3 border border-muted d-flex flex-row-reverse p-0 " style="border-radius: 5px;">
+
+                <button class="select_file_btn text-start fw-semibold w-100 p-2 openfile " >
+                    Photo <label  class="" for="getFile" id="filename"></label>
+                </button>
+                <input asp-for="UploadFilePhoto"  class="fileinput" type="file" id="getFilePhoto" style="display:none">
+            </div>
+            <div class=" col-md-1 col-sm-2 border border-0">
+                <button  class="btn btn-info rounded-0 rounded-end  openfile upload_file_btn text-center text-white fw-semibold w-100 p-2 ">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> 
+                </button>
+
+            </div>
+        </div>
+        <div class="col-12 mb-3">
+            <div class="form-floating">
+                <textarea asp-for="adminNotes" class="form-control" placeholder=""  id="floatingTextarea"
+                          style="height: 100px"></textarea>
+                <label for="floatingTextarea" class="text-muted">Admin Notes</label>
+            </div>
+        </div>
+       <hr />
+        <div class="col-12 mb-3">
+            <h3>Onboarding</h3>
+        </div>
+        <div class="row my-1">
+            <div class="wrapper d-flex">
+                <div class="col-1 m-1">
+                    <input type="checkbox" style="height:20px;width:20px" class="btn-outline-info" id="cICA"/>
+                </div>
+                <div class="col-4">
+                    <span>Independent Contract Agreement</span>
+                </div>
+                <div class="col-2">
+                    <input asp-for="UploadFileIndependentContractor" class="fileinput" type="file" id="getFileICA" style="display:none">
+                    <button type="button" id="openfileICA" class="btn btn-info">Upload</button>
+                </div>
+                <div class="col-2">
+                    <button type="button" class="btn btn-info" id="viewBtnICA" style="display:none;">View</button>
+                </div>
+            </div>
+        </div>
+        <div class="row my-1">
+            <div class="wrapper d-flex">
+                <div class="col-1 m-1">
+                    <input type="checkbox" style="height:20px;width:20px" class="btn-outline-info" id="cBC" />
+                </div>
+                <div class="col-4">
+                    <span>Background Check</span>
+                </div>
+                <div class="col-2">
+                    <input asp-for="UploadFileIndependentContractor" class="fileinput" type="file" id="getFileBC" style="display:none">
+                    <button type="button" id="openfileBC" class="btn btn-info">Upload</button>
+                </div>
+                <div class="col-2">
+                    <button type="button" class="btn btn-info" id="viewBtnBC" style="display:none">View</button>
+                </div>
+            </div>
+        </div>
+        <div class="row my-1">
+            <div class="wrapper d-flex">
+                <div class="col-1 m-1">
+                    <input type="checkbox" style="height:20px;width:20px" class="btn-outline-info" id="cHC" />
+                </div>
+                <div class="col-4">
+                    <span>HIPAA Compliance</span>
+                </div>
+                <div class="col-2">
+                    <input asp-for="UploadFileIndependentContractor" class="fileinput" type="file" id="getFileHC" style="display:none">
+                    <button type="button" id="openfileHC" class="btn btn-info">Upload</button>
+                </div>
+                <div class="col-2">
+                    <button type="button" class="btn btn-info" id="viewBtnHC" style="display:none">View</button>
+                </div>
+            </div>
+        </div>
+        <div class="row my-1">
+            <div class="wrapper d-flex">
+                <div class="col-1 m-1">
+                    <input type="checkbox" style="height:20px;width:20px" class="btn-outline-info" id="cNDA" />
+                </div>
+                <div class="col-4">
+                    <span>Non-Disclosure Agreement</span>
+                </div>
+                <div class="col-2">
+                    <input asp-for="UploadFileIndependentContractor" class="fileinput" type="file" id="getFileNDA" style="display:none">
+                    <button type="button" id="openfileNDA" class="btn btn-info">Upload</button>
+                </div>
+                <div class="col-2">
+                    <button type="button" class="btn btn-info" id="viewBtnNDA" style="display:none">View</button>
+                </div>
+            </div>
+        </div>
+        <div class="row my-1">
+            <div class="wrapper d-flex">
+                <div class="col-1 m-1">
+                    <input type="checkbox" style="height:20px;width:20px" class="btn-outline-info" id="cLD" />
+                </div>
+                <div class="col-4">
+                    <span>License Document</span>
+                </div>
+                <div class="col-2">
+                    <input asp-for="UploadFileIndependentContractor" class="fileinput" type="file" id="getFileLD" style="display:none">
+                    <button type="button" id="openfileLD" class="btn btn-info">Upload</button>
+                </div>
+                <div class="col-2">
+                    <button type="button" class="btn btn-info" id="viewBtnLD" style="display:none">View</button>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="col-12 mb-3 d-flex flex-row-reverse">
+            <div class="">
+                <input type="submit"  class=" btn btn-success" placeholder="" value="Create Account">
+                
+            </div>
+        </div>
+    </form>
+
+</section>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('.regioncheckbox').change(function () {
+                let regionIds = $('input[name="Region1"]:checked').map(function () {
+                    return $(this).val();
+                }).get().join(',');
+                $('#regionids1').val(regionIds);
+                console.log(regionIds);
+            });
+            $('#openfileICA').click(function () {
+                $('#getFileICA').trigger('click');
+
+            });
+            $('#getFileICA').change(function () {
+                $('#cICA').prop("checked", true);
+                $('#viewBtnICA').show();
+            });
+            $('#viewBtnICA').click(function () {
+                // Retrieve the selected file and display it
+                var file = $('#getFileICA').prop('files')[0];
+                if (file) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        // Display the file content or path as per your requirement
+                        var url = URL.createObjectURL(file);
+                        var newTab = window.open(url, '_blank');
+                        newTab.focus();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            $('#openfileBC').click(function () {
+                $('#getFileBC').trigger('click');
+
+            });
+            $('#getFileBC').change(function () {
+                $('#cBC').prop("checked", true);
+                $('#viewBtnBC').show();
+            });
+            $('#viewBtnBC').click(function () {
+                // Retrieve the selected file and display it
+                var file = $('#getFileBC').prop('files')[0];
+                if (file) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        // Display the file content or path as per your requirement
+                        var url = URL.createObjectURL(file);
+                        var newTab = window.open(url, '_blank');
+                        newTab.focus();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            $('#openfileHC').click(function () {
+                $('#getFileHC').trigger('click');
+
+            });
+            $('#getFileHC').change(function () {
+                $('#cHC').prop("checked", true);
+                $('#viewBtnHC').show();
+            });
+            $('#viewBtnHC').click(function () {
+                // Retrieve the selected file and display it
+                var file = $('#getFileHC').prop('files')[0];
+                if (file) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        // Display the file content or path as per your requirement
+                        var url = URL.createObjectURL(file);
+                        var newTab = window.open(url, '_blank');
+                        newTab.focus();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            $('#openfileNDA').click(function () {
+                $('#getFileNDA').trigger('click');
+
+            });
+            $('#getFileNDA').change(function () {
+                $('#cNDA').prop("checked", true);
+                $('#viewBtnNDA').show();
+            });
+            $('#viewBtnNDA').click(function () {
+                // Retrieve the selected file and display it
+                var file = $('#getFileNDA').prop('files')[0];
+                if (file) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        // Display the file content or path as per your requirement
+                        var url = URL.createObjectURL(file);
+                        var newTab = window.open(url, '_blank');
+                        newTab.focus();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            $('#openfileLD').click(function () {
+                $('#getFileLD').trigger('click');
+
+            });
+            $('#getFileLD').change(function () {
+                $('#cLD').prop("checked", true);
+                $('#viewBtnLD').show();
+            });
+            $('#viewBtnLD').click(function () {
+                // Retrieve the selected file and display it
+                var file = $('#getFileLD').prop('files')[0];
+                if (file) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        // Display the file content or path as per your requirement
+                        var url = URL.createObjectURL(file);
+                        var newTab = window.open(url, '_blank');
+                        newTab.focus();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            $('.openfile').click(function () {
+                $('#getFilePhoto').trigger('click');
+               
+            });
+            $('#getFilePhoto').change(function () {
+                // You can add additional logic here to handle file selection
+                var fileName = $(this).val();
+                //document.getElementById("getFilePhoto").textContent = this.files[0].name;
+                $('#filename').text(this.files[0].name);
+
+                console.log(fileName);
+            });
+        });
+      
+
+    </script>
+}

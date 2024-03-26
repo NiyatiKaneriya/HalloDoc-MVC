@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -40,7 +41,7 @@ namespace HalloDoc_DAL.ViewModels.AdminViewModels
 
         public string altPhone { get; set; }
         [Required]
-        public string? RoleId { get; set; }
+        public int? RoleId { get; set; }
 
         public int PhysicianId { get; set; }
 
@@ -53,8 +54,11 @@ namespace HalloDoc_DAL.ViewModels.AdminViewModels
         public DateTime? Modifieddate { get; set; }
 
         public string? Modifiedby { get; set; }
-
+    
         public DateTime Createddate { get; set; }
+        public string BusinessName { get; set; }
+        public string BusinessWebsite { get; set; }
+        public string adminNotes { get; set; }
         [Required]
         public string? Regionsid { get; set; }
         [Required]
@@ -66,6 +70,18 @@ namespace HalloDoc_DAL.ViewModels.AdminViewModels
             public string Regionname { get; set; }
         }
 
-
+        public IFormFile? UploadFilePhoto { get; set; }
+        public IFormFile? UploadFileIndependentContractor {  get; set; }
+        public IFormFile? UploadFileBackgroundcheck { get; set; }
+        public IFormFile? UploadFileHIPPA { get; set; }
+        public IFormFile? UploadFileNondisclouser { get; set; }
+        public IFormFile? UploadFileLicense { get; set; }
+        public string? UploadImagePhoto { get; set; }
+        public string? UploadImageIndependentContractor { get; set; }
+        public string? UploadImageBackgroundcheck { get; set; }
+        public string? UploadImageHIPPA { get; set; }
+        public string? UploadImageNondisclouser { get; set; }
+        public string? UploadImageLicense { get; set; }
+  
     }
 }
