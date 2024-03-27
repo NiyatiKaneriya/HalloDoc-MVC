@@ -339,17 +339,18 @@ input[type=file] {
 
 .upload_file_btn {
     background-color: #01BCE9;
-    border: 2px solid #01BCE9;
+    border: 1px solid #01BCE9;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
     color: #FFFFFF;
 }
 
 .select_file_btn {
-    border-top: 2px solid #9e9797;
-    border-bottom: 2px solid #9e9797;
-    border-left: 2px solid #9e9797;
-    color: #9e9797;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    color: #ccc;
+    border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     border-right: none;
     background-color: transparent;

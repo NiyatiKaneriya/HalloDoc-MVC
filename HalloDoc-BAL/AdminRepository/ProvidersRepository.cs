@@ -2,6 +2,7 @@
 using HalloDoc_DAL.DataContext;
 using HalloDoc_DAL.Models;
 using HalloDoc_DAL.ViewModels.AdminViewModels;
+using Microsoft.AspNetCore.Http;
 using Nancy;
 using Nancy.Json;
 using System;
@@ -24,7 +25,7 @@ namespace HalloDoc_BAL.AdminRepository
             _context = context;
         }
       
-        public Boolean UploadDocumentsPhysician(EditCreatePhysician model, int PhysicianId)
+        public Boolean UploadDocumentsPhysicianPhoto(EditCreatePhysician model, int PhysicianId)
         {
 
             if (model.UploadFilePhoto != null)
@@ -49,7 +50,30 @@ namespace HalloDoc_BAL.AdminRepository
                 }
                 return true;
             }
+
             return false;
+        }
+        public string UploadDocumentsPhysician(IFormFile file, int PhysicianId, string uploadfileName)
+        {
+            string uploadFilePath = null;
+            if (file != null)
+            {
+                string FilePath = "wwwroot\\UploadedFilesByPhysician\\" + PhysicianId;
+                string path = Path.Combine(Directory.GetCurrentDirectory(), FilePath);
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                string newfilename = uploadfileName;
+                string fileNameWithPath = Path.Combine(path, newfilename);
+                uploadFilePath = FilePath.Replace("wwwroot\\UploadedFilesByPhysician\\", "/UploadedFilesByPhysician/") + "/" + newfilename;
+                using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
+                
+                return uploadFilePath;
+            }
+
+            return uploadFilePath;
         }
         public static (double latitude, double longitude) GetCoordinates(string address)
         {
@@ -193,19 +217,44 @@ namespace HalloDoc_BAL.AdminRepository
                 BusinessWebsite = model.BusinessWebsite,
                 RegionId = model.Regionid,
                 Status = 2,
-
+                IsDeleted = new System.Collections.BitArray(new[] { false }),
                 RoleId = model.RoleId,
                 CreatedDate = DateTime.Now,
-               
+                IsAgreementDoc = new System.Collections.BitArray(new[] {model.IsAgreementDoc}),
+                IsBackgroundDoc = new System.Collections.BitArray(new[] {model.IsBackgroundDoc}),
+                IsLicenseDoc = new System.Collections.BitArray(new[] {model.IsLicenseDoc}),
+                IsTrainingDoc = new System.Collections.BitArray(new[] {model.IsTrainingDoc}),
+                IsNonDisclosureDoc = new System.Collections.BitArray(new[] {model.IsNonDisclosureDoc}),
 
             };
             _context.Physicians.Add(physician);
             _context.SaveChanges();
             if (model.UploadFilePhoto != null)
             {
-                UploadDocumentsPhysician(model,physician.PhysicianId);
+                UploadDocumentsPhysicianPhoto(model,physician.PhysicianId);
             }
+            if(model.UploadFileIndependentContractor != null)
+            {
+                 UploadDocumentsPhysician(model.UploadFileIndependentContractor , physician.PhysicianId, "Independentcontractor.pdf");
+            }
+            if (model.UploadFileBackgroundcheck != null)
+            {
+                UploadDocumentsPhysician(model.UploadFileBackgroundcheck, physician.PhysicianId, "BackgroundCheck.pdf");
+            }
+            if (model.UploadFileHIPPA != null)
+            {
+                UploadDocumentsPhysician(model.UploadFileHIPPA, physician.PhysicianId, "HIPPA.pdf");
+            }
+            if (model.UploadFileNondisclouser != null)
+            {
+                UploadDocumentsPhysician(model.UploadFileNondisclouser, physician.PhysicianId, "NonDisclouser.pdf");
 
+            }
+            if (model.UploadFileLicense != null)
+            {
+                UploadDocumentsPhysician(model.UploadFileLicense, physician.PhysicianId, "License.pdf");
+
+            }
             List<int> list = model.Regionsid.Split(',').Select(int.Parse).ToList();
 
             foreach (var value in list)
@@ -234,7 +283,7 @@ namespace HalloDoc_BAL.AdminRepository
             var notification = new PhysicianNotification
             {
                 PhysicianId = physician.PhysicianId,
-                IsNotificationStopped = new System.Collections.BitArray(0),
+                IsNotificationStopped = new System.Collections.BitArray(new[] {false}),
             };
             _context.PhysicianNotifications.Add(notification);
             _context.SaveChangesAsync();

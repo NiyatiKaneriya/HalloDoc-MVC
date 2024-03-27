@@ -49,6 +49,9 @@ namespace HalloDoc_MVC.Controllers.AdminController
             _providersRepository.CreatePhysicianAcc(model);
             return RedirectToAction("Index");
         }
-
+        public IActionResult EditPhysicianInfo(EditCreatePhysician model)
+        {
+            return View("Index");
+        }
     }
 }

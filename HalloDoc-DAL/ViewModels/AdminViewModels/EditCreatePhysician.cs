@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -69,19 +70,26 @@ namespace HalloDoc_DAL.ViewModels.AdminViewModels
             public int? Regionid { get; set; }
             public string Regionname { get; set; }
         }
-
+        public BitArray IsDeleted { get; set; }
         public IFormFile? UploadFilePhoto { get; set; }
         public IFormFile? UploadFileIndependentContractor {  get; set; }
+        public bool IsAgreementDoc { get; set; }
         public IFormFile? UploadFileBackgroundcheck { get; set; }
+        public bool IsBackgroundDoc { get; set; }
         public IFormFile? UploadFileHIPPA { get; set; }
+        public bool IsTrainingDoc { get; set; }
         public IFormFile? UploadFileNondisclouser { get; set; }
+        public bool IsNonDisclosureDoc { get; set; }
         public IFormFile? UploadFileLicense { get; set; }
+        public bool IsLicenseDoc { get; set; }
         public string? UploadImagePhoto { get; set; }
         public string? UploadImageIndependentContractor { get; set; }
         public string? UploadImageBackgroundcheck { get; set; }
         public string? UploadImageHIPPA { get; set; }
         public string? UploadImageNondisclouser { get; set; }
         public string? UploadImageLicense { get; set; }
+        public IFormFile? Signature { get; set; }
+        public string? UploadImageSignature { get;set; }
   
     }
 }

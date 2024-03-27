@@ -16,8 +16,8 @@
         <h3>Edit Physician Account</h3>
     </div>
 
-   <form asp-action="ResetPasswordPhysicianProfile" asp-controller="Providers" method="post" class="row bg-white shadow  form-physician">
-        <input name="AdminId" hidden id="AdminId" value="@CV.AspNetUserID" />
+   <form asp-action="EditPhysicianAcc" asp-controller="Providers" method="post" class="row bg-white shadow  form-physician" enctype="multipart/form-data">
+        <input name="PhysicianId" hidden id="PhysicianId" value="@Model.PhysicianId" asp-for="PhysicianId" />
 
         <div class="col-12 mb-3">
             <h4>Account Information </h4>
@@ -31,7 +31,7 @@
         </div>
         <div class=" col-md-6 col-sm-12 mb-3">
             <div class="form-floating ">
-                <input asp-for="Password" type="password" class="form-control " placeholder="Password" id="password">
+                <input asp-for="Password" name="Password" type="password" class="form-control " placeholder="Password" id="password">
                 <label for="password" class="text-muted">Password</label><span asp-validation-for="Password" class="text-danger small"></span>
             </div>
         </div>
@@ -131,10 +131,9 @@
         </div>
         <div class="col-12 mb-3 d-flex flex-row-reverse gap-3">
             <button class="btn btn-info text-white" id="Editbtn">Edit</button>
-            <input type="submit" class="btn btn-info text-white" id="Savebtn" value="Save" disabled>
+            
         </div>
-    </form>
-   <form asp-controller="Providers" asp-action="EditBillingInfoPhysician" id="mailinginfo" class="row bg-white shadow form-admin" method="post" enctype="multipart/form-data">
+   
         <div class="col-12 mb-3">
             <h4>Mailing & Billing Information</h4>
         </div>
@@ -179,15 +178,219 @@
         
           <div class="col-12 mb-3 d-flex flex-row-reverse gap-3">
             <button class="btn btn-info text-white" id="Editbtnbilling">Edit</button>
-            <input type="submit" class="btn btn-info text-white" id="Savebtnbilling" value="Save" disabled>
+            
         </div>
-    </form> 
+        <div class="col-12 mb-3">
+            <h3>Provider Profile</h3>
+        </div>
+        <div class=" col-md-6 col-sm-12 mb-3">
+            <div class="form-floating ">
+                <input type="text" asp-for="BusinessName" disabled class="form-control inputAdmin" id="BusinessName" placeholder="BusinessName">
+                <label for="BusinessName" class="text-muted">Business Name</label>
+            </div>
+        </div>
+        <div class=" col-md-6 col-sm-12 mb-3">
+            <div class="form-floating">
+                <input type="text" asp-for="BusinessWebsite" disabled class="form-control inputAdmin" id="Website" placeholder="Website">
+                <label for="Website" class="text-muted">Business Website</label>
+            </div>
+        </div>
+     
+        <div class="row gx-2 ms-1">
+            <div class="col-md-6">
+                <div class="row px-3 ">
+                    <div class="col-9 p-0">
+                        <button id="selectphoto" type="button" disabled class="select_file_btn text-start openfile fw-semibold w-100 p-2">
+                            Select
+                            Photo
+                        </button>
+                        <input type="file" id="getFilePhoto" style="display:none" >
+                    </div>
+                    <div class="col-3 p-0">
+                        <button type="button" id="uploadphotobtn" disabled class="upload_file_btn text-center openfile fw-semibold w-100 p-2">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                        </button>
+                    </div>
+                </div>
+                <label class="m-2" for="getFile" id="photoname"></label>
+            </div>
+            <div class="col-md-4">
+                <div class="row px-3">
+                    <div class="col-8 p-0">
+                        <button id="selectsign" disabled type="button" class="select_file_btn text-start fw-semibold w-100 p-2">
+                            Select
+                            Sign
+                        </button>
+                        <input  type="file" asp-for="Signature" id="getSign" style="display:none" >
+                    </div>
+                    <div class="col-4 p-0">
+                        <button type="button" id="uploadsignbtn" disabled class="upload_file_btn text-center fw-semibold w-100 p-2">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                        </button>
+                    </div>
+                </div>
+                <label class="m-2" for="getFile" id="signname"></label>
+            </div>
+            <div class="col-md-2">
+                <button type="button" disabled class="py-2 ms-1 btn btn-info text-light" id="createBtn"><i class="fa-solid fa-pencil "></i></button>
+            </div>
+        </div>
+       
+        <div id="signature" style="border:1px solid black;">
 
- </section> 
+        </div> 
+        <div id="preview" class="btn">preview</div>
+       
+        <img src="@Model.Signature"  id="signpreview" />
+        <div class="col-12 mb-3">
+            <div class="form-floating">
+                <textarea disabled asp-for="adminNotes" class="form-control" placeholder="" id="AdminNotes"
+                          style="height: 100px"></textarea>
+                <label for="floatingTextarea" class="text-muted">Admin Notes</label>
+            </div>
+        </div>
+        <div class="col-12 mb-3 d-flex flex-row-reverse gap-3">
+            <button class="btn btn-info text-white" id="EditbtnProfile">Edit</button>
+
+        </div>
+    <hr />
+    <div class="col-12 mb-3">
+        <h3>Onboarding</h3>
+    </div>
+    <div class="row my-1">
+        <div class="wrapper d-flex">
+            <div class="col-1 m-1">
+                <input type="checkbox" asp-for="IsAgreementDoc" style="height:20px;width:20px" class="btn-outline-info" id="cICA" />
+            </div>
+            <div class="col-4">
+                <span>Independent Contract Agreement</span>
+            </div>
+            <div class="col-2">
+                <input asp-for="UploadFileIndependentContractor" class="fileinput" type="file" id="getFileICA" style="display:none">
+                <button type="button" id="openfileICA" class="btn btn-info">Upload</button>
+            </div>
+            <div class="col-2">
+                <button type="button" class="btn btn-info" id="viewBtnICA" style="display:none;">View</button>
+            </div>
+        </div>
+    </div>
+    <div class="row my-1">
+        <div class="wrapper d-flex">
+            <div class="col-1 m-1">
+                <input type="checkbox" asp-for="IsBackgroundDoc" style="height:20px;width:20px" class="btn-outline-info" id="cBC" />
+            </div>
+            <div class="col-4">
+                <span>Background Check</span>
+            </div>
+            <div class="col-2">
+                <input asp-for="UploadFileBackgroundcheck" class="fileinput" type="file" id="getFileBC" style="display:none">
+                <button type="button" id="openfileBC" class="btn btn-info">Upload</button>
+            </div>
+            <div class="col-2">
+                <button type="button" class="btn btn-info" id="viewBtnBC" style="display:none">View</button>
+            </div>
+        </div>
+    </div>
+    <div class="row my-1">
+        <div class="wrapper d-flex">
+            <div class="col-1 m-1">
+                <input type="checkbox" asp-for="IsTrainingDoc" style="height:20px;width:20px" class="btn-outline-info" id="cHC" />
+            </div>
+            <div class="col-4">
+                <span>HIPAA Compliance</span>
+            </div>
+            <div class="col-2">
+                <input asp-for="UploadFileHIPPA" class="fileinput" type="file" id="getFileHC" style="display:none">
+                <button type="button" id="openfileHC" class="btn btn-info">Upload</button>
+            </div>
+            <div class="col-2">
+                <button type="button" class="btn btn-info" id="viewBtnHC" style="display:none">View</button>
+            </div>
+        </div>
+    </div>
+    <div class="row my-1">
+        <div class="wrapper d-flex">
+            <div class="col-1 m-1">
+                <input type="checkbox" asp-for="IsNonDisclosureDoc" style="height:20px;width:20px" class="btn-outline-info" id="cNDA" />
+            </div>
+            <div class="col-4">
+                <span>Non-Disclosure Agreement</span>
+            </div>
+            <div class="col-2">
+                <input asp-for="UploadFileNondisclouser" class="fileinput" type="file" id="getFileNDA" style="display:none">
+                <button type="button" id="openfileNDA" class="btn btn-info">Upload</button>
+            </div>
+            <div class="col-2">
+                <button type="button" class="btn btn-info" id="viewBtnNDA" style="display:none">View</button>
+            </div>
+        </div>
+    </div>
+    <div class="row my-1">
+        <div class="wrapper d-flex">
+            <div class="col-1 m-1">
+                <input type="checkbox" asp-for="IsLicenseDoc" style="height:20px;width:20px" class="btn-outline-info" id="cLD" />
+            </div>
+            <div class="col-4">
+                <span>License Document</span>
+            </div>
+            <div class="col-2">
+                <input asp-for="UploadFileLicense" class="fileinput" type="file" id="getFileLD" style="display:none">
+                <button type="button" id="openfileLD" class="btn btn-info">Upload</button>
+            </div>
+            <div class="col-2">
+                <button type="button" class="btn btn-info" id="viewBtnLD" style="display:none">View</button>
+            </div>
+        </div>
+    </div>
+    <hr />
+        <div class="col-12 mb-3 d-flex flex-row-reverse">
+            <div class="">
+                <input type="submit" class=" btn btn-danger" placeholder="" value="delete Account">
+
+            </div>
+            <div class="">
+                <input type="submit" class=" btn btn-info" placeholder="" value="Save">
+
+            </div>
+        </div>
+    </form>
+</section> 
 
 
  @section scripts {
-    <script type="text/javascript">
+     <script src="/lib/jSignature/jquery.js"></script>
+     <script src="/lib/jSignature/jSignature.min.js"></script>
+    <script src="/lib/jSignature/modernizr.js"></script>
+    @* <script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.5.3/signature_pad.min.js"></script> *@
+    <script>
+        var signature = $('#signature').jSignature({ 'UndoButton': true });
+        $('#preview').click(function () {
+            var data = signature.jSignature('getData', 'image');
+            var imageData = "data:" + data[0] + "," + data[1]; // Concatenate the data
+
+            console.log(data);
+
+            $('#signpreview').attr('src', imageData);
+
+            // Fetch the data URI as a Blob
+            fetch(imageData)
+                .then(response => response.blob())
+                .then(blob => {
+                    // Create a File object from the Blob
+                    var file = new File([blob], "signature.png", { type: data[0] });
+                    console.log(file);
+                   
+                    // // Set the file input with the generated file
+                    var input = $('#getSign')[0]; // Get the raw DOM element
+                    input.file = [file]; // Set the files property with an array containing the file
+                    console.log(input.file);
+                    
+                })
+                .catch(error => {
+                    console.error("Error fetching image data:", error);
+                });
+        });
+
 
         $(document).ready(function () {
             $("#Editbtn").click(function (event) {
@@ -213,7 +416,20 @@
                 $("#Phone").prop("disabled", false);
                 $("#Savebtnbilling").prop("disabled", false);
             });
+            $("#EditbtnProfile").click(function (event) {
+                event.preventDefault();
 
+                $("#BusinessName").prop("disabled", false);
+                $("#Website").prop("disabled", false);
+                $("#AdminNotes").prop("disabled", false);
+                $("#createBtn").prop("disabled", false);
+                $("#uploadsignbtn").prop("disabled", false);
+                $("#selectsign").prop("disabled", false);
+                $("#uploadphotobtn").prop("disabled", false);
+                $("#selectphoto").prop("disabled", false);
+                
+                
+            });
             $("#Savebtn").click(function (event) {
 
                 event.preventDefault();
@@ -285,7 +501,137 @@
 
 
         });
+        $('.regioncheckbox').change(function () {
+            let regionIds = $('input[name="Region1"]:checked').map(function () {
+                return $(this).val();
+            }).get().join(',');
+            $('#regionids1').val(regionIds);
+            console.log(regionIds);
+        });
+        $('#openfileICA').click(function () {
+            $('#getFileICA').trigger('click');
 
+        });
+        $('#getFileICA').change(function () {
+            $('#cICA').prop("checked", true);
+            $('#viewBtnICA').show();
+        });
+        $('#viewBtnICA').click(function () {
+            // Retrieve the selected file and display it
+            var file = $('#getFileICA').prop('files')[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    // Display the file content or path as per your requirement
+                    var url = URL.createObjectURL(file);
+                    var newTab = window.open(url, '_blank');
+                    newTab.focus();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        $('#openfileBC').click(function () {
+            $('#getFileBC').trigger('click');
+
+        });
+        $('#getFileBC').change(function () {
+            $('#cBC').prop("checked", true);
+            $('#viewBtnBC').show();
+        });
+        $('#viewBtnBC').click(function () {
+            // Retrieve the selected file and display it
+            var file = $('#getFileBC').prop('files')[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    // Display the file content or path as per your requirement
+                    var url = URL.createObjectURL(file);
+                    var newTab = window.open(url, '_blank');
+                    newTab.focus();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        $('#openfileHC').click(function () {
+            $('#getFileHC').trigger('click');
+
+        });
+        $('#getFileHC').change(function () {
+            $('#cHC').prop("checked", true);
+            $('#viewBtnHC').show();
+        });
+        $('#viewBtnHC').click(function () {
+            // Retrieve the selected file and display it
+            var file = $('#getFileHC').prop('files')[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    // Display the file content or path as per your requirement
+                    var url = URL.createObjectURL(file);
+                    var newTab = window.open(url, '_blank');
+                    newTab.focus();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        $('#openfileNDA').click(function () {
+            $('#getFileNDA').trigger('click');
+
+        });
+        $('#getFileNDA').change(function () {
+            $('#cNDA').prop("checked", true);
+            $('#viewBtnNDA').show();
+        });
+        $('#viewBtnNDA').click(function () {
+            // Retrieve the selected file and display it
+            var file = $('#getFileNDA').prop('files')[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    // Display the file content or path as per your requirement
+                    var url = URL.createObjectURL(file);
+                    var newTab = window.open(url, '_blank');
+                    newTab.focus();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        $('#openfileLD').click(function () {
+            $('#getFileLD').trigger('click');
+
+        });
+        $('#getFileLD').change(function () {
+            $('#cLD').prop("checked", true);
+            $('#viewBtnLD').show();
+        });
+        $('#viewBtnLD').click(function () {
+            // Retrieve the selected file and display it
+            var file = $('#getFileLD').prop('files')[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    // Display the file content or path as per your requirement
+                    var url = URL.createObjectURL(file);
+                    var newTab = window.open(url, '_blank');
+                    newTab.focus();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        $('.openfile').click(function () {
+            $('#getFilePhoto').trigger('click');
+
+        });
+        $('#getFilePhoto').change(function () {
+            // You can add additional logic here to handle file selection
+            var fileName = $(this).val();
+            //document.getElementById("getFilePhoto").textContent = this.files[0].name;
+            $('#filename').text(this.files[0].name);
+
+            console.log(fileName);
+        });
+               
 
     </script>
 }
