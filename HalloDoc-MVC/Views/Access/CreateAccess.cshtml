@@ -1,0 +1,60 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<section class="container-fluid w-75 my-5">
+
+    <div class=" d-flex flex-row-reverse justify-content-between form-admin mb-3">
+
+        <a asp-controller="Access" asp-action="Account" class="text-decoration-none text-info ">
+            <span class="ml-5 btn btn-outline-info">
+                <i class="fa fa-solid fa-angle-left"></i> Back
+            </span>
+        </a>
+        <h3>Create Role</h3>
+    </div>
+    <form class="row">
+        <div class="col-12 mb-3">
+            <h4>Details</h4>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="form-floating ">
+                <input class="form-control " id="RoleName" placeholder="RoleName" />
+                <label for="RoleName" class="text-muted">RoleName</label>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="form-floating">
+                <select class="form-select " id="AccountType" aria-label="account Type" >
+                    <option value="1">Admin</option>
+                    <option value="2">Physician</option>
+                    <option value="3">Patient</option>
+                </select>
+                <label for="AccountType">Account Type</label>        
+            </div>
+        </div>
+        <div class="col-12 mb-3">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                    Default checkbox
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                <label class="form-check-label" for="flexCheckChecked">
+                    Checked checkbox
+                </label>
+            </div>
+           
+        </div>
+        <div class="col-12 d-flex flex-row-reverse">
+            <div>
+                <input type="submit" class="btn btn-info text-light" value="save">
+                <button type="reset" class="btn btn-outline-info" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </form>
+
+</section>

@@ -2,8 +2,10 @@
 using HalloDoc_BAL.AdminRepository.AdminInterfaces;
 using HalloDoc_DAL.ViewModels.AdminViewModels;
 using HalloDoc_DAL.ViewModels.PatientViewModels;
-using HalloDoc_MVC.Models.CV;
 using Microsoft.AspNetCore.Mvc;
+using HalloDoc_MVC.Models.CV;
+using Microsoft.Diagnostics.Runtime;
+using HalloDoc_DAL.Models;
 
 namespace HalloDoc_MVC.Controllers.AdminController
 {
@@ -22,6 +24,7 @@ namespace HalloDoc_MVC.Controllers.AdminController
 
         public IActionResult Index()
         {
+           
             ViewBag.RegionCombobox = _actionRepository.RegionComboBox();
 
             return View();
@@ -49,9 +52,51 @@ namespace HalloDoc_MVC.Controllers.AdminController
             _providersRepository.CreatePhysicianAcc(model);
             return RedirectToAction("Index");
         }
-        public IActionResult EditPhysicianInfo(EditCreatePhysician model)
+       
+        public IActionResult EditPhysicianPassword(string password,int PhysicianId)
         {
-            return View("Index");
+            if (_providersRepository.EditPhysicianPassword(password, PhysicianId))
+            {
+                ViewData["result"] = "password updated successfully.";
+                return RedirectToAction("EditPhysician", new { PhysicianId = PhysicianId });
+            }
+            else
+            {
+                ViewData["result"] = "password is not updated, there is some error .";
+                return RedirectToAction("EditPhysician", new { PhysicianId = PhysicianId });
+            }
+
         }
+        public IActionResult EditPhysicianInfo(EditCreatePhysician formData)
+        {
+            string id = CV.AspNetUserID();
+            if (_providersRepository.EditPhysicianInfo(formData,id))
+            {
+                ViewData["result"] = "info updated.";
+                return RedirectToAction("EditPhysician", new { PhysicianId = formData.PhysicianId });
+            }
+            else
+            {
+                ViewData["result"] = "info not updated, there is some error .";
+                return RedirectToAction("EditPhysician", new { PhysicianId = formData.PhysicianId });
+            }
+
+        }
+        public IActionResult EditPhysicianMailing(EditCreatePhysician formData)
+        {
+            string id = CV.AspNetUserID();
+            if (_providersRepository.EditPhysicianMailing(formData, id))
+            {
+                ViewData["result"] = "info updated.";
+                return RedirectToAction("EditPhysician", new { PhysicianId = formData.PhysicianId });
+            }
+            else
+            {
+                ViewData["result"] = "info not updated, there is some error .";
+                return RedirectToAction("EditPhysician", new { PhysicianId = formData.PhysicianId });
+            }
+
+        }
+
     }
 }

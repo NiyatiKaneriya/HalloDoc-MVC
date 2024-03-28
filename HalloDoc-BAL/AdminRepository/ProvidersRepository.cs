@@ -3,6 +3,7 @@ using HalloDoc_DAL.DataContext;
 using HalloDoc_DAL.Models;
 using HalloDoc_DAL.ViewModels.AdminViewModels;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Nancy;
 using Nancy.Json;
 using System;
@@ -161,7 +162,15 @@ namespace HalloDoc_BAL.AdminRepository
                              LastName = r.LastName,
                              FirstName = r.FirstName,
                              status = (int)r.Status,
-                             zipcode = r.Zip
+                             zipcode = r.Zip,
+                             UploadImagePhoto = r.Photo,
+                             UploadImageSignature = r.Signature,
+                             IsAgreementDoc = r.IsAgreementDoc.Get(0),
+                             IsBackgroundDoc = r.IsBackgroundDoc.Get(0),
+                             IsTrainingDoc = r.IsTrainingDoc.Get(0),
+                             IsLicenseDoc = r.IsLicenseDoc.Get(0),
+                             IsNonDisclosureDoc = r.IsNonDisclosureDoc.Get(0),
+
                          }).FirstOrDefault();
             List<Regions> regions = new List<Regions>();
 
@@ -291,5 +300,109 @@ namespace HalloDoc_BAL.AdminRepository
             return true;
         }
         #endregion
+
+        #region edit physician password
+
+        public bool EditPhysicianPassword(string password,int PhysicianId)
+        {
+            if(PhysicianId != null && password!= null)
+            {
+                var physician = _context.Physicians.FirstOrDefault(e => e.PhysicianId == PhysicianId);
+
+                var aspnetuser = _context.AspNetUsers.FirstOrDefault(e => e.Id == physician.Id);
+
+                aspnetuser.PasswordHash = password;
+                aspnetuser.ModifiedDate = DateTime.Now;
+                _context.AspNetUsers.Update(aspnetuser);
+                _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
+
+
+        #endregion
+
+        #region edit physician info
+
+        public bool EditPhysicianInfo(EditCreatePhysician model, string id)
+        {
+            if (model.PhysicianId != 0 )
+            {
+                var physician = _context.Physicians.FirstOrDefault(e=>e.PhysicianId ==model.PhysicianId);
+                physician.FirstName = model.FirstName;
+                physician.LastName = model.LastName;
+                physician.Email = model.Email;
+                physician.SyncEmailAddress = model.ConfirmedEmail;
+                physician.MedicalLicense = model.MedicalLicense;
+                physician.Npinumber = model.NPINumber;
+                physician.Mobile = model.PhoneNumber;
+                physician.ModifiedDate = DateTime.Now;
+                physician.ModifiedBy = id;
+                _context.Physicians.Update(physician);
+                _context.SaveChanges();
+                List<int> list = model.Regionsid.Split(',').Select(int.Parse).ToList();
+                List<int> oldregion = new List<int>();
+
+                oldregion = _context.PhysicianRegions.Where(r => r.PhysicianId == physician.PhysicianId).Select(e => e.RegionId).ToList();
+
+
+                foreach (var value in oldregion)
+                {
+                    if (!list.Contains(value))
+                    {
+                        var PhysicianRegion = _context.PhysicianRegions.FirstOrDefault(e => e.PhysicianId == physician.PhysicianId && e.RegionId == value);
+                        _context.PhysicianRegions.Remove(PhysicianRegion);
+                        _context.SaveChanges();
+
+                    }
+                    list.Remove(value);
+                }
+                foreach (var value in list)
+                {
+                    PhysicianRegion ar = new PhysicianRegion
+                    {
+                        PhysicianId = physician.PhysicianId,
+                        RegionId = Convert.ToInt32(value),
+                    };
+                    _context.PhysicianRegions.Add(ar);
+                    _context.SaveChanges();
+
+                }
+                return true;
+            }
+            return false;
+        }
+
+
+        #endregion
+
+        #region edit physician mailing info
+
+        public bool EditPhysicianMailing(EditCreatePhysician model, string id)
+        {
+            if (model.PhysicianId != 0)
+            {
+                var physician = _context.Physicians.FirstOrDefault(e => e.PhysicianId == model.PhysicianId);
+                physician.Address1 = model.Address1;
+                physician.Address2 = model.Address2;
+                physician.City = model.city;
+                physician.RegionId = model.Regionid;
+                physician.Zip = model.zipcode;
+                physician.AltPhone = model.altPhone;
+                physician.ModifiedDate = DateTime.Now;
+                physician.ModifiedBy = id;
+                _context.Physicians.Update(physician);
+                _context.SaveChanges();
+                
+                return true;
+            }
+            return false;
+        }
+
+
+        #endregion
+
+
     }
 }

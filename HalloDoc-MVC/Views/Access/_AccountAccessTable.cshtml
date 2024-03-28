@@ -1,0 +1,40 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model List<HalloDoc_DAL.ViewModels.AdminViewModels.RoleModel>
+
+<div class="table-responsive mt-3 ">
+    <table class="table">
+        <thead class="border-0">
+            <tr class="table-secondary">
+                
+                <th scope="col" class="table-text-header d-none">Menu id / RoleId</th>
+                
+                <th scope="col" class="table-text-header ">Name</th>
+                <th scope="col" class="table-text-header ">Account type</th>
+               
+                <th scope="col" class="table-text-header ">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+             @foreach (var item2 in Model)
+            { 
+                <tr>
+                    <td scope="col" class="table-text d-none">@item2.RoleId</td>
+                  
+                    <td scope="col" class="table-text ">@item2.Name</td>
+                    <td scope="col" class="table-text ">@item2.AccountType</td>
+                   
+                    <td scope="col" class="table-text ">
+                       
+                        <a class="btn btn-outline-info" > Edit</a>
+                        <a class="btn btn-outline-info"> Delete</a>
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+</div>

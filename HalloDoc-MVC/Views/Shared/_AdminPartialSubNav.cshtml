@@ -17,7 +17,7 @@
                 <a data-toggle="tab" class="text-muted tab-link nav-link"  asp-action="Index" asp-controller="AdminProfile">My Profile</a>
             </li>
             <li class="dropdown">
-                <a data-toggle="tab" class="text-muted tab-link nav-link dropdown-toggle"  id="dropdownMenuButton11" data-bs-toggle="dropdown" aria-expanded="false">Providers</a>
+                <a data-toggle="tab" class="btn text-muted tab-link nav-link dropdown-toggle"  id="dropdownMenuButton11" data-bs-toggle="dropdown" aria-expanded="false">Providers</a>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
 
                     <li><a class="dropdown-item " asp-action="Index" asp-controller="Providers">Provider</a></li>
@@ -28,8 +28,14 @@
             <li class="">
                 <a data-toggle="tab" class="text-muted tab-link nav-link" asp-action="Index" asp-controller="Partners">Partners</a>
             </li>
-            <li class="">
-                <a data-toggle="tab" class="text-muted tab-link nav-link" asp-action="Index" asp-controller="Access">Access</a>
+            <li class="dropdown">
+                <a data-toggle="tab" class="btn text-muted tab-link nav-link dropdown-toggle" id="dropdownMenuButton111" data-bs-toggle="dropdown" aria-expanded="false">Access</a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+
+                    <li><a class="dropdown-item " asp-action="Account" asp-controller="Access">Account Access</a></li>
+                    <li><a class="dropdown-item">User Access</a></li>
+                    
+                </ul>
             </li>
             <li class="">
                 <a data-toggle="tab" class="text-muted tab-link nav-link" asp-action="Index" asp-controller="Records">Records</a>

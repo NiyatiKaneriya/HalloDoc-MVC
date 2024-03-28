@@ -28,6 +28,8 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IAdminProfileRepository, AdminProfileRepository>();
 builder.Services.AddScoped<IProvidersRepository, ProvidersRepository>();
 builder.Services.AddScoped<IProviderLocationRepository, ProviderLocationRepository>();
+builder.Services.AddScoped<IAccessRepository, AccessRepository>();
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();
 
